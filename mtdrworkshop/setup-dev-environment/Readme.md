@@ -29,15 +29,20 @@ Estimated Lab Time: ~25 minutes
   Click the Cloud Shell icon in the top-right corner of the Console.
   ![](images/7-open-cloud-shell.png " ")
 
-2. Clone the GitHub repo.
+2. Clone the GitHub repo and move up the `mtdrworkshop` directory.
 
     ````
     <copy>
-    git clone https://github.com/oracle/oci-react-samples/mtdrworkshop.git
+    git clone https://github.com/oracle/oci-react-samples.git
     </copy>
     ````
+    Then
+    ````
+    <copy>
+    cd ~/oci-react-samples; mv mtdrworkshop ..</copy>
+    ````
 
-  You should now see `mtdrworkshop` in your root directory
+    You should now see `mtdrworkshop` in your root directory
 
 3. Change to the mtdrworkshop directory:
 
@@ -45,6 +50,8 @@ Estimated Lab Time: ~25 minutes
     <copy>cd ~mtdrworkshop</copy>
 
     ```
+
+
 4. Set the execution mode for all Shell scripts
 
     ```
