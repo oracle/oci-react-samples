@@ -27,25 +27,6 @@ import oracle.ucp.jdbc.PoolDataSourceFactory;
  * This class takes care of the storage of the todo items. It uses an Autonomous Database
  * from the Oracle Cloud (ATP). The following table is used to store the todo items:
  *
- * CREATE USER todoapp IDENTIFIED BY "kj4sd#Bsd@#!!23";
- * GRANT CREATE SESSION TO todoapp;
-
-BEGIN
-   ORDS_ADMIN.ENABLE_SCHEMA(
-     p_enabled => TRUE,
-     p_schema => 'todoapp',
-     p_url_mapping_type => 'BASE_PATH',
-     p_url_mapping_pattern => 'schema-alias',
-     p_auto_rest_auth => TRUE
-   );
-   COMMIT;
-END;
-/
-
-GRANT DWROLE TO todoapp;
-
-
-
  * CREATE TABLE todoitem (
  *   id NUMBER GENERATED ALWAYS AS IDENTITY,
  *   description VARCHAR2(32000),
@@ -90,9 +71,19 @@ class TodoItemStorage {
     pool.setInactiveConnectionTimeout(60);
     pool.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
     pool.setMaxStatements(10);
+    // In this application, we don't set any init, min or max size in UCP. We
+    // also don't start the pool explicitly. This means that the very first 
+    // connection request will start the pool. The default maximum pool size
+    // is MAX_INT which isn't appropriate and should be configured properly in
+    // production.
   }
 
   /**
+   * We have two options to implement the backend. We can either make the database compute
+   * the JSON document or create the JSON document in Java. In this implementation we have
+   * chosen to build the JSON document in Java. So this method returns a list of TodoItem
+   * objects.
+   *
    * The Oracle Database can also return the rows in a JSON format:
    * SELECT
    *   json_arrayagg(json_object('id' VALUE id, 'description' VALUE description, 'date' VALUE creation_ts))
@@ -100,7 +91,7 @@ class TodoItemStorage {
    *   todoitem
    * ORDER BY creation_ts DESC
    *
-   * @return
+   * @return a list of TodoItem objects
    */
   List<TodoItem> all() {
     LOGGER.fine("all");
