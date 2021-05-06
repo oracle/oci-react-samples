@@ -36,7 +36,7 @@ Estimated Lab Time: ~25 minutes
     git clone https://github.com/oracle/oci-react-samples.git
     </copy>
     ````
-    Then
+    Move up mtdrworkshop directory (most scripts assume it is at the home/root directory)
     ````
     <copy>
     cd ~/oci-react-samples; mv mtdrworkshop ..</copy>

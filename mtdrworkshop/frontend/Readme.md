@@ -58,7 +58,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 1. clone again the git repository to a directory on your laptop (we only need the front end in this lab)
   ```
-  <copy>git clone https://github.com/oracle/oci-react-samples/mtdrworkshop.git</copy>
+  <copy>git clone https://github.com/oracle/oci-react-samples.git</copy>
   ```
 
 2. cd frontend
