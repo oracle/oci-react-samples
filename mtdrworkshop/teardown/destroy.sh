@@ -8,7 +8,7 @@ echo ________________________________________
 echo Deletting resources
 echo ________________________________________
 
-export WORKINGDIR=workingdir
+export WORKINGDIR=~/mtdrworkshop/workingdir
 echo WORKINGDIR = $WORKINGDIR
 
 export MTDRWORKSHOP_COMPARTMENT_ID=$(cat $WORKINGDIR/mtdrworkshopcompartmentid.txt)
