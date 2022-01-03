@@ -8,7 +8,7 @@ set -e
 
 # Provision Cluster, DBs, etc with terraform (and wait)
 if ! state_done PROVISIONING; then
-  cd $GRABDISH_HOME/terraform
+  cd $MTDRWORKSHOP_LOCATION/terraform
   export TF_VAR_ociTenancyOcid="$(state_get TENANCY_OCID)"
   export TF_VAR_ociUserOcid="$(state_get USER_OCID)"
   export TF_VAR_ociCompartmentOcid="$(state_get COMPARTMENT_OCID)"

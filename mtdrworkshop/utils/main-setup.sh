@@ -30,7 +30,7 @@ while ! state_done RUN_TYPE; do
     state_set USER_NAME "LL$(state_get RESERVATION_ID)-USER"
     state_set_done PROVISIONING
     state_set_done K8S_PROVISIONING
-    state_set RUN_NAME "grabdish$(state_get RESERVATION_ID)"
+    state_set RUN_NAME "mtdrworkshop$(state_get RESERVATION_ID)"
     #state_set ORDER_DB_NAME "ORDER$(state_get RESERVATION_ID)" #don't need this
     #state_set INVENTORY_DB_NAME "INVENTORY$(state_get RESERVATION_ID)" #don't need this
     #state_set_done OKE_LIMIT_CHECK # don't need this
@@ -59,7 +59,7 @@ while ! state_done USER_OCID; do
   fi
   # Validate
   if test ""`oci iam user get --user-id "$OCI_CS_USER_OCID" --query 'data."lifecycle-state"' --raw-output 2>$MTDRWORKSHOP_LOG/user_ocid_err` == 'ACTIVE'; then
-    state_set USER_OCID "$USER_OCID"
+    state_set USER_OCID "$OCI_CS_USER_OCID"
   else
     echo "That user OCID could not be validated"
     cat $MTDRWORKSHOP_LOG/user_ocid_err
@@ -86,22 +86,31 @@ while ! state_done REGION; do
   state_set REGION "$OCI_REGION" # Set in cloud shell env
 done
 
+
+##for testing purposes we won't create the compartment, we'll just ask for the compartment OCID
+
+
+##uncomment this later for green button
 #create the compartment
+# while ! state_done COMPARTMENT_OCID; do
+#   if test $(state_get RUN_TYPE) -ne 3; then
+#     echo "Resources will be created in a new compartment named $(state_get RUN_NAME)"
+#     export OCI_CLI_PROFILE=$(state_get HOME_REGION)
+#     COMPARTMENT_OCID=`oci iam compartment create --compartment-id "$(state_get TENANCY_OCID)" --name "$(state_get RUN_NAME)" --description "GrabDish Workshop" --query 'data.id' --raw-output`
+#     export OCI_CLI_PROFILE=$(state_get REGION)
+#   else
+#     read -p "Please enter your OCI compartment's OCID: " COMPARTMENT_OCID
+#   fi
+#   while ! test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; do
+#     echo "Waiting for the compartment to become ACTIVE"
+#     sleep 2
+#   done
+#   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
+# done
 while ! state_done COMPARTMENT_OCID; do
-  if test $(state_get RUN_TYPE) -ne 3; then
-    echo "Resources will be created in a new compartment named $(state_get RUN_NAME)"
-    export OCI_CLI_PROFILE=$(state_get HOME_REGION)
-    COMPARTMENT_OCID=`oci iam compartment create --compartment-id "$(state_get TENANCY_OCID)" --name "$(state_get RUN_NAME)" --description "GrabDish Workshop" --query 'data.id' --raw-output`
-    export OCI_CLI_PROFILE=$(state_get REGION)
-  else
-    read -p "Please enter your OCI compartment's OCID: " COMPARTMENT_OCID
-  fi
-  while ! test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; do
-    echo "Waiting for the compartment to become ACTIVE"
-    sleep 2
-  done
+  read -p "Please enter your OCI compartment's OCID" COMPARTMENT_OCID
+  echo "Compartment OCID: $COMPARTMENT_OCID"
   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
-done
 
 
 ## Run the terraform.sh in the background
@@ -110,6 +119,6 @@ if ! state_get PROVISIONING; then
     echo "$MTDRWORKSHOP_LOCATION/utils/terraform.sh is already running"
   else
     echo "Executing terraform.sh in the background"
-    nohup $MTDRWORKSHOP_LOCATION/utils/terraform.sh &>> $GRABDISH_LOG/terraform.log &
+    nohup $MTDRWORKSHOP_LOCATION/utils/terraform.sh &>> $MTDRWORKSHOP_LOG/terraform.log &
   fi
 fi
