@@ -26,14 +26,13 @@ else
 fi
 export PATH=$JAVA_HOME/bin:$PATH
 
-
 #state directory
 if test -d ~/mtdrworkshop-state; then
-  export MTDRWORKSHOP_LOCATION=~/mtdrworkshop-state
+  export MTDRWORKSHOP_STATE_HOME=~/mtdrworkshop-state
 else
   export MTDRWORKSHOP_STATE_HOME=$MTDRWORKSHOP_LOCATION
 fi
-
+echo "MTDRWORKSOP_STATE_HOME: $MTDRWORKSHOP_STATE_HOME"
 #Log Directory
 export MTDRWORKSHOP_LOG=$MTDRWORKSHOP_STATE_HOME/log
 mkdir -p $MTDRWORKSHOP_LOG
