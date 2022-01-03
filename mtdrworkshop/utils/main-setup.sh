@@ -22,6 +22,7 @@ fi
 #need to edit this
 while ! state_done RUN_TYPE; do
   if [[ "$HOME" =~ /home/ll[0-9]{1,5}_us ]]; then
+    echo "We are in green button"
     # Green Button (hosted by Live Labs)
     state_set RUN_TYPE "3"
     state_set RESERVATION_ID `grep -oP '(?<=/home/ll).*?(?=_us)' <<<"$HOME"`
@@ -58,7 +59,7 @@ while ! state_done USER_OCID; do
   fi
   # Validate
   if test ""`oci iam user get --user-id "$OCI_CS_USER_OCID" --query 'data."lifecycle-state"' --raw-output 2>$MTDRWORKSHOP_LOG/user_ocid_err` == 'ACTIVE'; then
-    state_set USER_OCID "$USER_CS_USER_OCID"
+    state_set USER_OCID "$USER_OCID"
   else
     echo "That user OCID could not be validated"
     cat $MTDRWORKSHOP_LOG/user_ocid_err

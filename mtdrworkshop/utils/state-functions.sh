@@ -52,7 +52,7 @@ function state_get() {
     if ! state_done "$1"; then
         return 1
     fi
-    cat $MTDRWORKSHOP_STATE_HOMEE/state/"$1"
+    cat $MTDRWORKSHOP_STATE_HOME/state/"$1"
 }
 
 # Export the functions so that they are available to subshells
