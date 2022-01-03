@@ -15,7 +15,7 @@ fi
 if test -z "$MTDRWORKSHOP_STATE_HOME"; then
   echo "ERROR: The mtdrworkshopt state home folder was not set"
 else
-  mkdir -p $GRABDISH_STATE_HOME/state
+  mkdir -p $MTDRWORKSHOP_STATE_HOME/state
 fi
 
 # Test if the state is done (file exists)
