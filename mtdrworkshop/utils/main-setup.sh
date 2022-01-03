@@ -57,8 +57,8 @@ while ! state_done USER_OCID; do
     USER_OCID=$TEST_USER_OCID
   fi
   # Validate
-  if test ""`oci iam user get --user-id "$USER_OCID" --query 'data."lifecycle-state"' --raw-output 2>$MTDRWORKSHOP_LOG/user_ocid_err` == 'ACTIVE'; then
-    state_set USER_OCID "$USER_OCID"
+  if test ""`oci iam user get --user-id "$OCI_CS_USER_OCID" --query 'data."lifecycle-state"' --raw-output 2>$MTDRWORKSHOP_LOG/user_ocid_err` == 'ACTIVE'; then
+    state_set USER_OCID "$USER_CS_USER_OCID"
   else
     echo "That user OCID could not be validated"
     cat $MTDRWORKSHOP_LOG/user_ocid_err
