@@ -30,7 +30,7 @@ resource "oci_core_service_gateway" "sgw"{
     }
     vcn_id = oci_core_vcn.okevcn.id
     #optional
-    diplay_name = "mtdr_sgw"
+    display_name = "mtdr_sgw"
 }
 
 resource "oci_core_route_table" "private"{
@@ -268,7 +268,7 @@ resource "oci_core_security_list" "nodePool"{
         #optional
         destination_type    = "SERVICE_CIDR_BLOCK"
         description         = "Allow nodes to communicate with OKE to ensure correct start-up and continued functioning"
-        icmp_options {
+        tcp_options {
             max = "443"
             min = "443"
         }
