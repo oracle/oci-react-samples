@@ -25,10 +25,10 @@ resource "oci_core_nat_gateway" "ngw"{
 resource "oci_core_service_gateway" "sgw"{
     #required
     compartment_id  = var.ociCompartmentOcid
-    services = {
+    services {
         service_id  = data.oci_core_services.services.services.0.id
     }
-    vcn.id = oci_core_vcn.okevcn.id
+    vcn_id = oci_core_vcn.okevcn.id
     #optional
     diplay_name = "mtdr_sgw"
 }
@@ -193,6 +193,19 @@ resource "oci_core_security_list" "endpoint"{
         }
     }
 }
+resource "oci_core_subnet" "nodePool_Subnet" {
+  #Required
+  #availability_domain = data.oci_identity_availability_domain.ad1.name
+  cidr_block          = "10.0.10.0/24"
+  compartment_id      = var.ociCompartmentOcid
+  vcn_id              = oci_core_vcn.okevcn.id
+  # Provider code tries to maintain compatibility with old versions.
+  security_list_ids = [oci_core_security_list.nodePool.id]
+  display_name      = "SubNet1ForNodePool"
+  prohibit_public_ip_on_vnic = "true"
+  route_table_id    = oci_core_route_table.private.id
+  dns_label           = "nodepool"
+}
 #nodepool security list
 resource "oci_core_security_list" "nodePool"{
     #required
@@ -341,6 +354,20 @@ resource "oci_core_security_list" "nodePool"{
             min = "22"
         }
     }
+}
+resource "oci_core_subnet" "svclb_Subnet" {
+  #Required
+  #availability_domain = data.oci_identity_availability_domain.ad1.name
+  cidr_block          = "10.0.20.0/24"
+  compartment_id      = var.ociCompartmentOcid
+  vcn_id              = oci_core_vcn.okevcn.id
+  # Provider code tries to maintain compatibility with old versions.
+  security_list_ids = [oci_core_default_security_list.svcLB.id]
+  display_name      = "SubNet1ForSvcLB"
+  route_table_id    = oci_core_vcn.okevcn.default_route_table_id
+  dhcp_options_id = oci_core_vcn.okevcn.default_dhcp_options_id
+  prohibit_public_ip_on_vnic = "false"
+  dns_label           = "svclb"
 }
 #default security list for svcLB
 resource oci_core_default_security_list svcLB {

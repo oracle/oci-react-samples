@@ -111,7 +111,7 @@ while ! state_done COMPARTMENT_OCID; do
   read -p "Please enter your OCI compartment's OCID" COMPARTMENT_OCID
   echo "Compartment OCID: $COMPARTMENT_OCID"
   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
-
+done
 
 ## Run the terraform.sh in the background
 if ! state_get PROVISIONING; then
@@ -122,3 +122,55 @@ if ! state_get PROVISIONING; then
     nohup $MTDRWORKSHOP_LOCATION/utils/terraform.sh &>> $MTDRWORKSHOP_LOG/terraform.log &
   fi
 fi
+
+# # Get Namespace
+# while ! state_done NAMESPACE; do
+#   NAMESPACE=`oci os ns get --compartment-id "$(state_get COMPARTMENT_OCID)" --query "data" --raw-output`
+#   state_set NAMESPACE "$NAMESPACE"
+# done
+
+# # login to docker
+# while ! state_done DOCKER_REGISTRY; do
+#   if test $(state_get RUN_TYPE) -ne 3; then
+#     export OCI_CLI_PROFILE=$(state_get HOME_REGION)
+#     if ! TOKEN=`oci iam auth-token create  --user-id "$(state_get USER_OCID)" --description 'mtdr docker login' --query 'data.token' --raw-output 2>$MTDRWORKSHOP_LOG/docker_registry_err`; then
+#       if grep UserCapacityExceeded $MTDRWORKSHOP_LOG/docker_registry_err >/dev/null; then
+#         # The key already exists
+#         echo 'ERROR: Failed to create auth token.  Please delete an old token from the OCI Console (Profile -> User Settings -> Auth Tokens).'
+#         read -p "Hit return when you are ready to retry?"
+#         continue
+#       else
+#         echo "ERROR: Creating auth token had failed:"
+#         cat $MTDRWORKSHOP_LOG/docker_registry_err
+#         exit
+#       fi
+#     fi
+#   else
+#     read -s -r -p "Please generate an Auth Token and enter the value: " TOKEN
+#     echo
+#     echo "Auth Token entry accepted.  Attempting docker login."
+#   fi
+
+#   RETRIES=0
+#   while test $RETRIES -le 30; do
+#     if echo "$TOKEN" | docker login -u "$(state_get NAMESPACE)/$(state_get USER_NAME)" --password-stdin "$(state_get REGION).ocir.io" &>/dev/null; then
+#       echo "Docker login completed"
+#       state_set DOCKER_REGISTRY "$(state_get REGION).ocir.io/$(state_get NAMESPACE)/$(state_get RUN_NAME)"
+#       export OCI_CLI_PROFILE=$(state_get REGION)
+#       break
+#     else
+#       # echo "Docker login failed.  Retrying"
+#       RETRIES=$((RETRIES+1))
+#       sleep 5
+#     fi
+#   done
+# done
+# # run oke-setup.sh in background
+# if ! state_get OKE_SETUP; then
+#   if ps -ef | grep "$GRABDISH_HOME/utils/oke-setup.sh" | grep -v grep; then
+#     echo "$GRABDISH_HOME/utils/oke-setup.sh is already running"
+#   else
+#     echo "Executing oke-setup.sh in the background"
+#     nohup $GRABDISH_HOME/utils/oke-setup.sh &>>$GRABDISH_LOG/oke-setup.log &
+#   fi
+# fi
