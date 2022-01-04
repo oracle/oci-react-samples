@@ -36,7 +36,7 @@ resource "oci_core_service_gateway" "sgw"{
 resource "oci_core_route_table" "private"{
     #required
     compartment_id  = var.ociCompartmentOcid
-    vcn_id          = oci_core_vcn.okecvn.id
+    vcn_id          = oci_core_vcn.okevcn.id
     #optional
     display_name    = "private"
     route_rules {
@@ -374,9 +374,6 @@ resource oci_core_default_security_list svcLB {
   display_name = "svcLB"
   manage_default_resource_id = oci_core_vcn.okevcn.default_security_list_id
 }
-
-
-
 data "oci_core_services" "services" {
   filter {
     name   = "name"
