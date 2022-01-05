@@ -89,7 +89,7 @@ resource "oci_core_subnet" "endpoint"{
     #required
     cidr_block                  = "10.0.0.0/28"
     compartment_id              = var.ociCompartmentOcid
-    vcn_id                      = oci_core_vcn.okevcn
+    vcn_id                      = oci_core_vcn.okevcn.id
     #optional
     security_list_ids           = [oci_core_security_list.endpoint.id]
     display_name                = "subnet1ForNodePool"
