@@ -6,6 +6,9 @@
 set -e
 
 
+
+#!/bin/bash
+
 # Provision Cluster, DBs, etc with terraform (and wait)
 if ! state_done PROVISIONING; then
   cd $MTDRWORKSHOP_LOCATION/terraform
