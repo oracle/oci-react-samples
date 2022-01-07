@@ -1,17 +1,17 @@
 #networking resources for OKE
-resource "oci_core_vcn" "okevcn"{
+resource "oci_core_vcn" "okevcn" {
     cidr_block      = "10.0.0.0/16"
     compartment_id  = var.ociCompartmentOcid
     display_name    = "mtdrworkshop"
     dns_label       = "mtdrworkshop"
 }
-resource "oci_core_internet_gateway" "igw"{
+resource "oci_core_internet_gateway" "igw" {
     compartment_id  = var.ociCompartmentOcid
     display_name    = "ClusterInternetGateway"
     vcn_id          = oci_core_vcn.okevcn.id
 }
 
-resource "oci_core_nat_gateway" "ngw"{
+resource "oci_core_nat_gateway" "ngw" {
     #Required
     compartment_id  = var.ociCompartmentOcid
     vcn_id          = oci_core_vcn.okevcn.id
@@ -22,7 +22,7 @@ resource "oci_core_nat_gateway" "ngw"{
     }
     display_name = "ngw"
 }
-resource "oci_core_service_gateway" "sgw"{
+resource "oci_core_service_gateway" "sgw" {
     #required
     compartment_id  = var.ociCompartmentOcid
     services {
@@ -33,7 +33,7 @@ resource "oci_core_service_gateway" "sgw"{
     display_name = "mtdr_sgw"
 }
 
-resource "oci_core_route_table" "private"{
+resource "oci_core_route_table" "private" {
     #required
     compartment_id  = var.ociCompartmentOcid
     vcn_id          = oci_core_vcn.okevcn.id
@@ -85,7 +85,7 @@ resource "oci_core_default_route_table" "public" {
 #     }
 # }
 
-resource "oci_core_subnet" "endpoint"{
+resource "oci_core_subnet" "endpoint" {
     #required
     cidr_block                  = "10.0.0.0/28"
     compartment_id              = var.ociCompartmentOcid
@@ -98,7 +98,7 @@ resource "oci_core_subnet" "endpoint"{
     dns_label                   = "endpoint"
 }
 #ApiEndpoint security list
-resource "oci_core_security_list" "endpoint"{
+resource "oci_core_security_list" "endpoint" {
     #required
     compartment_id  = var.ociCompartmentOcid
     vcn_id          = oci_core_vcn.okevcn.id
@@ -207,7 +207,7 @@ resource "oci_core_subnet" "nodePool_Subnet" {
   dns_label           = "nodepool"
 }
 #nodepool security list
-resource "oci_core_security_list" "nodePool"{
+resource "oci_core_security_list" "nodePool" {
     #required
     compartment_id  = var.ociCompartmentOcid
     vcn_id          = oci_core_vcn.okevcn.id

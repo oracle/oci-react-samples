@@ -72,6 +72,30 @@ while ! state_done USER_NAME; do
   state_set USER_NAME "$USER_NAME"
 done
 
+
+# Get Run Name from directory name
+while ! state_done RUN_NAME; do
+  cd $MTDRWORKSHOP_LOCATION
+  cd ../..
+  # Validate that a folder was creared
+  if test "$PWD" == ~; then
+    echo "ERROR: The workshop is not installed in a separate folder."
+    exit
+  fi
+  DN=`basename "$PWD"`
+  # Validate run name.  Must be between 1 and 13 characters, only letters or numbers, starting with letter
+  if [[ "$DN" =~ ^[a-zA-Z][a-zA-Z0-9]{0,12}$ ]]; then
+    state_set RUN_NAME `echo "$DN" | awk '{print tolower($0)}'`
+    #state_set ORDER_DB_NAME "$(state_get RUN_NAME)o"
+    #state_set INVENTORY_DB_NAME "$(state_get RUN_NAME)i"
+  else
+    echo "Error: Invalid directory name $RN.  The directory name must be between 1 and 13 characters,"
+    echo "containing only letters or numbers, starting with a letter.  Please restart the workshop with a valid directory name."
+    exit
+  fi
+  cd $MTDRWORKSHOP_LOCATION
+done
+
 # Get the tenancy OCID
 while ! state_done TENANCY_OCID; do
   state_set TENANCY_OCID "$OCI_TENANCY" # Set in cloud shell env, gets used in terraform script
@@ -107,6 +131,8 @@ done
 #   done
 #   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
 # done
+
+
 while ! state_done COMPARTMENT_OCID; do
   read -p "Please enter your OCI compartment's OCID" COMPARTMENT_OCID
   echo "Compartment OCID: $COMPARTMENT_OCID"
@@ -173,8 +199,7 @@ if ! state_get OKE_SETUP; then
     echo "Executing oke-setup.sh in the background"
     nohup $MTDRWORKSHOP_LOCATION/utils/oke-setup.sh &>>$MTDRWORKSHOP_LOG/oke-setup.log &
   fi
-fi:
-
+fi
 
 # Wait for provisioning
 if ! state_done PROVISIONING; then

@@ -1,17 +1,18 @@
-resource "oci_containerengine_cluster" "mtdrworkshop_cluster"{
+resource "oci_containerengine_cluster" "mtdrworkshop_cluster" {
     #Required
     compartment_id      = var.ociCompartmentOcid
-    kubernetes_version  = "v1.21.5"
-    name                = "mtdrworkshopcluster"
-    vcn_id              = "oci_core_vcn.okevcn.id"
-    #optional
-    endpoint_config{
+    endpoint_config {
         #optional
         is_public_ip_enabled = "true"
-        nsg_id=[
+        nsg_ids = [
         ]
         subnet_id = oci_core_subnet.endpoint.id
     }
+    kubernetes_version  = "v1.20.8"
+    name                = "mtdrworkshopcluster"
+    vcn_id              = oci_core_vcn.okevcn.id
+    #optional
+
     options{
         service_lb_subnet_ids = [oci_core_subnet.svclb_Subnet.id]
 
@@ -35,7 +36,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
   #Required
   cluster_id         = oci_containerengine_cluster.mtdrworkshop_cluster.id
   compartment_id     = var.ociCompartmentOcid
-  kubernetes_version = "v1.21.5"
+  kubernetes_version = "v1.20.8"
   name               = "Pool"
 #  node_shape="VM.Standard2.4"
 #  node_shape         = "VM.Standard.B2.1"
