@@ -72,7 +72,7 @@ while ! state_done USER_NAME; do
 done
 
 
-Get Run Name from directory name
+#Get Run Name from directory name
 while ! state_done RUN_NAME; do
   cd $MTDRWORKSHOP_LOCATION
   cd ../..
