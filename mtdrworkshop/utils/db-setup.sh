@@ -8,8 +8,10 @@ set -e
 
 # Create Object Store Bucket (Should be replaced by terraform one day)
 while ! state_done OBJECT_STORE_BUCKET; do
+  echo "creating object storage bucket"
   oci os bucket create --compartment-id "$(state_get COMPARTMENT_OCID)" --name "$(state_get RUN_NAME)"
   state_set_done OBJECT_STORE_BUCKET
+  echo "finished creating object storage buckets"
 done
 
 
@@ -22,6 +24,7 @@ done
 
 # Get Wallet
 while ! state_done WALLET_GET; do
+  echo "creating wallet"
   cd $MTDRWORKSHOP_LOCATION
   mkdir wallet
   cd wallet
@@ -29,22 +32,27 @@ while ! state_done WALLET_GET; do
   unzip wallet.zip
   cd $MTDRWORKSHOP_LOCATION
   state_set_done WALLET_GET
+  echo "finished creating wallet"
 done
 
 
 # Get DB Connection Wallet and to Object Store
 while ! state_done CWALLET_SSO_OBJECT; do
+  echo "grabbing wallet"
   cd $MTDRWORKSHOP_LOCATION/wallet
   oci os object put --bucket-name "$(state_get RUN_NAME)" --name "cwallet.sso" --file 'cwallet.sso'
   cd $MTDRWORKSHOP_LOCATION
   state_set_done CWALLET_SSO_OBJECT
+  echo "done grabbing wallet"
 done
 
 
 # Create Authenticated Link to Wallet
 while ! state_done CWALLET_SSO_AUTH_URL; do
+  echo "creating authenticated link to wallet"
   ACCESS_URI=`oci os preauth-request create --object-name 'cwallet.sso' --access-type 'ObjectRead' --bucket-name "$(state_get RUN_NAME)" --name 'mtdrworkshop' --time-expires $(date '+%Y-%m-%d' --date '+7 days') --query 'data."access-uri"' --raw-output`
   state_set CWALLET_SSO_AUTH_URL "https://objectstorage.$(state_get REGION).oraclecloud.com${ACCESS_URI}"
+  echo "done creating authenticated link to wallet"
 done
 
 
@@ -57,6 +65,7 @@ done
 
 # Create Inventory ATP Bindings
 while ! state_done DB_WALLET_SECRET; do
+  echo "creating Inventory ATP Bindings"
   cd $MTDRWORKSHOP_LOCATION/wallet
   cat - >sqlnet.ora <<!
 WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="/msdataworkshop/creds")))
@@ -93,13 +102,9 @@ WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="$TNS_ADMI
 SSL_SERVER_DN_MATCH=yes
 !
 MTDR_DB_SVC="$(state_get MTDR_DB_NAME)_tp"
-##INVENTORY_DB_SVC="$(state_get INVENTORY_DB_NAME)_tp"
 TODO_USER=TODOUSER
-#INVENTORY_USER=INVENTORYUSER
 ORDER_LINK=ORDERTOINVENTORYLINK
-#INVENTORY_LINK=INVENTORYTOORDERLINK
 ORDER_QUEUE=ORDERQUEUE
-#INVENTORY_QUEUE=INVENTORYQUEUE
 
 
 # Get DB Password
@@ -123,6 +128,7 @@ done
 
 # Order DB User, Objects
 while ! state_done TODO_USER; do
+  echo "connecting to mtdr database"
   U=$TODO_USER
   SVC=$MTDR_DB_SVC
   sqlplus /nolog <<!
@@ -138,6 +144,7 @@ insert into todoitem  (description) values ('Manual item insert');
 commit;
 !
   state_set_done TODO_USER
+  echo "finished connecting to database and creating attributes"
 done
 # DB Setup Done
 state_set_done DB_SETUP

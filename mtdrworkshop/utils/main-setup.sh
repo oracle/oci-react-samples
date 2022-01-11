@@ -220,7 +220,7 @@ if ! state_done DB_PASSWORD; then
 
   while true; do
     if test -z "$TEST_DB_PASSWORD"; then
-      read -s -r -p "Enter the password to be used for the order and inventory databases: " PW
+      read -s -r -p "Enter the password to be used for the MTDR database: " PW
     else
       PW="$TEST_DB_PASSWORD"
     fi
@@ -271,6 +271,7 @@ fi
 
 # Collect DB password and create secret
 while ! state_done DB_PASSWORD; do
+  echo "collecting DB password and creating secret"
   while true; do
     if kubectl create -n msdataworkshop -f -; then
       state_set_done DB_PASSWORD
@@ -296,6 +297,7 @@ done
 
 # Set admin password in order database
 while ! state_done MTDR_DB_PASSWORD_SET; do
+  echo "setting admin password in mtdr_db"
   # get password from vault secret
   DB_PASSWORD=`kubectl get secret dbuser -n msdataworkshop --template={{.data.dbpassword}} | base64 --decode`
   umask 177
