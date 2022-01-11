@@ -30,7 +30,7 @@ function state_done() {
 # so this function creates a file in the state directory and the name of the file is the argument passed into the function
 function state_set_done() {
   touch $MTDRWORKSHOP_STATE_HOME/state/"$1"
-  echo "`date`: $1" >>$MTDRWORKSHOP_STATE_HOME/state.log
+  echo "`date`: $1" >>$MTDRWORKSHOP_LOG/state.log
   echo "$1 completed"
 }
 
@@ -38,7 +38,7 @@ function state_set_done() {
 #$1 is the nane of the variable and $2 is the value of that variable
 function state_set() {
   echo "$2" > $MTDRWORKSHOP_STATE_HOME/state/"$1"
-  echo "`date`: $1: $2" >>$MTDRWORKSHOP_STATE_HOME/state.log
+  echo "`date`: $1: $2" >>$MTDRWORKSHOP_LOG/state.log
   echo "$1: $2"
 }
 
