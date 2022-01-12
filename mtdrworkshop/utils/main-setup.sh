@@ -214,11 +214,11 @@ fi
 
 # run db-setup.sh in background
 if ! state_get DB_SETUP; then
-  if ps -ef | grep "$MTDRWORKSHOP_HOME/utils/db-setup.sh" | grep -v grep; then
-    echo "$MTDRWORKSHOP_HOME/utils/db-setup.sh is already running"
+  if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/db-setup.sh" | grep -v grep; then
+    echo "$MTDRWORKSHOP_LOCATION/utils/db-setup.sh is already running"
   else
     echo "Executing db-setup.sh in the background"
-    nohup $MTDRWORKSHOP_HOME/utils/db-setup.sh &>>$MTDRWORKSHOP_LOG/db-setup.log &
+    nohup $MTDRWORKSHOP_LOCATION/utils/db-setup.sh &>>$MTDRWORKSHOP_LOG/db-setup.log &
   fi
 fi
 

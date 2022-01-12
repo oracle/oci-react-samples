@@ -71,7 +71,7 @@ done
 
 # Wait for TO DO User (avoid concurrent kubectl)
 while ! state_done TODO_USER; do
-  echo "`date`: Waiting for ORDER_USER"
+  echo "`date`: Waiting for TODO_USER"
   sleep 2
 done
 
