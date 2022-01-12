@@ -69,8 +69,8 @@ while ! state_done OKE_NAMESPACE; do
   fi
 done
 
-# Wait for Order User (avoid concurrent kubectl)
-while ! state_done ORDER_USER; do
+# Wait for TO DO User (avoid concurrent kubectl)
+while ! state_done TODO_USER; do
   echo "`date`: Waiting for ORDER_USER"
   sleep 2
 done

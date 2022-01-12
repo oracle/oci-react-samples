@@ -11,7 +11,7 @@ set -e
 
 
 # Remove from .bashrc
-sed -i.bak '/grabdish/d' ~/.bashrc
+#sed -i.bak '/grabdish/d' ~/.bashrc
 
 
 # No destroy necessary for Live Labs
@@ -39,15 +39,6 @@ else
 fi
 
 
-# Run the lb-destroy.sh in the background
-if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/lb-destroy.sh" | grep -v grep; then
-  echo "$MTDRWORKSHOP_LOCATION/utils/lb-destroy.sh is already running"
-else
-  echo "Executing lb-destroy.sh in the background"
-  nohup $MTDRWORKSHOP_LOCATION/utils/lb-destroy.sh &>> $MTDRWORKSHOP_LOG/lb-destroy.log &
-fi
-
-
 # Terraform Destroy
 echo "Running terraform destroy"
 cd $MTDRWORKSHOP_LOCATION/terraform
@@ -57,7 +48,6 @@ export TF_VAR_ociCompartmentOcid="$(state_get COMPARTMENT_OCID)"
 export TF_VAR_ociRegionIdentifier="$(state_get REGION)"
 export TF_VAR_runName="$(state_get RUN_NAME)"
 export TF_VAR_orderDbName="$(state_get ORDER_DB_NAME)"
-export TF_VAR_inventoryDbName="$(state_get INVENTORY_DB_NAME)"
 terraform init
 terraform destroy -auto-approve
 

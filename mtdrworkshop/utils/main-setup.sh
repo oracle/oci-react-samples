@@ -138,6 +138,18 @@ while ! state_done COMPARTMENT_OCID; do
   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
 done
 
+
+## Run the java-builds.sh in the background
+if ! state_get JAVA_BUILDS; then
+  if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh" | grep -v grep; then
+    echo "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh is already running"
+  else
+    echo "Executing java-builds.sh in the background"
+    nohup $MTDRWORKSHOP_LOCATION/utils/java-builds.sh &>> $MTDRWORKSHOP_LOG/java-builds.log &
+  fi
+fi
+
+
 ## Run the terraform.sh in the background
 if ! state_get PROVISIONING; then
   if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/terraform.sh" | grep -v grep; then
