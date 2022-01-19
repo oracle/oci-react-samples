@@ -39,8 +39,6 @@ mkdir -p $MTDRWORKSHOP_LOG
 
 source $MTDRWORKSHOP_LOCATION/utils/state-functions.sh
 
-echo "source $(pwd)/env.sh" >> ~/.bashrc
-
 # SHORTCUT ALIASES AND UTILS...
 alias k='kubectl'
 alias kt='kubectl --insecure-skip-tls-verify'
