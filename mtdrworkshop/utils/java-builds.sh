@@ -45,6 +45,7 @@ done
 
 # Build all the images (no push) except frontend-helidon (requires Jaeger)
 while ! state_done JAVA_BUILDS; do
+  echo "building images"
   for b in $BUILDS; do
     cd $MTDRWORKSHOP_LOCATION/backend
     time ./build.sh &>> $MTDRWORKSHOP_LOG/build-backend.log
@@ -53,7 +54,8 @@ while ! state_done JAVA_BUILDS; do
 done
 
 while ! state_done JAVA_DEPLOY; do
-  for bi in $BUILDS; do
+  echo "pushing images"
+  for b in $BUILDS; do
     cd $MTDRWORKSHOP_LOCATION/backend
     time ./deploy.sh &>> $MTDRWORKSHOP_LOG/deploy-backend.log
   done
