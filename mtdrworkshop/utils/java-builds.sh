@@ -6,7 +6,7 @@
 set -e
 
 
-BUILDS="mtdrworkshop"
+BUILDS="todolistapp-helidon-se"
 
 # Provision Repos
 while ! state_done JAVA_REPOS; do
@@ -43,21 +43,21 @@ while ! state_done DOCKER_REGISTRY; do
 done
 
 
-# Build all the images (no push) except frontend-helidon (requires Jaeger)
-while ! state_done JAVA_BUILDS; do
-  echo "building images"
-  for b in $BUILDS; do
-    cd $MTDRWORKSHOP_LOCATION/backend
-    time ./build.sh &>> $MTDRWORKSHOP_LOG/build-backend.log
-  done
-  state_set_done JAVA_BUILDS
-done
+# # Build all the images (no push) except frontend-helidon (requires Jaeger)
+# while ! state_done JAVA_BUILDS; do
+#   echo "building images"
+#   for b in $BUILDS; do
+#     cd $MTDRWORKSHOP_LOCATION/backend
+#     time ./build.sh &>> $MTDRWORKSHOP_LOG/build-backend.log
+#   done
+#   state_set_done JAVA_BUILDS
+# done
 
-while ! state_done JAVA_DEPLOY; do
-  echo "pushing images"
-  for b in $BUILDS; do
-    cd $MTDRWORKSHOP_LOCATION/backend
-    time ./deploy.sh &>> $MTDRWORKSHOP_LOG/deploy-backend.log
-  done
-  state_set_done JAVA_DEPLOY
-done
+# while ! state_done JAVA_DEPLOY; do
+#   echo "pushing images"
+#   for b in $BUILDS; do
+#     cd $MTDRWORKSHOP_LOCATION/backend
+#     time ./deploy.sh &>> $MTDRWORKSHOP_LOG/deploy-backend.log
+#   done
+#   state_set_done JAVA_DEPLOY
+# done

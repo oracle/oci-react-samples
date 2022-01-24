@@ -12,7 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.time.OffsetDateTime;
-
+import javax.inject.Inject; //added
+import javax.inject.Named; //added
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
@@ -39,6 +40,10 @@ import oracle.ucp.jdbc.PoolDataSourceFactory;
  */
 
 class TodoItemStorage {
+
+  @Inject
+  @Named("todopdb")
+
   private final static Logger LOGGER = Logger.getLogger(TodoItemStorage.class.getName());
 
   private final PoolDataSource pool;

@@ -11,6 +11,15 @@ echo CURRENTTIME is $CURRENTTIME  ...this will be appended to generated deployme
 cp src/main/k8s/app.yaml todolistapp-helidon-se-deployment-$CURRENTTIME.yaml
 #may hit sed incompat issue with mac
 sed -i "s|%DOCKER_REGISTRY%|${DOCKER_REGISTRY}|g" todolistapp-helidon-se-deployment-$CURRENTTIME.yaml
-kubectl apply -f $SCRIPT_DIR/todolistapp-helidon-se-deployment-$CURRENTTIME.yaml 
+#kubectl apply -f $SCRIPT_DIR/todolistapp-helidon-se-deployment-$CURRENTTIME.yaml 
+
+
+if [ -z "$1" ]; then
+    kubectl apply -f $SCRIPT_DIR/todolistapp-helidon-se-deployment-$CURRENTTIME.yaml -n msdataworkshop
+else
+    kubectl apply -f <(istioctl kube-inject -f $SCRIPT_DIR/todolistapp-helidon-se-deployment-$CURRENTTIME.yaml) -n msdataworkshop
+fi
+
+#kubectl apply -f $SCRIPT_DIR/order-service.yaml -n msdataworkshop
 
 #kubectl create -f $SCRIPT_DIR/todolistapp-helidon-se-service.yaml  -n todoapplication
