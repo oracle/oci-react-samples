@@ -28,7 +28,7 @@ spec:
       app: todolistapp-helidon-se
 #End added
   replicas: 2
-  template:
+  template::
     metadata:
       labels:
         app: todolistapp-helidon-se
@@ -39,21 +39,21 @@ spec:
         image: %DOCKER_REGISTRY%/todolistapp-helidon-se:0.1
         imagePullPolicy: Always
         env:
-          - name: oracle.ucp.jdbc.PoolDataSource.todopdb.user
-            value: "TODOUSER"
-          - name: oracle.ucp.jdbc.PoolDataSource.todopdb.URL
-            value: "jdbc:oracle:thin:@%TODO_PDB_NAME%_tp?TNS_ADMIN=/msdataworkshop/creds"
-          - name: OCI_REGION
-            value: "%OCI_REGION%"
-          - name: dbpassword
-            valueFrom:
-              secretKeyRef:
-                name: dbuser
-                key: dbpassword
-                optional: true
-          volumeMounts:
-          - name: creds
-          - mountPath: /msdataworkshop/creds
+        - name: oracle.ucp.jdbc.PoolDataSource.todopdb.user
+          value: "TODOUSER"
+        - name: oracle.ucp.jdbc.PoolDataSource.todopdb.URL
+          value: "jdbc:oracle:thin:@%TODO_PDB_NAME%_tp?TNS_ADMIN=/msdataworkshop/creds"
+        - name: OCI_REGION
+          value: "%OCI_REGION%"
+        - name: dbpassword
+          valueFrom:
+            secretKeyRef:
+              name: dbuser
+              key: dbpassword
+              optional: true
+        volumeMounts:
+        - name: creds
+          mountPath: /msdataworkshop/creds
         ports:
         - containerPort: 8080
         livenessProbe:
@@ -80,3 +80,4 @@ spec:
           labelSelector:
             matchLabels:
               app: todolistapp-helidon-se
+---
