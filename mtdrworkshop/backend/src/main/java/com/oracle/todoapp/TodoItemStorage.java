@@ -12,8 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.time.OffsetDateTime;
-//import javax.inject.Inject; //added
-//import javax.inject.Named; //added
+import javax.inject.Inject; //added by petersong
+import javax.inject.Named; //added by peter song
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
@@ -41,9 +41,10 @@ import oracle.ucp.jdbc.PoolDataSourceFactory;
 
 class TodoItemStorage {
 
-  //@Inject
-  //@Named("todopdb")
-
+  @Inject //added by psong
+  @Named("todopdb")//added by psong
+  static String url = System.getenv("oracle.ucp.jdbc.PoolDataSource.todopdb.URL") //added by psong
+  static String pwSecretFromK8s = System.getenv("dbpassword") //added by psong
   private final static Logger LOGGER = Logger.getLogger(TodoItemStorage.class.getName());
 
   private final PoolDataSource pool;
@@ -71,8 +72,9 @@ class TodoItemStorage {
     System.out.printf("Using url: %s%n", url);
     pool = PoolDataSourceFactory.getPoolDataSource();
     pool.setURL(url);
-    pool.setUser(user);
-    pool.setPassword(password);
+    //pool.setUser(user);
+    pool.setUser("TODOUSER");
+    pool.setPassword(pwSecretFromK8s);
     pool.setInactiveConnectionTimeout(60);
     pool.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
     pool.setMaxStatements(10);

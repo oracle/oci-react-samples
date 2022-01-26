@@ -28,7 +28,7 @@ spec:
       app: todolistapp-helidon-se
 #End added
   replicas: 2
-  template::
+  template:
     metadata:
       labels:
         app: todolistapp-helidon-se
@@ -68,16 +68,16 @@ spec:
             port: 8080
           initialDelaySeconds: 40
           periodSeconds: 3
-        restartPolicy: Always
-        volumes:
-        - name: creds
-          secret:
-            secretName: db-wallet-secret
-        topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: todolistapp-helidon-se
+      restartPolicy: Always
+      volumes:
+      - name: creds
+        secret:
+          secretName: db-wallet-secret
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: todolistapp-helidon-se
 ---

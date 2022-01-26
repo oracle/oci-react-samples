@@ -10,9 +10,9 @@ FROM openjdk:11
 
 
 #Thinking we don't need to add the wallet here since we're using a kubernetes secret
-ADD target/classes/wallet /target/classes/wallet
+##ADD target/classes/wallet /target/classes/wallet
 
-## this is a maven dependency? 
+## add maven dependencies
 ADD target/libs /target/libs
 
 ##adding the service itself

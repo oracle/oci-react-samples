@@ -27,9 +27,9 @@ class TodoItem implements Serializable {
   private static final long serialVersionUID = 4168008245514009223L;
   private final static Logger LOGGER = Logger.getLogger(TodoItem.class.getName());
   //added line
-  static {
-      System.setProperty("oracle.jdbc.fanEnabled", "false");
-  }
+  // static {
+  //     System.setProperty("oracle.jdbc.fanEnabled", "false");
+  // }
   // This is the mapping with the database rows:
   int id;
   String description;

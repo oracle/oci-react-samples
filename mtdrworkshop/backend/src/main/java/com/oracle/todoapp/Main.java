@@ -35,7 +35,7 @@ public final class Main {
     Config config = Config.create();
 
     WebServer.builder()
-      .config(config.get("server"))
+      .config(config.get("server")) //update this server configuration from the config provided
       .addMediaSupport(JsonpSupport.create())
       .routing(createRouting(config))
       .build()
