@@ -40,11 +40,11 @@ import oracle.ucp.jdbc.PoolDataSourceFactory;
  */
 
 class TodoItemStorage {
-
+å
   @Inject //added by psong
   @Named("todopdb")//added by psong
-  static String url = System.getenv("oracle.ucp.jdbc.PoolDataSource.todopdb.URL") //added by psong
-  static String pwSecretFromK8s = System.getenv("dbpassword") //added by psong
+  static String url = System.getenv("oracle.ucp.jdbc.PoolDataSource.todopdb.URL"); //added by psong
+  static String pwSecretFromK8s = System.getenv("dbpassword") //added by psong;
   private final static Logger LOGGER = Logger.getLogger(TodoItemStorage.class.getName());
 
   private final PoolDataSource pool;
