@@ -13,11 +13,11 @@ if [ -z "$TODO_PDB_NAME" ]; then
     echo "Error: TODO_PDB_NAME env variable needs to be set!"
     exit 1
 fi
-if [ -z "$OCI_REGION"]; then
+if [ -z "$OCI_REGION" ]; then
     echo "OCI_REGION not set. Will get it with state_get"
     export OCI_REGION=$(state_get REGION)
 fi
-if [ -z "$OCI_REGION"]; then
+if [ -z "$OCI_REGION" ]; then
     echo "Error: OCI_REGION env variable needs to be set!"
     exit 1
 fi
