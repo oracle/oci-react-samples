@@ -39,10 +39,12 @@ spec:
         image: %DOCKER_REGISTRY%/todolistapp-helidon-se:0.1
         imagePullPolicy: Always
         env:
-        - name: oracle.ucp.jdbc.PoolDataSource.todopdb.user
+        - name: database.user
           value: "TODOUSER"
-        - name: oracle.ucp.jdbc.PoolDataSource.todopdb.URL
+        - name: database.url
           value: "jdbc:oracle:thin:@%TODO_PDB_NAME%_tp?TNS_ADMIN=/msdataworkshop/creds"
+        - name: todo.table.name
+          value: "todoitem"
         - name: OCI_REGION
           value: "%OCI_REGION%"
         - name: dbpassword

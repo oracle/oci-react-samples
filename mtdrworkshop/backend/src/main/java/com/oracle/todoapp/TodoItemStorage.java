@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import io.helidon.config.Config;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
-
+import io.helidon.dbclient.jdbc;
 /*
  * This class takes care of the storage of the todo items. It uses an Autonomous Database
  * from the Oracle Cloud (ATP). The following table is used to store the todo items:
@@ -40,11 +40,9 @@ import oracle.ucp.jdbc.PoolDataSourceFactory;
  */
 
 class TodoItemStorage {
-å
-  @Inject //added by psong
-  @Named("todopdb")//added by psong
-  static String url = System.getenv("oracle.ucp.jdbc.PoolDataSource.todopdb.URL"); //added by psong
-  static String pwSecretFromK8s = System.getenv("dbpassword") //added by psong;
+  //@Inject //added by psong
+  //@Named("todopdb")//added by psong
+  static String pwSecretFromK8s = System.getenv("dbpassword").trim();//added by psong;
   private final static Logger LOGGER = Logger.getLogger(TodoItemStorage.class.getName());
 
   private final PoolDataSource pool;
@@ -66,9 +64,10 @@ class TodoItemStorage {
 
   private TodoItemStorage(Config config)  throws SQLException {
     LOGGER.log(Level.CONFIG, ()->config.toString());
+    // trying this in place of "url and user and dbpasswor"
+    String password = config.get("password").asString().get();
     String url = config.get("url").asString().get();
     String user = config.get("user").asString().get();
-    String password = config.get("password").asString().get();
     System.out.printf("Using url: %s%n", url);
     pool = PoolDataSourceFactory.getPoolDataSource();
     pool.setURL(url);
