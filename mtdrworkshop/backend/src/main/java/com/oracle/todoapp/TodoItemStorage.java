@@ -12,8 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.time.OffsetDateTime;
-import javax.inject.Inject; //added by petersong
-import javax.inject.Named; //added by peter song
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
@@ -23,7 +21,7 @@ import java.util.logging.Logger;
 import io.helidon.config.Config;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
-import io.helidon.dbclient.jdbc;
+//import io.helidon.dbclient.jdbc;
 /*
  * This class takes care of the storage of the todo items. It uses an Autonomous Database
  * from the Oracle Cloud (ATP). The following table is used to store the todo items:

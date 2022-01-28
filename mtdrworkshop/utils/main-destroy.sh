@@ -37,6 +37,13 @@ else
   echo "Executing repo-destroy.sh in the background"
   nohup $MTDRWORKSHOP_LOCATION/utils/repo-destroy.sh &>> $MTDRWORKSHOP_LOG/repo-destroy.log &
 fi
+# Run the lb-destroy.sh in the background
+if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/lb-destroy.sh" | grep -v grep; then
+  echo "$MTDRWORKSHOP_LOCATION/utils/lb-destroy.sh is already running"
+else
+  echo "Executing lb-destroy.sh in the background"
+  nohup $MTDRWORKSHOP_LOCATION/utils/lb-destroy.sh &>> $MTDRWORKSHOP_LOG/lb-destroy.log &
+fi
 
 
 # Terraform Destroy
@@ -47,7 +54,7 @@ export TF_VAR_ociUserOcid="$(state_get USER_OCID)"
 export TF_VAR_ociCompartmentOcid="$(state_get COMPARTMENT_OCID)"
 export TF_VAR_ociRegionIdentifier="$(state_get REGION)"
 export TF_VAR_runName="$(state_get RUN_NAME)"
-export TF_VAR_orderDbName="$(state_get ORDER_DB_NAME)"
+export TF_VAR_mtdrDbName="$(state_get MTDR_DB_NAME)"
 terraform init
 terraform destroy -auto-approve
 
