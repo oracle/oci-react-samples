@@ -399,6 +399,7 @@ resource "oci_core_subnet" "svclb_Subnet" {
   cidr_block          = "10.0.20.0/24"
   compartment_id      = var.ociCompartmentOcid
   vcn_id              = oci_core_vcn.okevcn.id
+  display_name        = "Subnet1 for svclb"
   # Provider code tries to maintain compatibility with old versions.
   security_list_ids = [oci_core_security_list.svclb_sl.id]
   route_table_id    = oci_core_vcn.okevcn.default_route_table_id
