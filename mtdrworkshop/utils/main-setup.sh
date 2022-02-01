@@ -115,28 +115,30 @@ done
 
 ##uncomment this later for green button
 #create the compartment
-# while ! state_done COMPARTMENT_OCID; do
-#   if test $(state_get RUN_TYPE) -ne 3; then
-#     echo "Resources will be created in a new compartment named $(state_get RUN_NAME)"
-#     export OCI_CLI_PROFILE=$(state_get HOME_REGION)
-#     COMPARTMENT_OCID=`oci iam compartment create --compartment-id "$(state_get TENANCY_OCID)" --name "$(state_get RUN_NAME)" --description "GrabDish Workshop" --query 'data.id' --raw-output`
-#     export OCI_CLI_PROFILE=$(state_get REGION)
-#   else
-#     read -p "Please enter your OCI compartment's OCID: " COMPARTMENT_OCID
-#   fi
-#   while ! test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; do
-#     echo "Waiting for the compartment to become ACTIVE"
-#     sleep 2
-#   done
-#   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
-# done
-
-
 while ! state_done COMPARTMENT_OCID; do
-  read -p "Please enter your OCI compartment's OCID" COMPARTMENT_OCID
-  echo "Compartment OCID: $COMPARTMENT_OCID"
+  if test $(state_get RUN_TYPE) -ne 3; then
+    read -p "if you have your own compartment, enter it here: " COMPARTMENT_OCID
+    if test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; then
+    state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
+    fi
+    else
+      echo "Resources will be created in a new compartment named $(state_get RUN_NAME)"
+      COMPARTMENT_OCID=`oci iam compartment create --compartment-id "$(state_get TENANCY_OCID)" --name "$(state_get RUN_NAME)" --description "mtdrworkshop" --query 'data.id' --raw-output`
+    fi
+  fi
+  while ! test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; do
+    echo "Waiting for the compartment to become ACTIVE"
+    sleep 2
+  done
   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
 done
+
+
+# while ! state_done COMPARTMENT_OCID; do
+#   read -p "Please enter your OCI compartment's OCID" COMPARTMENT_OCID
+#   echo "Compartment OCID: $COMPARTMENT_OCID"
+#   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
+# done
 
 
 ## Run the java-builds.sh in the background
