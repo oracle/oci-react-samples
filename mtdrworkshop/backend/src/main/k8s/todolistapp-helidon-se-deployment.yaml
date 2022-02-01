@@ -58,6 +58,7 @@ spec:
           mountPath: /msdataworkshop/creds
         ports:
         - containerPort: 8080
+        ## if you want to use a livenessProbe or readinessProbe, need to add a handler to the code -petersong
         # livenessProbe:
         #   httpGet:
         #     path: /heath/live

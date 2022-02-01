@@ -355,25 +355,64 @@ resource "oci_core_security_list" "nodePool" {
         }
     }
 }
-resource "oci_core_subnet" "svclb_Subnet" {
+# resource "oci_core_subnet" "svclb_Subnet" {
+#   #Required
+#   #availability_domain = data.oci_identity_availability_domain.ad1.name
+#   cidr_block          = "10.0.20.0/24"
+#   compartment_id      = var.ociCompartmentOcid
+#   vcn_id              = oci_core_vcn.okevcn.id
+#   # Provider code tries to maintain compatibility with old versions.
+#   security_list_ids = [oci_core_default_security_list.svcLB.id]
+#   display_name      = "SubNet1ForSvcLB"
+#   route_table_id    = oci_core_vcn.okevcn.default_route_table_id
+#   dhcp_options_id = oci_core_vcn.okevcn.default_dhcp_options_id
+#   prohibit_public_ip_on_vnic = "false"
+#   dns_label           = "svclb"
+# }
+
+resource "oci_core_security_list" "svclb_sl" {
+    #required
+    compartment_id  = var.ociCompartmentOcid
+    vcn_id          = oci_core_vcn.okevcn.id
+    #Optional
+    display_name    = "scvlb"
+    egress_security_rules {
+        #Required
+        destination         = "0.0.0.0/0"
+        protocol            = "6" #TCP
+        #optional
+        destination_type    = "CIDR_BLOCK"
+        stateless           = "false"
+    }
+    ingress_security_rules {
+        #required
+        source              = "0.0.0.0/0"
+        protocol            = "6" #TCP
+        #optional
+        source_type         = "CIDR_BLOCK"
+        stateless           = "false"
+    }
+}
+resource "oci_core_subnet" "svcl_Subnet" {
   #Required
   #availability_domain = data.oci_identity_availability_domain.ad1.name
   cidr_block          = "10.0.20.0/24"
   compartment_id      = var.ociCompartmentOcid
   vcn_id              = oci_core_vcn.okevcn.id
   # Provider code tries to maintain compatibility with old versions.
-  security_list_ids = [oci_core_default_security_list.svcLB.id]
-  display_name      = "SubNet1ForSvcLB"
+  security_list_ids = [oci_core_security_list.svclb_sl.id]
   route_table_id    = oci_core_vcn.okevcn.default_route_table_id
   dhcp_options_id = oci_core_vcn.okevcn.default_dhcp_options_id
   prohibit_public_ip_on_vnic = "false"
   dns_label           = "svclb"
 }
+
+
 #default security list for svcLB
-resource oci_core_default_security_list svcLB {
-  display_name = "svcLB"
-  manage_default_resource_id = oci_core_vcn.okevcn.default_security_list_id
-}
+# resource oci_core_default_security_list svcLB {
+#   display_name = "svcLB"
+#   manage_default_resource_id = oci_core_vcn.okevcn.default_security_list_id
+# }
 data "oci_core_services" "services" {
   filter {
     name   = "name"
