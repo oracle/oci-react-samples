@@ -119,8 +119,7 @@ while ! state_done COMPARTMENT_OCID; do
   if test $(state_get RUN_TYPE) -ne 3; then
     read -p "if you have your own compartment, enter it here: " COMPARTMENT_OCID
     if test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; then
-    state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
-    fi
+      state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
     else
       echo "Resources will be created in a new compartment named $(state_get RUN_NAME)"
       COMPARTMENT_OCID=`oci iam compartment create --compartment-id "$(state_get TENANCY_OCID)" --name "$(state_get RUN_NAME)" --description "mtdrworkshop" --query 'data.id' --raw-output`
