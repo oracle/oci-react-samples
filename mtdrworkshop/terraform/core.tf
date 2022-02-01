@@ -393,7 +393,7 @@ resource "oci_core_security_list" "svclb_sl" {
         stateless           = "false"
     }
 }
-resource "oci_core_subnet" "svcl_Subnet" {
+resource "oci_core_subnet" "svclb_Subnet" {
   #Required
   #availability_domain = data.oci_identity_availability_domain.ad1.name
   cidr_block          = "10.0.20.0/24"
