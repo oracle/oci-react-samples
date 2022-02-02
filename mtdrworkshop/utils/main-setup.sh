@@ -18,7 +18,6 @@ if state_done SETUP_VERIFIED; then
 fi
 
 #Identify Run Type
-#need to edit this
 while ! state_done RUN_TYPE; do
   if [[ "$HOME" =~ /home/ll[0-9]{1,5}_us ]]; then
     echo "We are in green button"
@@ -30,9 +29,8 @@ while ! state_done RUN_TYPE; do
     state_set_done PROVISIONING
     state_set_done K8S_PROVISIONING
     state_set RUN_NAME "mtdrworkshop$(state_get RESERVATION_ID)"
-    state_set MTDR_DB_NAME "MTDRDB$(state_get RESERVATION_ID)" #don't need this
-    #state_set INVENTORY_DB_NAME "INVENTORY$(state_get RESERVATION_ID)" #don't need this
-    #state_set_done OKE_LIMIT_CHECK # don't need this
+    state_set MTDR_DB_NAME "MTDRDB$(state_get RESERVATION_ID)"
+    #state_set_done OKE_LIMIT_CHECK
     #state_set_done ATP_LIMIT_CHECK
   else
     state_set RUN_TYPE "1"
@@ -49,7 +47,6 @@ done
 
 
 # Get the User OCID
-#if this is a green button then it won't go into this while loop
 while ! state_done USER_OCID; do
   if test -z "$TEST_USER_OCID"; then
     read -p "Please enter your OCI user's OCID: " USER_OCID
@@ -65,7 +62,6 @@ while ! state_done USER_OCID; do
   fi
 done
 
-#this will only run if not green button
 while ! state_done USER_NAME; do
   USER_NAME=`oci iam user get --user-id "$(state_get USER_OCID)" --query "data.name" --raw-output`
   state_set USER_NAME "$USER_NAME"
@@ -110,15 +106,13 @@ while ! state_done REGION; do
 done
 
 
-##for testing purposes we won't create the compartment, we'll just ask for the compartment OCID
-
-
-##uncomment this later for green button
 #create the compartment
+##newest code added later
 while ! state_done COMPARTMENT_OCID; do
   if test $(state_get RUN_TYPE) -ne 3; then
-    read -p "if you have your own compartment, enter it here: " COMPARTMENT_OCID
-    if test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; then
+    read -p "if you have your own compartment, enter it here: if not, hit enter" COMPARTMENT_OCID
+    ##newest condition added
+    if test "$COMPARTMENT_OCID" != "" && `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; then
       state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
     else
       echo "Resources will be created in a new compartment named $(state_get RUN_NAME)"
@@ -131,14 +125,6 @@ while ! state_done COMPARTMENT_OCID; do
   done
   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
 done
-
-
-# while ! state_done COMPARTMENT_OCID; do
-#   read -p "Please enter your OCI compartment's OCID" COMPARTMENT_OCID
-#   echo "Compartment OCID: $COMPARTMENT_OCID"
-#   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
-# done
-
 
 ## Run the java-builds.sh in the background
 if ! state_get JAVA_BUILDS; then
