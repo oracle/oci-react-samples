@@ -68,10 +68,10 @@ while ! state_done DB_WALLET_SECRET; do
   echo "creating Inventory ATP Bindings"
   cd $MTDRWORKSHOP_LOCATION/wallet
   cat - >sqlnet.ora <<!
-WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="/msdataworkshop/creds")))
+WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="/mtdrworkshop/creds")))
 SSL_SERVER_DN_MATCH=yes
 !
-  if kubectl create -f - -n msdataworkshop; then
+  if kubectl create -f - -n mtdrworkshop; then
     state_set_done DB_WALLET_SECRET
   else
     echo "Error: Failure to create db-wallet-secret.  Retrying..."
@@ -109,7 +109,7 @@ ORDER_QUEUE=ORDERQUEUE
 
 # Get DB Password
 while true; do
-  if DB_PASSWORD=`kubectl get secret dbuser -n msdataworkshop --template={{.data.dbpassword}} | base64 --decode`; then
+  if DB_PASSWORD=`kubectl get secret dbuser -n mtdrworkshop --template={{.data.dbpassword}} | base64 --decode`; then
     if ! test -z "$DB_PASSWORD"; then
       break
     fi

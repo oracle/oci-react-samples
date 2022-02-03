@@ -61,7 +61,7 @@ done
 
 # Create OKE Namespace
 while ! state_done OKE_NAMESPACE; do
-  if kubectl create ns msdataworkshop; then
+  if kubectl create ns mtdrworkshop; then
     state_set_done OKE_NAMESPACE
   else
     echo "Failed to create namespace.  Retrying..."

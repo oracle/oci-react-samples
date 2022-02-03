@@ -42,6 +42,8 @@ while ! state_done DOCKER_REGISTRY; do
   sleep 5
 done
 
+state_set_done JAVA_BUILDS
+
 
 # # Build all the images (no push) except frontend-helidon (requires Jaeger)
 # while ! state_done JAVA_BUILDS; do

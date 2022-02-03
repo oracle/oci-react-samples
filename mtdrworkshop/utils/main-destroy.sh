@@ -61,7 +61,7 @@ terraform init
 terraform destroy -auto-approve
 
 
-# If BYO K8s then delete the msdataworkshop namespace in k8s
+# If BYO K8s then delete the mtdrworkshop namespace in k8s
 if state_done BYO_K8S; then
-  kubectl delete ns msdataworkshop
+  kubectl delete ns mtdrworkshop
 fi

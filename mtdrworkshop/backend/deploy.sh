@@ -38,11 +38,11 @@ mv -- /tmp/todolistapp-helidon-se-deployment-$CURRENTTIME.yaml todolistapp-helid
 
 
 if [ -z "$1" ]; then
-    kubectl apply -f $SCRIPT_DIR/todolistapp-helidon-se-deployment-$CURRENTTIME.yaml -n msdataworkshop
+    kubectl apply -f $SCRIPT_DIR/todolistapp-helidon-se-deployment-$CURRENTTIME.yaml -n mtdrworkshop
 else
-    kubectl apply -f <(istioctl kube-inject -f $SCRIPT_DIR/todolistapp-helidon-se-deployment-$CURRENTTIME.yaml) -n msdataworkshop
+    kubectl apply -f <(istioctl kube-inject -f $SCRIPT_DIR/todolistapp-helidon-se-deployment-$CURRENTTIME.yaml) -n mtdrworkshop
 fi
 
-#kubectl apply -f $SCRIPT_DIR/order-service.yaml -n msdataworkshop
+#kubectl apply -f $SCRIPT_DIR/order-service.yaml -n mtdrworkshop
 
 #kubectl create -f $SCRIPT_DIR/todolistapp-helidon-se-service.yaml  -n todoapplication

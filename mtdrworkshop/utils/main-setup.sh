@@ -112,11 +112,12 @@ while ! state_done COMPARTMENT_OCID; do
   if test $(state_get RUN_TYPE) -ne 3; then
     read -p "if you have your own compartment, enter it here: if not, hit enter" COMPARTMENT_OCID
     ##newest condition added
-    if test "$COMPARTMENT_OCID" != "" && `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; then
+    if test "$COMPARTMENT_OCID" != "" && test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null` == 'ACTIVE'; then
       state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
     else
       echo "Resources will be created in a new compartment named $(state_get RUN_NAME)"
       COMPARTMENT_OCID=`oci iam compartment create --compartment-id "$(state_get TENANCY_OCID)" --name "$(state_get RUN_NAME)" --description "mtdrworkshop" --query 'data.id' --raw-output`
+      ##sleep 10
     fi
   fi
   while ! test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; do
@@ -259,7 +260,7 @@ done
 
 # Wait for kubectl Setup
 if ! state_done OKE_NAMESPACE; then
-  echo "`date`: Waiting for kubectl configuration and msdataworkshop namespace"
+  echo "`date`: Waiting for kubectl configuration and mtdrworkshop namespace"
   while ! state_done OKE_NAMESPACE; do
     LOGLINE=`tail -1 $MTDRWORKSHOP_LOG/state.log`
     echo -ne r"\033[2K\r${LOGLINE:0:120}"
@@ -272,7 +273,7 @@ fi
 while ! state_done DB_PASSWORD; do
   echo "collecting DB password and creating secret"
   while true; do
-    if kubectl create -n msdataworkshop -f -; then
+    if kubectl create -n mtdrworkshop -f -; then
       state_set_done DB_PASSWORD
       break
     else
@@ -298,7 +299,7 @@ done
 while ! state_done MTDR_DB_PASSWORD_SET; do
   echo "setting admin password in mtdr_db"
   # get password from vault secret
-  DB_PASSWORD=`kubectl get secret dbuser -n msdataworkshop --template={{.data.dbpassword}} | base64 --decode`
+  DB_PASSWORD=`kubectl get secret dbuser -n mtdrworkshop --template={{.data.dbpassword}} | base64 --decode`
   umask 177
   echo '{"adminPassword": "'"$DB_PASSWORD"'"}' > temp_params
   umask 22
@@ -318,3 +319,26 @@ done
 
 
 ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils" | grep -v grep
+
+bgs="JAVA_BUILDS OKE_SETUP DB_SETUP PROVISIONING"
+while ! state_done SETUP_VERIFIED; do
+  NOT_DONE=0
+  bg_not_done=
+  for bg in $bgs; do
+    if state_done $bg; then
+      echo "$bg has completed"
+    else
+      # echo "$bg is running"
+      NOT_DONE=$((NOT_DONE+1))
+      bg_not_done="$bg_not_done $bg"
+    fi
+  done
+  if test "$NOT_DONE" -gt 0; then
+    # echo "Log files are located in $MTDRWORKSHOP_LOG"
+    bgs=$bg_not_done
+    echo -ne r"\033[2K\r$bgs still running "
+    sleep 10
+  else
+    state_set_done SETUP_VERIFIED
+  fi
+done

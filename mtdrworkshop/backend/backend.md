@@ -8,7 +8,6 @@ Estimated time: ~25-minutes.
 
 ### Objectives
 
-* Set values for environment variables
 * Build and deploy the Docker image of the application
 * Deploy the image on the Oracle Kubernetes Engine (OKE)
 * Describe the steps for Undeploying
@@ -38,71 +37,31 @@ The backend is implemented using the following Java classes (under ./backend/src
 
   ![](images/Backend-APIs.png " ")
 
+## **Task 1**: Build and push the Docker images to the OCI Registry
 
-## **STEP 1**: Set values for workshop environment variables
+1. Edit ./backend/src/main/java/com/oracle/todoapp/Main.java
 
-1. Set the root directory of the workshop
-  ```
-  <copy>export MTDRWORKSHOP_LOCATION=~/mtdrworkshop</copy>
-  ```
-2. Run source addAndSourcePropertiesInBashrc.sh
-
-The following command will set the values of environment variables in mtdrworkshop.properties and source ~/.bashrc
-
-  ```
-  <copy>cd $MTDRWORKSHOP_LOCATION; source addAndSourcePropertiesInBashrc.sh
- </copy>
- ```
-
-## **STEP 2**: Build and push the Docker images to the OCI Registry
-
-1. Ensure that the "DOCKER_REGISTRY" variable is set
-
- Example: `<region-key>.ocir.io/<object-storage-namespace>/<firstname.lastname>/<repo-name>`
- If the variable is not set or is an empty string, the push will fail (but the docker image will be built).
-
-2. Make sure to be in backend/target/classes/wallet directory then execute
-   ```
-   <copy>unzip ~/mtdrworkshop/setup-dev-environment/wallet.zip</copy>
-   ```
-
-3. Pick mtdrb_tp service alias (see the list of aliases in
-   ./backend/target/classes/wallet/tnsnames.ora)
-
-   ![](images/tnsnames-ora.png " ")
-
-4. Edit ./backend/target/classes/application.yaml to set the database service and user password
-  ![](images/application-yaml.png " ")
-
-5. Copy the edited ./backend/target/classes/application.yaml to ./backend/src/main/resources/application.yaml
-
-6. Edit ./backend/src/main/java/com/oracle/todoapp/Main.java
     - Locate the following code fragment
+
     ![](images/CORS-Main.png " ")
     - Replace `eu-frankfurt-1` in  `"https://objectstorage.eu-frankfurt-1.oraclecloud.com"` by your region
 
     - Save the file
 
-7. Run `build.sh` script to build and push the
-    microservices images into the repository
+2. Run `build.sh` script to build and push the helidon-se image into the repository
 
     ```
     <copy>cd $MTDRWORKSHOP_LOCATION/backend; ./build.sh</copy>
     ```
   In a couple of minutes, you should have successfully built and pushed the images into the OCIR repository.
 
-8. Check your container registry from the root compartment
+3. Check your container registry in your compartment
     - Go to the Console, click the hamburger menu in the top-left corner and open
     **Developer Services > Container Registry**.
+   
+   ![](psong_images/container_registry.png)
 
-   ![](images/Registry-root-compart.png " ")
-
-9. Mark Access as Public  (if Private)  
-   (**Actions** > **Change to Public**):
-
-   ![](images/Public-access.png " ")
-
-## **STEP 3**: Deploy on Kubernetes and Check the Status
+## **STEP 2**: Deploy on Kubernetes and Check the Status
 
 1. Run the `deploy.sh` script
 
