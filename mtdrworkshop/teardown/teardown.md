@@ -1,0 +1,47 @@
+# Teardown 
+
+## Introduction
+In this lab, we will tear down the resources created in your tenancy and the directory in the Oracle cloud shell
+
+Estimated time: 10 minutes
+
+### Objectives
+- Delete object storage bucket created in Lab 3
+- Delete deployment created in Lab 3
+- Run destroy script
+### Prerequisites
+- Have successfully completed the earlier labs
+
+
+## **Task 1**: Delete Workshop Resources
+
+1. Since the mtdrworkshop bucket created in Lab 3 wasn't created by the setup script, the destroy script does not know 
+of it and we need to delete it ourselves
+
+![](images/delete_bucket.png)
+
+2. We can't run the destroy script when there's a deployment in the api gateway. Navigate to Gateway and Deployments 
+
+![](images/delete_deployment.png)
+
+## **Task 2**: Run the destroy script
+
+1. Run the following command to delete the resources created in your tenancy. It will delete everything except the compartment, and may take several minutes to run.
+
+```
+cd $MTDRWORKSHOP_LOCATION
+source destroy.sh
+```
+## **Task 3**: Delete the directory
+
+1. Once the destroy script is completed, delete the directory in your cloud shell where you installed the workshop
+
+```
+cd $HOME
+rm -rf <directory_name>
+```
+
+## **Task 4**: Delete the compartment
+
+1. In the Oracle Cloud Console, navigate to the **compartments** screen in the **Identity** section. Select the compartment that was created for the workshop (if you didn't provide one) and delete it
+

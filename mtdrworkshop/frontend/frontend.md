@@ -32,6 +32,8 @@ The index.css file contains all the styles for the application.
 
 ### Prerequisites
 
+**Everything from Prerequisites - Task 2 should be done locally on your laptop**
+
 1. This lab requires the completion of lab 1 and 2
 
 2. You will be using the npm command, make sure it is installed
@@ -52,13 +54,13 @@ The index.css file contains all the styles for the application.
   ```
 If not installed, please install Go (see https://golang.org/doc/)
 
-## **STEP 1**: Configure API.js
+## **Task 1**: Configure API.js
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 1. clone again the git repository to a directory on your laptop (we only need the front end in this lab)
   ```
-  <copy>git clone https://github.com/oracle/oci-react-samples/mtdrworkshop.git</copy>
+  <copy>git clone https://github.com/peterrsongg/oci-react-samples.git</copy>
   ```
 
 2. cd frontend
@@ -87,7 +89,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
  ```
  - In the Cloud console, navigate to **Developer Services > API Management**
  - Click on your Gateway and go to Deployment
- - Copy the Endpoint
+ - Copy the Deployment Endpoint
  - Paste the endpoint as the value of API_LIST and append "/todolist"
 
   Example  
@@ -108,7 +110,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 3. The page will reload if you make edits.<br />
    You will also see any lint errors in the console.
 
-4. Cancel the developer mode execution and build the app for production to the `build` folder.<br />
+4. Cancel the developer mode execution and build the app for production to the `build` folder. This will create a folder named `build` for you<br />
 
 - Issue "Ctrl-c" to cancel the developer mode executions
 
@@ -130,8 +132,17 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 1. Open up the hamburger menu in the top-left corner of the Console and select
 **Object Storage > Object Storage**.
 
-    - Create the 'mtdrworkshop' bucket
+  ![](images/object_store_navigate.png)
+    - Create the 'mtdrworkshop' (or another name if that's taken) bucket
 
+  ![](images/create_bucket.png)
+
+  Enter in the bucket details.
+  ![](images/bucket_details.png)
+
+  Edit visibility to public
+
+  ![](images/edit_visibility.png)
 2. Install the Staci utility for copying directories to OCI object storage
    bucket with folder hierarchies
 
@@ -159,7 +170,8 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
   <copy>go build</copy>
   ```
 
-3. Upload a static build into the bucket, using the staci binary
+3. Upload a static build into the bucket, using the staci binary.
+`-source build` should be the path to `build` from `npm run build` earlier. `-target mtdrworkshop` should be the name of the bucket
 
 ```
 <copy>./staci/staci -source build -target mtdrworkshop</copy>
@@ -175,10 +187,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
   ![](images/MyToDo.png " ")
 
-Congratulations for completing the entire lab!!
 
 ## Acknowledgements
 
-* **Author** -  - Kuassi Mensah, Dir. Product Management, Java Database Access
+* **Authors** -  Kuassi Mensah, Dir. Product Management, Java Database Access
 * **Contributors** - Jean de Lavarene, Sr. Director of Development, JDBC/UCP
 * **Last Updated By/Date** - Kuassi Mensah, Database Product Management,  April 2021

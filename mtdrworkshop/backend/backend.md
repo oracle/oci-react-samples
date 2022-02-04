@@ -66,37 +66,46 @@ The backend is implemented using the following Java classes (under ./backend/src
 1. Run the `deploy.sh` script
 
   ```
-  <copy>cd $MTDRWORKSHOP_LOCATION/backend; ./deploy.sh</copy>
+  <copy>
+  cd $MTDRWORKSHOP_LOCATION/backend 
+  ./deploy.sh
+  </copy>
   ```
 
---> service/todolistapp-helidon-se-service created
---> deployment.apps/todolistapp-helidon-se-deployment created
+   If everything runs correctly the script will output something like this. 
+
+   ![](psong_images/deploy_output.png)
+
 
 2. Check the status using the following commands
-$ kubectl get services
 
 The following command returns the Kubernetes service of MyToDo application with a load balancer exposed through an external API
   ```
-  <copy>kubectl get services</copy>
+  <copy>services</copy>
   ```
+  This will run `kubectl get services` in the background, but the setup script creates aliases for ease of use
 
-![](images/K8-service-Ext-IP.png " ")
+![](psong_images/get_services.png)
 
-3. $ kubectl get pods
+3. The following command returns all the pods running in your kubernetes cluster:
   ```
-  <copy>kubectl get pods</copy>
+  <copy>pods</copy>
   ```
+This will run `kubectl get pods` in the background, but the setup script creates aliases for ease of use
+![](psong_images/get_pods.png)
 
-![](images/k8-pods.png " ")
+5. You can tail the log of one of the pods by running:
 
-5. Continuously tailing the log of one of the pods
+  ```
+  kubectl -n mtdrworkshop logs -f <pod name>
+  ```
 
   $ kubectl logs -f <pod name>
-  Example kubectl lgs -f todolistapp-helidon-se-deployment-7fd6dcb778-c9dbv
+  Example: `kubectl -n mtdrworkshop logs -f todolistapp-helidon-se-deployment-7fd6dcb778-c9dbv`
 
-  Returns:
-  http://130.61.66.27/todolist
+![](psong_images/pod_logs.png)
 
+  If the logs return `webserver is up!` then you have done everything correctly.
 ## **STEP 4**: UnDeploy (optional)
 
   If you make changes to the image, you need to delete the service and the pods by running undeploy.sh then redo Steps 2 & 3.
@@ -113,57 +122,61 @@ The following command returns the Kubernetes service of MyToDo application with 
 The API Gateway protects any RESTful service running on Container Engine for Kubernetes, Compute, or other endpoints through policy enforcement, metrics and logging.
 Rather than exposing the Helidon service directly, we will use the API Gateway to define cross-origin resource sharing (CORS).
 
+The setup script already creates an API gateway, but you still need to create the deployments in the api gateway.
+
 1. From the hamburger  menu navigate **Developer Services** > **API Management > Create Gateway**
-   ![](images/API-Gateway-menu.png " ")
+   ![](psong_images/api_gateway_navigate.png)
 
-2. Configure the basic info: name, compartment, VCN and Subnet
-    - VCN: pick on of the vitual circuit network
-    - Subnet pick the public subnet   
-    The click "Create"
-  ![](images/Basic-gateway.png " ")
+2. Click on the todolist gateway that has been created for you
+   ![](psong_images/select_gateway.png)
 
-3. Click on Todolist gateway
-       ![](images/Gateway.png " ")
+3. Create a todolist deployment by clicking create deployment
+   ![](psong_images/create_deployment.png)
 
-4. Click on Deployments
-   ![](images/Deployment-menu.png " ")
+4. Fill out the basic information like so:
 
-5. Create a todolist deployment
-   ![](images/Deployment.png " ")
-
-
-6. Configure Cross-origin resource sharing (CORS) policies.
+![](psong_images/basic_information_deployment.png)
+5. Configure Cross-origin resource sharing (CORS) policies.
   - CORS is a security mechanism that will prevent running application loaded from origin A  from using resources from another origin B.
   - Allowed Origins: is the list of all servers (origins) that are allowed to access the API deployment typically your Kubernetes cluster IP.
+  - Replace the `.us-phoenix-1` portion with whichever region you replaced with in task 1.
+  - Replace the 3rd IP address with the external IP address of your Load Balancer
   - Allowed methods: GET, PUT, DELETE, POST, OPTIONS are all needed.
-    ![](images/Origins-Methods.png " ")
 
-7. Configure the Headers
-    ![](images/Headers.png " ")
+  To configure CORS, scroll down and click add next to CORS and fill in this information under allowed origins
 
-8. Configure the routes: we will define two routes:
-    - /todolist for the first two APIs: GET, POST and OPTIONS
-    ![](images/Route-1.png " ")
+  ![](psong_images/cors_information.png)
 
-    - /todolist/{id} for the remaining three APIs: (GET, PUT and DELETE)
-    ![](images/Route-2.png " ")
+6. Configure the Headers
+
+    ![](images/Headers.png)
+
+7. Configure the routes: we will define two routes:
+  - /todolist for the first two APIs: GET, POST and OPTIONS
+
+  ![](psong_images/route_1.png)
+
+- /todolist/{id} for the remaining three APIs: (GET, PUT and DELETE)
+
+![](psong_images/route_2.png)
 
 
 ## **STEP 6**: Testing the backend application through the API Gateway
 
 1. Navigate to the newly create Gateway Deployment Detail an copy the endpoint
-   ![](images/Gateway-endpoint.png " ")
+   ![](psong_images/copy_endpoint.png " ")
 
 2. Testing through the API Gateway endpoint
   postfix the gateway endpoint with "/todolist" as shown in the image below
-   ![](images/Backend-Testing.png " ")
 
-  It should display the Todo Item(s) in the TodoItem table. At least the row you have created in Part I.
+   ![](psong_images/endpoint_successful.png " ")
+
+  It should display the Todo Item(s) in the TodoItem table that was created during the setup.
 
 Congratulations, you have completed lab 2; you may now [proceed to the next lab](#next).
 
 ## Acknowledgements
 
-* **Author** -  - Kuassi Mensah, Dir. Product Management, Java Database Access
+* **Author** -  - Kuassi Mensah, Dir. Product Management, Java Database Access, Peter Song Developer Advocate JDBC
 * **Contributors** - Jean de Lavarene, Sr. Director of Development, JDBC/UCP
-* **Last Updated By/Date** - Kuassi Mensah, Database Product Management,  April 2021
+* **Last Updated By/Date** - Peter Song Developer Advocate  February 2022
