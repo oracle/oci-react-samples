@@ -39,14 +39,14 @@ The backend is implemented using the following Java classes (under ./backend/src
 
 ## **Task 1**: Build and push the Docker images to the OCI Registry
 
-The OCI Container Regisry is where your Docker images are managed. A container registry should have been created for you in your compartment.
+The OCI Container Regisry is where your Docker images are managed. A container registry should have been created for you in Lab 1 in your compartment.
 
 1. Edit ./backend/src/main/java/com/oracle/todoapp/Main.java
 
     - Locate the following code fragment
 
     ![](images/CORS-Main.png " ")
-    - Replace `eu-frankfurt-1` in  `"https://objectstorage.eu-frankfurt-1.oraclecloud.com"` by your region
+    - Replace `eu-frankfurt-1` in  `"https://objectstorage.eu-frankfurt-1.oraclecloud.com"` with your region
 
     - Save the file
 
@@ -141,7 +141,7 @@ The setup script already creates an API gateway, but you still need to create th
 
 ![](psong_images/basic_information_deployment.png)
 5. Configure Cross-origin resource sharing (CORS) policies.
-  - CORS is a security mechanism that will prevent loading resources from an unspecified origins (domain, scheme, or port).
+  - CORS is a security mechanism that will prevent loading resources from unspecified origins (domain, scheme, or port).
   - Allowed Origins: is the list of all servers (origins) that are allowed to access the API deployment typically your Kubernetes cluster IP.
   - Replace the `.us-phoenix-1` portion with whichever region you replaced with in task 1.
   - Replace the 3rd IP address with the external IP address of your Load Balancer
@@ -181,6 +181,6 @@ Congratulations, you have completed lab 2; you may now [proceed to the next lab]
 
 ## Acknowledgements
 
-* **Author** -  - Kuassi Mensah, Dir. Product Management, Java Database Access, Peter Song Developer Advocate JDBC
+* **Author** -  Kuassi Mensah, Dir. Product Management, Java Database Access, Peter Song Developer Advocate JDBC
 * **Contributors** - Jean de Lavarene, Sr. Director of Development, JDBC/UCP
 * **Last Updated By/Date** - Peter Song Developer Advocate  February 2022

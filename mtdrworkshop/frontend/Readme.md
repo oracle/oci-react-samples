@@ -145,7 +145,7 @@ The build folder will be uploaded to object storage so you can access your appli
 **Object Storage > Object Storage**.
 
   ![](images/object_store_navigate.png)
-    - Create the 'mtdrworkshop' (or another name if that's taken) bucket
+  Create the 'mtdrworkshop' (or another name if that's taken) bucket
 
   ![](images/create_bucket.png)
 

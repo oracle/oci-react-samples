@@ -25,7 +25,7 @@ Estimated Lab Time: ~30 minutes
 
 If you are not the tenancy administrator, there may be additional policies you must have in your group to perform some of the steps for this lab. If you cannot create a group and add specific policies, please ask your tenancy administrator for the correct policies in order to follow along.
 
-**If your group already has the permissions listed in part 6 of this step you may skip to step 2.**
+**If your group already has the permissions listed in part 6 of this step you may skip to Task 2.**
 
 1. First make sure you are in your home region.
 
@@ -94,7 +94,7 @@ Allow group myToDoGroup to manage objects in tenancy
   mkdir reacttodo
   ````
   ````
-  cd reacttodo;  
+  cd reacttodo
   ````
 
 ## **Task 4: Clone the workshop code**
@@ -152,7 +152,7 @@ The setup script uses terraform, bash scripts, and SQL to automate the creation 
   ![](psong_images/compartment_ocid.png)
 
 
-6. Next the setup will create an authentication token for your tenancy so that docker can log in to the Oracle Cloud Infrastructure Regisry. If there is no space for a new Auth Token, the setup will ask you to remove an auth token then hit enter when you are ready.
+6. Next the setup will create an authentication token for your tenancy so that docker can log in to the Oracle Cloud Infrastructure Registry. If there is no space for a new Auth Token, the setup will ask you to remove an auth token then hit enter when you are ready.
 
   ![](psong_images/navigate_user_ocid.png)
 
