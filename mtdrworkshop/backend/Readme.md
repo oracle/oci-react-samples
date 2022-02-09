@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this lab, you will deploy the pre-built Helidon Java Docker image to OKE, then configure the API Gateway.
+In this lab, you will build and deploy the pre-built Helidon Java Docker image to OKE, then configure the API Gateway to work with your application.
 
 Estimated time: ~25-minutes.
 
@@ -119,7 +119,6 @@ This will run `kubectl get pods` in the background, but the setup script creates
     cd $MTDRWORKSHOP_LOCATION/backend; ./undeploy.sh
   ```
   2. Rebuild the image + Deploy + (Re)Configure the API Gateway
-
 
 ## **Task 4**: Configure the API Gateway
 
