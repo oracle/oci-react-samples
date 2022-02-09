@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this lab, you will deploy the pre-built Helidon Java backend Docker image to OKE, then configure the API Gateway.
+In this lab, you will deploy the pre-built Helidon Java Docker image to OKE, then configure the API Gateway.
 
 Estimated time: ~25-minutes.
 
@@ -39,6 +39,8 @@ The backend is implemented using the following Java classes (under ./backend/src
 
 ## **Task 1**: Build and push the Docker images to the OCI Registry
 
+The OCI Container Regisry is where your Docker images are managed. A container registry should have been created for you in your compartment.
+
 1. Edit ./backend/src/main/java/com/oracle/todoapp/Main.java
 
     - Locate the following code fragment
@@ -48,13 +50,15 @@ The backend is implemented using the following Java classes (under ./backend/src
 
     - Save the file
 
+This will allow the appropriate object storage bucket to access your application.
+
 2. Run `build.sh` script to build and push the helidon-se image into the repository
 
     ```
     cd $MTDRWORKSHOP_LOCATION/backend
     ./build.sh
     ```
-  In a couple of minutes, you should have successfully built and pushed the images into the OCIR repository.
+  In a couple of minutes, you should have successfully built and pushed the images into the OCI repository.
 
 3. Check your container registry in your compartment
     - Go to the Console, click the hamburger menu in the top-left corner and open
@@ -62,7 +66,7 @@ The backend is implemented using the following Java classes (under ./backend/src
    
    ![](psong_images/container_registry.png)
 
-## **STEP 2**: Deploy on Kubernetes and Check the Status
+## **Task 2**: Deploy on Kubernetes and Check the Status
 
 1. Run the `deploy.sh` script
 
@@ -91,6 +95,7 @@ The following command returns the Kubernetes service of MyToDo application with 
   pods
   ```
 This will run `kubectl get pods` in the background, but the setup script creates aliases for ease of use
+
 ![](psong_images/get_pods.png)
 
 5. You can tail the log of one of the pods by running:
@@ -105,7 +110,7 @@ This will run `kubectl get pods` in the background, but the setup script creates
 ![](psong_images/pod_logs.png)
 
   If the logs return `webserver is up!` then you have done everything correctly.
-## **STEP 4**: UnDeploy (optional)
+## **Task 3**: UnDeploy (optional)
 
   If you make changes to the image, you need to delete the service and the pods by running undeploy.sh then redo Steps 2 & 3.
 
@@ -116,14 +121,14 @@ This will run `kubectl get pods` in the background, but the setup script creates
   2. Rebuild the image + Deploy + (Re)Configure the API Gateway
 
 
-## **STEP 5**: Configure the API Gateway
+## **Task 4**: Configure the API Gateway
 
 The API Gateway protects any RESTful service running on Container Engine for Kubernetes, Compute, or other endpoints through policy enforcement, metrics and logging.
 Rather than exposing the Helidon service directly, we will use the API Gateway to define cross-origin resource sharing (CORS).
 
-The setup script already creates an API gateway, but you still need to create the deployments in the api gateway.
+The setup script already creates an API gateway, but you still need to create the deployments in the API gateway.
 
-1. From the hamburger  menu navigate **Developer Services** > **API Management > Create Gateway**
+1. From the hamburger  menu navigate **Developer Services** > **API Management > Gateways**
    ![](psong_images/api_gateway_navigate.png)
 
 2. Click on the todolist gateway that has been created for you
@@ -136,13 +141,13 @@ The setup script already creates an API gateway, but you still need to create th
 
 ![](psong_images/basic_information_deployment.png)
 5. Configure Cross-origin resource sharing (CORS) policies.
-  - CORS is a security mechanism that will prevent running application loaded from origin A  from using resources from another origin B.
+  - CORS is a security mechanism that will prevent loading resources from an unspecified origins (domain, scheme, or port).
   - Allowed Origins: is the list of all servers (origins) that are allowed to access the API deployment typically your Kubernetes cluster IP.
   - Replace the `.us-phoenix-1` portion with whichever region you replaced with in task 1.
   - Replace the 3rd IP address with the external IP address of your Load Balancer
   - Allowed methods: GET, PUT, DELETE, POST, OPTIONS are all needed.
 
-  To configure CORS, scroll down and click add next to CORS and fill in this information under allowed origins
+  To configure CORS, scroll down and click add next to CORS and fill in this information under allowed origins. These are the origins that can load resources to your application.
 
   ![](psong_images/cors_information.png)
 
@@ -160,7 +165,7 @@ The setup script already creates an API gateway, but you still need to create th
 ![](psong_images/route_2.png)
 
 
-## **STEP 6**: Testing the backend application through the API Gateway
+## **Task 5**: Testing the backend application through the API Gateway
 
 1. Navigate to the newly create Gateway Deployment Detail an copy the endpoint
    ![](psong_images/copy_endpoint.png " ")

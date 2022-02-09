@@ -2,15 +2,20 @@
 
 ## Introduction
 
-In this  lab, you will configure your development environment and collect information that will be used later throughout this workshop.
+In this lab, you will configure your development environment and collect information that will be used later throughout this workshop. The setup script requires certain environment variables to be set, which is why a script for configuring the environment variables is necessary. After the environment varialbes are set, the setup script uses Terraform, Bash, and SQL to automate the creation of all the resources needed for this lab, such as VCN's, an OKE Cluster, API Gateway, Autonomous database, etc. The script also creates a table and inserts one row into the table, which we will use to make sure the setup was done correctly.
 
-Estimated Lab Time: ~25 minutes
+Estimated Lab Time: ~30 minutes
 
 ### Objectives
 
 * Create group and give the appropriate permissions to run the setup
-* Clone the github repository and execute setup script
-
+* Clone the github repository and execute setup script to create the following resources:
+    * 1 Autonomous database
+    * 1 API gateway
+    * 1 Object Storage bucket
+    * 1 OKE cluster
+    * 1 OCI Registry
+    * 1 Virtual Cloud Network
 ### Prerequisites
 
 - This lab requires an [Oracle Cloud account](https://www.oracle.com/cloud/free/). You may use your own cloud account, a cloud account that you obtained through a trial, a Free Tier account, or a LiveLabs account.
@@ -102,26 +107,23 @@ Allow group myToDoGroup to manage objects in tenancy
 
 ## **Task 5**: Start the setup
 
+The setup script uses terraform, bash scripts, and SQL to automate the creation of the resources needed for this lab. The script will ask for the necessary components to automate resource creation. 
+
+
 1. Change to the mtdrworkshop directory:
 
   ```
-  
   cd oci-react-samples/mtdrworkshop
-  
   ```
 2. Copy this command to make sure that env.sh gets run everytime you start up cloud shell
 
   ```
-  
   echo source $(pwd)/env.sh >> ~/.bashrc
-  
   ```
 3. Run the following sequence of commands to start the setup
   ```
-  
   source env.sh
   source setup.sh
-  
   ```
 4. If the previous steps were done correctly, the setup will ask for your OCID. 
 
@@ -142,7 +144,7 @@ Allow group myToDoGroup to manage objects in tenancy
 
   ![](psong_images/compartment_ocid_ask.png)
 
-  To use an existing compartment, you must enter the OCID of the compartment yourself. To find the OCID of an existing compartment, click on the Navigation Menu of the cloud console, navigate to **Idenity & Security** and click on **Compartments**
+  To use an existing compartment, you must enter the OCID of the compartment yourself. To find the OCID of an existing compartment, click on the Navigation Menu of the cloud console, navigate to **Identity & Security** and click on **Compartments**
 
   ![](psong_images/compartment_navigate.png)
   Click the appropriate compartment and copy the OCID 
@@ -167,7 +169,8 @@ Allow group myToDoGroup to manage objects in tenancy
 ![](psong_images/db_password_prompt.png)
     
 
-## **TASK 6**: Monitor the setup
+## **Task 6**: Monitor the setup
+The setup should take around 20 minutes to complete. During the setup, the cloud shell will output its progress so keep an eye on it to see exactly what it's doing. If there are any errors, you should check the logs located in the $MTDRWORKSHOP_LOG directory.
 
 1. The setup will update you with the progress of the resource creation. Wait for the setup to complete to move on to the next lab
 
@@ -181,21 +184,13 @@ ps -ef
 
 ## **Task 7**: Complete the setup
 
-When the setup is done running, you will see a message : **SETUP COMPLETED**
+When the setup is done running, you will see a message : **SETUP VERIFIED**
 
 You can view the log files in the $MTDRWORKSHOP_LOG directory. The command below will show you all the log files. You can view the contents of the files if you'd like.
 
 ```
 ls -al $MTDRWORKSHOP_LOG
 ```
-
-1. The setup will provision 
-    * 1 Autonomous database
-    * 1 API gateway
-    * 1 Object Storage bucket
-    * 1 OKE cluster
-    * 1 OCI Registry
-    * 1 Virtual Cloud Network
 
 
 Congratulations, you have completed lab 1; you may now [proceed to the next lab](#next).

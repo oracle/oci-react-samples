@@ -32,7 +32,7 @@ The index.css file contains all the styles for the application.
 
 ### Prerequisites
 
-**Everything from Prerequisites - Task 2 should be done locally on your laptop**
+**Everything from Prerequisites to Task 2 should be done locally on your laptop**
 
 1. This lab requires the completion of lab 1 and 2
 
@@ -47,7 +47,7 @@ The index.css file contains all the styles for the application.
 
 3. The lab requires also Go lang.
 
-  "go version" -> `go version go1.15.2 darwin/amd64`
+    "go version" -> `go version go1.15.2 darwin/amd64`
 
   ```
   go version
@@ -55,10 +55,11 @@ The index.css file contains all the styles for the application.
 If not installed, please install Go (see https://golang.org/doc/)
 
 ## **Task 1**: Configure API.js
+In this task you will edit API.js to point to the correct endpoint that will be allowed to access the APIs used in your application
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-1. clone the git repository to a directory on your laptop (we only need the front end in this lab)
+1. Clone the git repository to a directory on your laptop (we only need the front end in this lab)
   ```
   mkdir reacttoo
   cd reacttodo
@@ -82,28 +83,33 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
  ```
  npm audit fix --force
  ```
-  - Ideally, npm -version should return > 6.14.x AND Node version > 14.16.x
+  Ideally, npm -version should return > 6.14.x AND Node version > 14.16.x
   If npm version < 6.14.x then install the latest Node using
    https://bit.ly/3evGlEo
 
 4. Update API_LIST in API.js
 
-  - Make sure to be in frontend/src directory
+  Make sure to be in frontend/src directory
  ```
  cd frontend/src
  ```
- - In the Cloud console, navigate to **Developer Services > API Management**
+ In the Cloud console, navigate to **Developer Services > API Management >Gateways**
+
+ ![](images/api_gateway_navigate.png)
  - Click on your Gateway and go to Deployment
  - Copy the Deployment Endpoint
+
+ ![](images/Api-gtw-deploy.png)
+
  - Paste the endpoint as the value of API_LIST and append "/todolist"
 
-  Example  
+  Example:
   const API_LIST = 'https://xxxxxxxxxx.apigateway.eu-frankfurt-1.oci.customer-oci.com/todolist';
 
   - Save the modified API.js file
 
-## **STEP 2**: Run in Dev Mode then Build for Production
-
+## **Task 2**: Run in Dev Mode then Build for Production
+Here you will run the application locally in development mode, then run in production mode to create the build folder.
 1. In the project directory, run the app in the development mode <br />
 
   ```
@@ -132,7 +138,8 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## **STEP 3**: Hosting on the Oracle Cloud's object storage
+## **Task 3**: Hosting on the Oracle Cloud's object storage
+The build folder will be uploaded to object storage so you can access your application from OCI.
 
 1. Open up the hamburger menu in the top-left corner of the Console and select
 **Object Storage > Object Storage**.
@@ -174,8 +181,10 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
   ```
   go build
   ```
+3. If you have never used your laptop for connecting to an Oracle Cloud account, you need to setup an **OCI config file** and create an **API key**
+    * Follow Step #2 in the following doc https://bit.ly/3vM7v2h for that purpose.
 
-3. Upload a static build into the bucket, using the staci binary.
+4. Upload a static build into the bucket, using the staci binary.
 `-source build` should be the path to `build` from `npm run build` earlier. `-target mtdrworkshop` should be the name of the bucket
 
 ```
@@ -195,6 +204,6 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Acknowledgements
 
-* **Authors** -  Kuassi Mensah, Dir. Product Management, Java Database Access
+* **Authors** -  Kuassi Mensah, Dir. Product Management, Java Database Access; Peter Song, Developer Advocate JDBC
 * **Contributors** - Jean de Lavarene, Sr. Director of Development, JDBC/UCP
-* **Last Updated By/Date** - Kuassi Mensah, Database Product Management,  April 2021
+* **Last Updated By/Date** - Peter Song, Developer Advocate JDBC
