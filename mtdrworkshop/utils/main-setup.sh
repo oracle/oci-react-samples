@@ -82,7 +82,6 @@ while ! state_done RUN_NAME; do
   if [[ "$DN" =~ ^[a-zA-Z][a-zA-Z0-9]{0,12}$ ]]; then
     state_set RUN_NAME `echo "$DN" | awk '{print tolower($0)}'`
     state_set MTDR_DB_NAME "$(state_get RUN_NAME)o"
-    #state_set INVENTORY_DB_NAME "$(state_get RUN_NAME)i"
   else
     echo "Error: Invalid directory name $RN.  The directory name must be between 1 and 13 characters,"
     echo "containing only letters or numbers, starting with a letter.  Please restart the workshop with a valid directory name."
@@ -117,7 +116,6 @@ while ! state_done COMPARTMENT_OCID; do
     else
       echo "Resources will be created in a new compartment named $(state_get RUN_NAME)"
       COMPARTMENT_OCID=`oci iam compartment create --compartment-id "$(state_get TENANCY_OCID)" --name "$(state_get RUN_NAME)" --description "mtdrworkshop" --query 'data.id' --raw-output`
-      ##sleep 10
     fi
   fi
   while ! test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; do

@@ -41,7 +41,14 @@ cd $HOME
 rm -rf <directory_name>
 ```
 
-## **Task 4**: Delete the compartment
+## **Task 4**: Edit ~/.bashrc
+
+1. We need to remove the line we added to ~/.bashrc in Lab1. Run the following command to remove
+```
+vi ~/.bashrc
+```
+delete this line ```echo source $(pwd)/env.sh >> ~/.bashrc``` from ~/.bashrc
+## **Task 5**: Delete the compartment
 
 1. In the Oracle Cloud Console, navigate to the **compartments** screen in the **Identity** section. Select the compartment that was created for the workshop (if you didn't provide one) and delete it
 

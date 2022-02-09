@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this lab you will deploy a pre-built ReactJS application locally then build it for production an host it on the Oracle Cloud Infrastucture.
+In this lab you will deploy a pre-built ReactJS application locally then build it for production and host it on Oracle Cloud Infrastucture.
 
 Estimated Lab Time: 15-minutes
 
@@ -32,12 +32,14 @@ The index.css file contains all the styles for the application.
 
 ### Prerequisites
 
+**Everything from Prerequisites - Task 2 should be done locally on your laptop**
+
 1. This lab requires the completion of lab 1 and 2
 
 2. You will be using the npm command, make sure it is installed
 
   ```
-  <copy>npm --version</copy>
+  npm --version
   ```
 
   if not please install Node for your laptop, using the following
@@ -48,32 +50,37 @@ The index.css file contains all the styles for the application.
   "go version" -> `go version go1.15.2 darwin/amd64`
 
   ```
-  <copy>go version</copy>
+  go version
   ```
 If not installed, please install Go (see https://golang.org/doc/)
 
-## **STEP 1**: Configure API.js
+## **Task 1**: Configure API.js
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-1. clone again the git repository to a directory on your laptop (we only need the front end in this lab)
+1. clone the git repository to a directory on your laptop (we only need the front end in this lab)
   ```
-  <copy>git clone https://github.com/oracle/oci-react-samples.git</copy>
+  mkdir reacttoo
+  cd reacttodo
+  git clone https://github.com/peterrsongg/oci-react-samples.git
   ```
 
-2. cd frontend
+2. Navigate to frontend
+  ```
+  cd oci-react-samples/mtdrworkshop/frontend
+  ```
 
 3. Run the following npm commands to install the required packages
 
   ```
-  <copy>npm install --save typescript</copy>
+  npm install --save typescript
   ```
   ```
-  <copy>npm install</copy>
+  npm install
   ```
   - In case of errors, try the following command
  ```
- <copy>npm audit fix --force</copy>
+ npm audit fix --force
  ```
   - Ideally, npm -version should return > 6.14.x AND Node version > 14.16.x
   If npm version < 6.14.x then install the latest Node using
@@ -83,11 +90,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
   - Make sure to be in frontend/src directory
  ```
- <copy>cd frontend/src</copy>
+ cd frontend/src
  ```
  - In the Cloud console, navigate to **Developer Services > API Management**
  - Click on your Gateway and go to Deployment
- - Copy the Endpoint
+ - Copy the Deployment Endpoint
  - Paste the endpoint as the value of API_LIST and append "/todolist"
 
   Example  
@@ -100,7 +107,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 1. In the project directory, run the app in the development mode <br />
 
   ```
-  <copy>npm start</copy>
+  npm start
   ```
 
 2. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -108,13 +115,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 3. The page will reload if you make edits.<br />
    You will also see any lint errors in the console.
 
-4. Cancel the developer mode execution and build the app for production to the `build` folder.<br />
+4. Cancel the developer mode execution and build the app for production to the `build` folder. This will create a folder named `build` for you<br />
 
 - Issue "Ctrl-c" to cancel the developer mode executions
 
 - Execute npm run build
   ```
-  <copy>npm run build</copy>
+  npm run build
   ```
 It correctly bundles React in production mode (into the build folder) and optimizes the build for the best performance.
 
@@ -130,39 +137,49 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 1. Open up the hamburger menu in the top-left corner of the Console and select
 **Object Storage > Object Storage**.
 
-    - Create the 'mtdrworkshop' bucket
+  ![](images/object_store_navigate.png)
+    - Create the 'mtdrworkshop' (or another name if that's taken) bucket
 
+  ![](images/create_bucket.png)
+
+  Enter in the bucket details.
+  ![](images/bucket_details.png)
+
+  Edit visibility to public
+
+  ![](images/edit_visibility.png)
 2. Install the Staci utility for copying directories to OCI object storage
    bucket with folder hierarchies
 
   - git clone https://github.com/maxjahn/staci.git
 
   ```
-  <copy>git clone https://github.com/maxjahn/staci.git</copy>
+  git clone https://github.com/maxjahn/staci.git
   ```
 
   - cd staci
 
   ```
-  <copy>cd staci</copy>
+  cd staci
   ```
 
   - go get -d
 
   ```
-  <copy>go get -d</copy>
+  go get -d
   ```
 
   - go build
 
   ```
-  <copy>go build</copy>
+  go build
   ```
 
-3. Upload a static build into the bucket, using the staci binary
+3. Upload a static build into the bucket, using the staci binary.
+`-source build` should be the path to `build` from `npm run build` earlier. `-target mtdrworkshop` should be the name of the bucket
 
 ```
-<copy>./staci/staci -source build -target mtdrworkshop</copy>
+./staci/staci -source build -target mtdrworkshop
 ```
 
 - The application is visible in the 'mtdrworkshop' bucket of your tenancy
@@ -175,10 +192,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
   ![](images/MyToDo.png " ")
 
-Congratulations for completing the entire lab!!
 
 ## Acknowledgements
 
-* **Author** -  - Kuassi Mensah, Dir. Product Management, Java Database Access
+* **Authors** -  Kuassi Mensah, Dir. Product Management, Java Database Access
 * **Contributors** - Jean de Lavarene, Sr. Director of Development, JDBC/UCP
 * **Last Updated By/Date** - Kuassi Mensah, Database Product Management,  April 2021
