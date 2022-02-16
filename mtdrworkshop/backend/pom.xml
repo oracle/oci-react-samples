@@ -99,6 +99,13 @@
     </build>
 
     <dependencies>
+    <!-- added by peter song for database connection-->
+        <dependency>
+            <groupId>com.oracle.oci.sdk</groupId>
+            <artifactId>oci-java-sdk-common</artifactId>
+            <version>1.32.2</version>
+        </dependency>
+    <!-- added by peter song for database connection-->
         <dependency>
             <groupId>io.helidon.webserver</groupId>
             <artifactId>helidon-webserver-cors</artifactId>

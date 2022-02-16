@@ -6,5 +6,5 @@
 
 echo delete frontend deployment and service...
 
-kubectl delete deployment todolistapp-helidon-se-deployment 
-kubectl delete service todolistapp-helidon-se-service
+kubectl -n mtdrworkshop delete deployment todolistapp-helidon-se-deployment 
+kubectl -n mtdrworkshop delete service todolistapp-helidon-se-service

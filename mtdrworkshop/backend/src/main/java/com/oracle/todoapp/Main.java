@@ -35,7 +35,7 @@ public final class Main {
     Config config = Config.create();
 
     WebServer.builder()
-      .config(config.get("server"))
+      .config(config.get("server")) //update this server configuration from the config provided
       .addMediaSupport(JsonpSupport.create())
       .routing(createRouting(config))
       .build()
@@ -63,7 +63,7 @@ public final class Main {
     CorsSupport corsSupport = CorsSupport.builder()
     .addCrossOrigin(CrossOriginConfig.builder()
         .allowOrigins("http://localhost:3000",
-           "https://objectstorage.eu-frankfurt-1.oraclecloud.com",
+           "https://objectstorage.us-phoenix-1.oraclecloud.com",
            "https://petstore.swagger.io")
         .allowMethods("POST", "PUT", "DELETE")
         .exposeHeaders("location")
