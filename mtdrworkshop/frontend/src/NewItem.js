@@ -10,7 +10,8 @@
  */
 
 import React, { useState } from "react";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
+
 
 function NewItem(props) {
   const [item, setItem] = useState('');

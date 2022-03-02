@@ -13,8 +13,8 @@
 import React, { useState, useEffect } from 'react';
 import NewItem from './NewItem';
 import API_LIST from './API';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { Button, TableBody, CircularProgress } from '@material-ui/core';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, TableBody, CircularProgress } from '@mui/material';
 import Moment from 'react-moment';
 
 /* In this application we're using Function Components with the State Hooks

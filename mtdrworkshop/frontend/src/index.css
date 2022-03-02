@@ -109,6 +109,7 @@ button.AddButton,
 button.DoneButton {
   font-size: max(8px,min(2vw, 12px));
   padding: 0.35em 0.5em;
+  color:#161513;
 }
 /* from the redwood theme */
 button.AddButton {
