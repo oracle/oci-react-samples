@@ -17,4 +17,5 @@
 // Copy from the endpoint from the API Gateway Deployment
 // Example: const API_LIST = 'https://di2eyonlz5s7kmuektcddaw5zq.apigateway.<region>.oci.customer-oci.com/todolist';
 const API_LIST = 'https://di2eyonlz5s7kmuektcddaw5zq.apigateway.eu-frankfurt-1.oci.customer-oci.com/todolist';
+
 export default API_LIST;
