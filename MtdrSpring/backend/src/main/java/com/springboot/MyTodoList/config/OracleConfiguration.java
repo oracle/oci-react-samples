@@ -37,8 +37,7 @@ public class OracleConfiguration {
         ds.setUser(env.getProperty("db_user"));
         logger.info("Using Username " + env.getProperty("db_user"));
         ds.setPassword(env.getProperty("dbpassword"));
-        logger.info("Using Password: " + env.getProperty("dbpassword"));
-//        // For local testing
+//        For local testing
 //        ds.setDriverType(dbSettings.getDriver_class_name());
 //        logger.info("Using Driver " + dbSettings.getDriver_class_name());
 //        ds.setURL(dbSettings.getUrl());
@@ -46,7 +45,6 @@ public class OracleConfiguration {
 //        ds.setUser(dbSettings.getUsername());
 //        logger.info("Using Username: " + dbSettings.getUsername());
 //        ds.setPassword(dbSettings.getPassword());
-//        logger.info("Using Password: " + dbSettings.getPassword());
         return ds;
     }
 }
