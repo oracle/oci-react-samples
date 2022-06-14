@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<version.lib.ojdbc>21.1.0.0</version.lib.ojdbc>
-		<frontend-src-dir>.../frontend</frontend-src-dir>
+		<frontend-src-dir>${project.basedir}/src/main</frontend-src-dir>
 		<node.version>v16.13.2</node.version>
 		<npm.version>8.1.2</npm.version>
 	</properties>
@@ -112,10 +112,10 @@
 						</goals>
 						<phase>prepare-package</phase>
 						<configuration>
-							<outputDirectory>${project.build.directory}/static</outputDirectory>
+							<outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/</directory>
+									<directory>${frontend-src-dir}/build</directory>
 									<filtering>false</filtering>
 								</resource>
 							</resources>
