@@ -16,6 +16,9 @@
 	<properties>
 		<java.version>11</java.version>
 		<version.lib.ojdbc>21.1.0.0</version.lib.ojdbc>
+		<frontend-src-dir>target/classes/static</frontend-src-dir>
+		<node.version>v16.13.2</node.version>
+		<npm.version>8.1.2</npm.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -65,26 +68,55 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<!-- Use the latest released version:
-                https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
 				<version>1.9.1</version>
+				<configuration>
+					<nodeVersion>${node.version}</nodeVersion>
+					<npmVersion>${npm.version}</npmVersion>
+					<workingDirectory>${frontend-src-dir}</workingDirectory>
+					<installDirectory>${project.build.directory}</installDirectory>
+					<downloadRoot></downloadRoot>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install-frontend-tools</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>npm run build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
-						<id>copy-resources</id>
-						<phase>process-resources</phase>
+						<id>position-react-build</id>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
+						<phase>prepare-package</phase>
 						<configuration>
-							<outputDirectory>${project.build.directory}</outputDirectory>
+							<outputDirectory>${project.build.directory}/static</outputDirectory>
 							<resources>
 								<resource>
-									<directory>.</directory>
-									<filtering>true</filtering>
+									<directory>${frontend-src-dir}/build</directory>
+									<filtering>false</filtering>
 								</resource>
 							</resources>
 						</configuration>
