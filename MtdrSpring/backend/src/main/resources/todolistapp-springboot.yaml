@@ -11,6 +11,19 @@ spec:
   selector:
     app: todolistapp-springboot
 ---
+#this is new stuff for hosting on the load balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: todolistapp-backend-router
+spec:
+  selector:
+    app: todolistapp-springboot
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: http
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

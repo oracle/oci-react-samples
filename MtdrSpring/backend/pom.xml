@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<version.lib.ojdbc>21.1.0.0</version.lib.ojdbc>
-		<frontend-src-dir>${project.basedir}/src/main</frontend-src-dir>
+		<frontend-src-dir>${project.basedir}/src/main/frontend</frontend-src-dir>
 		<node.version>v16.13.2</node.version>
 		<npm.version>8.1.2</npm.version>
 	</properties>
