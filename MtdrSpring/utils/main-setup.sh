@@ -291,6 +291,46 @@ while ! state_done DB_PASSWORD; do
 !
   done
 done
+# create UI username
+if ! state_done UI_USERNAME; then
+  echo
+  echo 'Create a UI Username'
+  echo
+
+  while true; do
+    if text -z "$TEST_UI_USERNAME"; then
+      read -s -r -p "Enter the username to be used for accessing the UI: " UI_USERNAME
+    else
+      UI_USERNAME="$TEST_UI_USERNAME"
+    fi
+  done
+  export UI_USERNAME
+fi
+
+
+
+
+# Collect UI password and create secret
+if ! state_done UI_PASSWORD; then
+  echo
+  echo 'UI passwords must be 8 to 30 characters'
+  echo
+
+  while true; do
+    if test -z "$TEST_UI_PASSWORD"; then
+      read -s -r -p "Enter the password to be used for accessing the UI: " PW
+    else
+      PW="$TEST_UI_PASSWORD"
+    fi
+    if [[ ${#PW} -ge 8 && ${#PW} -le 30 ]]; then
+      echo
+      break
+    else
+      echo "Invalid Password, please retry"
+    fi
+  done
+  BASE64_UI_PASSWORD=`echo -n "$PW" | base64`
+fi
 
 
 # Set admin password in order database
@@ -314,6 +354,29 @@ while ! state_done OKE_SETUP; do
   sleep 2
 done
 
+# Create UI password secret
+while ! state_done UI_PASSWORD; do
+  while true; do
+    if kubectl create -n mtdrworkshop -f -; then
+      state_set_done UI_PASSWORD
+      break
+    else
+      echo 'Error: Creating UI Password Secret Failed.  Retrying...'
+      sleep 10
+    fi <<!
+{
+   "apiVersion": "v1",
+   "kind": "Secret",
+   "metadata": {
+      "name": "frontendadmin"
+   },
+   "data": {
+      "password": "${BASE64_UI_PASSWORD}"
+   }
+}
+!
+  done
+done
 
 
 ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils" | grep -v grep
