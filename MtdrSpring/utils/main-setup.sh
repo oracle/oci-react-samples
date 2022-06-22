@@ -232,6 +232,45 @@ if ! state_done DB_PASSWORD; then
   BASE64_DB_PASSWORD=`echo -n "$PW" | base64`
 fi
 
+# create UI username
+if ! state_done UI_USERNAME; then
+  echo
+  echo 'Create a UI Username'
+  echo
+
+  while true; do
+    if text -z "$TEST_UI_USERNAME"; then
+      read -s -r -p "Enter the username to be used for accessing the UI: " UI_USERNAME
+    else
+      UI_USERNAME="$TEST_UI_USERNAME"
+    fi
+  done
+  export UI_USERNAME
+fi
+
+
+# Collect UI password and create secret
+if ! state_done UI_PASSWORD; then
+  echo
+  echo 'UI passwords must be 8 to 30 characters'
+  echo
+
+  while true; do
+    if test -z "$TEST_UI_PASSWORD"; then
+      read -s -r -p "Enter the password to be used for accessing the UI: " PW
+    else
+      PW="$TEST_UI_PASSWORD"
+    fi
+    if [[ ${#PW} -ge 8 && ${#PW} -le 30 ]]; then
+      echo
+      break
+    else
+      echo "Invalid Password, please retry"
+    fi
+  done
+  BASE64_UI_PASSWORD=`echo -n "$PW" | base64`
+fi
+
 # Wait for provisioning
 if ! state_done PROVISIONING; then
   echo "`date`: Waiting for terraform provisioning"
@@ -291,46 +330,6 @@ while ! state_done DB_PASSWORD; do
 !
   done
 done
-# create UI username
-if ! state_done UI_USERNAME; then
-  echo
-  echo 'Create a UI Username'
-  echo
-
-  while true; do
-    if text -z "$TEST_UI_USERNAME"; then
-      read -s -r -p "Enter the username to be used for accessing the UI: " UI_USERNAME
-    else
-      UI_USERNAME="$TEST_UI_USERNAME"
-    fi
-  done
-  export UI_USERNAME
-fi
-
-
-
-
-# Collect UI password and create secret
-if ! state_done UI_PASSWORD; then
-  echo
-  echo 'UI passwords must be 8 to 30 characters'
-  echo
-
-  while true; do
-    if test -z "$TEST_UI_PASSWORD"; then
-      read -s -r -p "Enter the password to be used for accessing the UI: " PW
-    else
-      PW="$TEST_UI_PASSWORD"
-    fi
-    if [[ ${#PW} -ge 8 && ${#PW} -le 30 ]]; then
-      echo
-      break
-    else
-      echo "Invalid Password, please retry"
-    fi
-  done
-  BASE64_UI_PASSWORD=`echo -n "$PW" | base64`
-fi
 
 
 # Set admin password in order database
