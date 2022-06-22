@@ -239,7 +239,7 @@ if ! state_done UI_USERNAME; then
   echo
 
   while true; do
-    if text -z "$TEST_UI_USERNAME"; then
+    if test -z "$TEST_UI_USERNAME"; then
       read -s -r -p "Enter the username to be used for accessing the UI: " UI_USERNAME
     else
       UI_USERNAME="$TEST_UI_USERNAME"
