@@ -243,7 +243,7 @@ if ! state_done UI_USERNAME; then
       read -s -r -p "Enter the username to be used for accessing the UI: " UI_USERNAME
       echo "UI_USERNAME: $UI_USERNAME"
       echo 'exporting UI_USERNAME'
-      export UI_USERNAME
+      export UI_USERNAME=$UI_USERNAME
       break
     else
       UI_USERNAME="$TEST_UI_USERNAME"
