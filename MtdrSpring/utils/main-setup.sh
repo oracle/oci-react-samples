@@ -246,7 +246,7 @@ if ! state_done UI_USERNAME; then
       UI_USERNAME="$TEST_UI_USERNAME"
     fi
   done
-  export UI_USERNAME=$USERNAME
+  export UI_USERNAME="$USERNAME"
 fi
 
 
