@@ -240,15 +240,16 @@ if ! state_done UI_USERNAME; then
 
   while true; do
     if test -z "$TEST_UI_USERNAME"; then
-      read -s -r -p "Enter the username to be used for accessing the UI: " USERNAME
+      read -s -r -p "Enter the username to be used for accessing the UI: " UI_USERNAME
+      echo "UI_USERNAME: $UI_USERNAME"
+      echo 'exporting UI_USERNAME'
+      export UI_USERNAME
       break
     else
       UI_USERNAME="$TEST_UI_USERNAME"
     fi
   done
-  export UI_USERNAME="$USERNAME"
 fi
-
 
 # Collect UI password and create secret
 if ! state_done UI_PASSWORD; then
