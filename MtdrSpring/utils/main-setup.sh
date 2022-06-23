@@ -239,7 +239,7 @@ if ! state_done UI_USERNAME; then
   echo
   read -s -r -p "Enter the username to be used for accessing the UI: " USERNAME
   state_set UI_USERNAME "$USERNAME"
-  export UI_USERNAME=$(state_get UI_USERNAME)
+  export UI_USERNAME="$(state_get UI_USERNAME)"
   state_set_done UI_USERNAME
 fi
 
@@ -396,3 +396,5 @@ while ! state_done SETUP_VERIFIED; do
     state_set_done SETUP_VERIFIED
   fi
 done
+
+export TEST_VAR='asdf'
