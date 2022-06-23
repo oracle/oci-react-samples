@@ -16,6 +16,17 @@ if [ -z "$OCI_REGION" ]; then
     echo "Error: OCI_REGION env variable needs to be set!"
     exit 1
 fi
+
+if [ -z "$UI_USERNAME" ]; then
+    echo "UI_USERNAME not set. Will get it with state_get"
+  export UI_USERNAME=$(state_get UI_USERNAME)
+fi
+
+if [ -z "$UI_USERNAME" ]; then
+    echo "Error: UI_USERNAME env variable needs to be set!"
+    exit 1
+fi
+
 echo "Creating springboot deplyoment and service"
 export CURRENTTIME=$( date '+%F_%H:%M:%S' )
 echo CURRENTTIME is $CURRENTTIME  ...this will be appended to generated deployment yaml
@@ -29,7 +40,8 @@ sed -e "s|%TODO_PDB_NAME%|${TODO_PDB_NAME}|g" todolistapp-springboot-${CURRENTTI
 mv -- /tmp/todolistapp-springboot-$CURRENTTIME.yaml todolistapp-springboot-$CURRENTTIME.yaml
 sed -e "s|%OCI_REGION%|${OCI_REGION}|g" todolistapp-springboot-${CURRENTTIME}.yaml > /tmp/todolistapp-springboot-$CURRENTTIME.yaml
 mv -- /tmp/todolistapp-springboot-$CURRENTTIME.yaml todolistapp-springboot-$CURRENTTIME.yaml
-
+sed -e "s|%UI_USERNAME%|${UI_USERNAME}|g" todolistapp-springboot-${CURRENTTIME}.yaml > /tmp/todolistapp-springboot-$CURRENTTIME.yaml
+mv -- /tmp/todolistapp-springboot-$CURRENTTIME.yaml todolistapp-springboot-$CURRENTTIME.yaml
 if [ -z "$1" ]; then
     kubectl apply -f $SCRIPT_DIR/todolistapp-springboot-$CURRENTTIME.yaml -n mtdrworkshop
 else
