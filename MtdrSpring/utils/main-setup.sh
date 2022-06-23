@@ -237,19 +237,19 @@ if ! state_done UI_USERNAME; then
   echo
   echo 'Create a UI Username'
   echo
-
-  while true; do
-    if test -z "$TEST_UI_USERNAME"; then
-      read -s -r -p "Enter the username to be used for accessing the UI: " UI_USERNAME
-      echo "UI_USERNAME: $UI_USERNAME"
-      echo 'exporting UI_USERNAME'
-      export UI_USERNAME=$UI_USERNAME
-      break
-    else
-      UI_USERNAME="$TEST_UI_USERNAME"
-    fi
-  done
+  read -s -r -p "Enter the username to be used for accessing the UI: " UI_USERNAME
+  export UI_USERNAME
 fi
+
+#  while true; do
+#    if test -z "$TEST_UI_USERNAME"; then
+#      read -s -r -p "Enter the username to be used for accessing the UI: " UI_USERNAME
+#      echo "UI_USERNAME: $UI_USERNAME"
+#      break
+#    else
+#      UI_USERNAME="$TEST_UI_USERNAME"
+#    fi
+#  done
 
 # Collect UI password and create secret
 if ! state_done UI_PASSWORD; then
@@ -404,3 +404,8 @@ while ! state_done SETUP_VERIFIED; do
     state_set_done SETUP_VERIFIED
   fi
 done
+
+
+
+## moving exports down here
+export UI_USERNAME
