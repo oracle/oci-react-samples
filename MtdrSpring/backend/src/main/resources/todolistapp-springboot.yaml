@@ -11,6 +11,19 @@ spec:
   selector:
     app: todolistapp-springboot
 ---
+#this is new stuff for hosting on the load balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: todolistapp-backend-router
+spec:
+  selector:
+    app: todolistapp-springboot
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: http
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,6 +59,14 @@ spec:
                 secretKeyRef:
                   name: dbuser
                   key: dbpassword
+                  optional: true
+            - name: ui_username
+              value: "%UI_USERNAME%"
+            - name: ui_password
+              valueFrom:
+                secretKeyRef:
+                  name: frontendadmin
+                  key: password
                   optional: true
           volumeMounts:
             - name: creds

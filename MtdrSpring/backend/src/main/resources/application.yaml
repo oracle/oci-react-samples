@@ -10,3 +10,7 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+  security:
+    user:
+      name: ${ui_username}
+      password: ${ui_password}
