@@ -1,0 +1,39 @@
+{
+    "id": 11070,
+    "name": "cloudbank",
+    "namespace": "cloudbank",
+    "app": {
+        "services": {
+            "banka": "banka",
+            "bankb": "bankb",
+            "port": 8080
+        },
+        "backend": {
+            "pdb_name": "cloudbankdb",
+            "image": {
+                "name": "transfer-springboot",
+                "version": 0.1
+            }
+        },
+        "frontend": {
+            "user": "cloudbank",
+            "image": {
+                "name": "frontend-react-springboot",
+                "version": 0.1
+            }
+        },
+        "secrets": {
+            "DB_WALLET_SECRET": "instance-wallet",
+            "FRONTEND_CREDENTIALS": {
+                "name": "cloudbank-password",
+                "key": "password"
+            }
+        }
+    },
+    "lab": {
+        "fixed_demo_user_credential": "Welcome12345",
+        "state_directory": "cbworkshop",
+        "docker_registry": "<region_key>.ocir.io/<tenancy_namespace>"
+    },
+    "state": {}
+}

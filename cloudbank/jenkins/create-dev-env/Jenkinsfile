@@ -1,0 +1,160 @@
+pipeline {
+    agent any
+    tools {
+        maven "m3"
+    }
+    environment {
+        CLUSTER_NAME=credentials("cbworkshop-cluster-name")
+        CLUSTER_NAMESPACE="cloudbank"
+        CLUSTER_SERVER_URL=credentials("cbworkshop-cluster-server-url")
+        REGION_KEY=credentials("cbworkshop-region-key")
+        TENANCY_NAMESPACE=credentials("cbworkshop-tenancy-namespace")
+        DOCKER_REGISTRY="${REGION_KEY}.ocir.io/${TENANCY_NAMESPACE}/cloudbank/transfer-springboot"
+    }
+    parameters {
+        string(name: 'ref_value', defaultValue: '', description: 'Payload ref')
+        string(name: 'x_github_event', defaultValue: '', description: 'Header X-Github-Event')
+        string(name:  'ref_type', defaultValue: '', description: 'Payload ref_type')
+    }
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+                [key: 'ref_value', value: '$.ref'],
+                [key: 'ref_type', value: '$.ref_type']
+            ],
+            genericHeaderVariables: [
+                [key: 'X-Github-Event', regexpFilter: '']
+
+            ],
+            causeString: 'Triggered by feature branch creation',
+            token: '',
+            tokenCredentialId: 'cbworkshop-create-branch-token',
+
+            printContributedVariables: false,
+            printPostContent: false,
+            silentResponse: false,
+            regexpFilterText: '$ref_value',
+            regexpFilterExpression: '(^feature/([a-z0-9]+)(/\\w+)*|^release/[0-9]+.[0-9]+)'
+        )
+    }
+    stages {
+        stage('create-feature-branch') {
+            when {
+                expression { params.ref_value ==~ /^feature\/([a-z0-9]+)(\/\w+)*/ }
+                expression { return params.ref_type == "branch" && params.x_github_event == "create" }
+                not {equals expected: 1, actual: params.ref_value.split('/').length}
+            }
+            stages {
+                stage("provision database") {
+                    environment {
+                        DATABASENAME="${params.ref_value.split("/")[1].toLowerCase()}"
+                        BRANCH="${params.ref_value}"
+                    }
+                    steps {
+                        dir("examples/cloudbank/jenkins") {
+                            echo 'Generating database for branch $BRANCH'
+                            sh './generate-yaml-file.sh $DATABASENAME'
+                        }
+                        dir("$WORKSPACE/run") {
+                            withKubeCredentials(kubectlCredentials: [[
+                            caCertificate: '',
+                            clusterName: env.CLUSTER_NAME,
+                            contextName: '',
+                            credentialsId: "cbworkshop-kubectl-token",
+                            namespace: env.CLUSTER_NAMESPACE,
+                            serverUrl: env.CLUSTER_SERVER_URL
+                            ]]) {
+                                script {
+                                    echo 'Creating Database $DATABASENAME.'
+                                    sh 'kubectl apply -f sidb-create.yaml'
+                                }
+                                timeout(15) {
+                                    waitUntil {
+                                        is_database_ready("$DATABASENAME")
+                                    }
+                                }
+                                script {
+                                    sh 'kubectl --type=merge -p \'{\"spec\":{\"loadBalancer\": true}}\' patch singleinstancedatabase $DATABASENAME'
+                                }
+                                withCredentials([string(credentialsId: 'cbworkshop-default-db-password', variable: 'PASSWORD')]) {
+                                    dir("$WORKSPACE/examples/cloudbank/sql") {
+                                        sh('./configure-sidb.sh $DATABASENAME $PASSWORD')
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                stage("notify") {
+                    steps {
+                        echo "Done! Environment provisioned!"
+                    }
+                }
+            }
+
+
+        }
+        stage('create-release-branch') {
+            when {
+                expression { params.ref_value ==~ /^release\/\d+\.\d+(\.\w+)*$/ }
+                expression { return params.ref_type == "branch" && params.x_github_event == "create" }
+            }
+            environment {
+                RELEASE_VERSION="${params.ref_value.split("/")[1]}"
+                APP_IMAGE="${DOCKER_REGISTRY}:${RELEASE_VERSION}"
+                OCIR_HTTP_REGISTRY="https://${REGION_KEY}.ocir.io"
+            }
+            stages {
+                stage("build") {
+                    steps {
+                        dir("examples/cloudbank/backend-springboot") {
+                            sh "mvn clean package"
+                            sh 'docker build -t ${APP_IMAGE} .'
+                        }
+                    }
+
+                }
+                stage("push") {
+                    steps{
+                        dir("examples/cloudbank/backend-springboot") {
+                            withDockerRegistry(credentialsId: 'cbworkshop_ocir_credentials_id', url: OCIR_HTTP_REGISTRY) {
+                                sh 'docker push ${APP_IMAGE}'
+                                sh 'docker rmi ${APP_IMAGE}'
+                            }
+                        }
+                    }
+                }
+                stage("deploy") {
+                    steps {
+                        withKubeCredentials(kubectlCredentials: [[
+                            caCertificate: '',
+                            clusterName: env.CLUSTER_NAME,
+                            contextName: '',
+                            credentialsId: "cbworkshop-kubectl-token",
+                            namespace: env.CLUSTER_NAMESPACE,
+                            serverUrl: env.CLUSTER_SERVER_URL
+                            ]]) {
+                                sh('kubectl set image deployment/banka-springboot bank=${APP_IMAGE}')
+                                sh('kubectl set image deployment/bankb-springboot bank=${APP_IMAGE}')
+                        }
+                    }
+                }
+                stage("notify") {
+                    steps {
+                        echo "Done! TEST environment ready!"
+                    }
+                }    
+            }
+        }
+    }
+}
+
+def is_database_ready(database) {
+    try {
+        def r = sh script: "kubectl get singleinstancedatabase $database -o 'jsonpath={.status.status}'", returnStdout: true
+        return (r == "Healthy")
+    } catch (Exception e) {
+        echo "Database is still being provisioned. Retrying..."
+        return false
+    }
+}

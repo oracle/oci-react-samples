@@ -1,0 +1,35 @@
+## Copyright (c) 2021 Oracle and/or its affiliates.
+## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: %CLOUDBANK_APP_IMAGE%
+          imagePullPolicy: Always
+          env:
+            - name: CLOUDBANK_SECURITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: %CLOUDBANK_SECURITY_PWD_SECRET_NAME%
+                  key: %CLOUDBANK_SECURITY_PWD_SECRET_KEY%
+                  optional: true
+            - name: CLOUDBANK_SECURITY_USERNAME
+              value: %CLOUDBANK_SECURITY_USERNAME%
+            - name: CLOUDBANK_APIS_BANKA
+              value: %CLOUDBANK_APIS_BANKA%
+            - name: CLOUDBANK_APIS_BANKB
+              value: %CLOUDBANK_APIS_BANKB%
+          ports:
+            - containerPort: 8080

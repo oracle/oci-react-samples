@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+    tools {
+        maven "m3"
+    }
+    parameters {
+        string(name: 'ref_value', defaultValue: '', description: 'Payload ref')
+    }
+
+    stages {
+        stage('push-to-feature-branch') {
+            when {
+                expression { GIT_BRANCH ==~ /^feature\/([a-z0-9]+)(\/\w+)*/ }
+            }
+            stages {
+                stage("build") {
+                    steps {
+                        dir("examples/cloudbank/backend-springboot") {
+                            sh "mvn clean package"
+                        }
+                    }
+                }
+                stage("run tests") {
+                    steps {
+                        dir("examples/cloudbank/backend-springboot") {
+                            echo "Running tests"
+                        }
+                    }
+                }
+            }
+        }
+        stage("merge-to-dev-branch") {
+            when {
+                branch 'dev'
+            }
+            stages {
+                stage("build") {
+                    steps {
+                        dir("examples/cloudbank/backend-springboot") {
+                            sh "mvn clean package"
+                        }
+                    }
+
+                }
+                stage("notify") {
+                    steps {
+                        echo "New changes merged into DEV ${GIT_COMMIT}"
+                    }
+                }
+
+            }
+        }
+    }
+}
+

@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+    environment {
+        CLUSTER_NAME=credentials("cbworkshop-cluster-name")
+        CLUSTER_NAMESPACE="cloudbank"
+        CLUSTER_SERVER_URL=credentials("cbworkshop-cluster-server-url")
+    }
+    parameters {
+        string(name: 'ref_value', defaultValue: '', description: 'Payload ref')
+        string(name: 'x_github_event', defaultValue: '', description: 'Header X-Github-Event')
+        string(name: 'ref_type', defaultValue: '', description: 'Payload ref_type')
+    }
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+                [key: 'ref_value', value: '$.ref'],
+                [key: 'ref_type', value: '$.ref_type'],
+            ],
+            genericHeaderVariables: [
+                [key: 'X-Github-Event', regexpFilter: '']
+
+            ],
+            causeString: 'Triggered by feature branch deletion',
+            token: '',
+            tokenCredentialId: 'cbworkshop-delete-branch-token',
+
+            printContributedVariables: false,
+            printPostContent: false,
+            silentResponse: false,
+            regexpFilterText: '$ref_value',
+            regexpFilterExpression: '^feature/([a-z0-9]+)(/\\w+)*'
+        )
+    }
+    stages {
+        stage('create-feature-branch') {
+            when {
+                expression { return params.ref_type == "branch" && params.x_github_event == "delete" }
+                not {equals expected: 1, actual: params.ref_value.split('/').length}
+            }
+            environment {
+                DATABASENAME="${params.ref_value.split("/")[1].toLowerCase()}"
+            }
+            steps {
+                dir("$WORKSPACE/run") {
+                    withKubeCredentials(kubectlCredentials: [[
+                    caCertificate: '',
+                    clusterName: env.CLUSTER_NAME,
+                    contextName: '',
+                    credentialsId: "cbworkshop-kubectl-token",
+                    namespace: env.CLUSTER_NAMESPACE,
+                    serverUrl: env.CLUSTER_SERVER_URL
+                    ]]) {
+                        script {
+                            echo "Destroying Database $DATABASENAME."
+                            sh 'kubectl delete singleinstancedatabase $DATABASENAME'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

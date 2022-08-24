@@ -1,0 +1,14 @@
+apiVersion: database.oracle.com/v1alpha1
+kind: AutonomousDatabase
+metadata:
+  name: cloudbankdb
+  namespace: cloudbank
+spec:
+  details:
+    autonomousDatabaseOCID: %ADB_OCID%
+  hardLink: true
+  ociConfig:
+    configMapName: oci-cred
+    secretName: oci-privatekey
+
+
