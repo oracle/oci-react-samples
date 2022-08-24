@@ -111,7 +111,7 @@ Allow group myToDoGroup to manage objects in tenancy
 1. Clone the workshop code inside the directory you just created.
   ````
   <copy>
-  git clone https://github.com/oracle/oci-react-samples.git
+  git clone --single-branch --branch helidon https://github.com/oracle/oci-react-samples.git
   </copy>
   ````
   You should now see `oci-react-samples` in your root directory
