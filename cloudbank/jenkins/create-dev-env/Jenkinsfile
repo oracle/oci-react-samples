@@ -51,7 +51,7 @@ pipeline {
                         BRANCH="${params.ref_value}"
                     }
                     steps {
-                        dir("examples/cloudbank/jenkins") {
+                        dir("cloudbank/jenkins") {
                             echo 'Generating database for branch $BRANCH'
                             sh './generate-yaml-file.sh $DATABASENAME'
                         }
@@ -77,7 +77,7 @@ pipeline {
                                     sh 'kubectl --type=merge -p \'{\"spec\":{\"loadBalancer\": true}}\' patch singleinstancedatabase $DATABASENAME'
                                 }
                                 withCredentials([string(credentialsId: 'cbworkshop-default-db-password', variable: 'PASSWORD')]) {
-                                    dir("$WORKSPACE/examples/cloudbank/sql") {
+                                    dir("$WORKSPACE/cloudbank/sql") {
                                         sh('./configure-sidb.sh $DATABASENAME $PASSWORD')
                                     }
                                 }
@@ -107,7 +107,7 @@ pipeline {
             stages {
                 stage("build") {
                     steps {
-                        dir("examples/cloudbank/backend-springboot") {
+                        dir("cloudbank/backend-springboot") {
                             sh "mvn clean package"
                             sh 'docker build -t ${APP_IMAGE} .'
                         }
@@ -116,7 +116,7 @@ pipeline {
                 }
                 stage("push") {
                     steps{
-                        dir("examples/cloudbank/backend-springboot") {
+                        dir("cloudbank/backend-springboot") {
                             withDockerRegistry(credentialsId: 'cbworkshop_ocir_credentials_id', url: OCIR_HTTP_REGISTRY) {
                                 sh 'docker push ${APP_IMAGE}'
                                 sh 'docker rmi ${APP_IMAGE}'

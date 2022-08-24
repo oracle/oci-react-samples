@@ -131,10 +131,9 @@ the Spring Boot app implements `WebMvcConfigurer` available:
 [here](src/main/java/com/cloudbank/authservice/config/WebMVCConfig.java). Which adds view controllers instructing Spring Boot to keep serving the bundled index.html for these endpoints.
 
 ### Making API requests from React
-By default, `POST` requests may be `Forbidden` and an HTTP status of `403` may be returned with Spring Security. Some suggest disabling CSRF, but since we are not using any other external auth challenges, we are returing the CSRF generated token on the frontend back to the Spring Boot server, as well as configuring HTTPSecurity's CSRFTokenRepository: [here (Frontend CSRF)](https://github.com/naberin/oracle.cloud.native.devops-oraoperator/blob/871edc91f0c1cbf3b1ebafe114568e80662e0721/examples/cloudbank-frontend-service/src/main/react-app/src/components/Transfer/transfer.js#L58) and [here (Backend SecurityFilterChain)](examples/cloudbank-frontend-service/src/main/java/com/cloudbank/authservice/config/WebSecurityConfig.java) This should allow our POST requests to go through after. 
 
 
-
+ 
 
 ### References
 [Frontend Maven Plugin](https://github.com/eirslett/frontend-maven-plugin)

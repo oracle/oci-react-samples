@@ -2,7 +2,7 @@
 # This script is called by Jenkins, where $WORKSPACE has a value
 
 # set locations
-root=$WORKSPACE/examples/cloudbank
+root=$WORKSPACE/cloudbank
 run_dir=$WORKSPACE/run
 kubernetes_dir=$root/kubernetes
 scripts_dir=$root/scripts

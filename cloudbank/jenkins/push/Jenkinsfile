@@ -15,14 +15,14 @@ pipeline {
             stages {
                 stage("build") {
                     steps {
-                        dir("examples/cloudbank/backend-springboot") {
+                        dir("cloudbank/backend-springboot") {
                             sh "mvn clean package"
                         }
                     }
                 }
                 stage("run tests") {
                     steps {
-                        dir("examples/cloudbank/backend-springboot") {
+                        dir("cloudbank/backend-springboot") {
                             echo "Running tests"
                         }
                     }
@@ -36,7 +36,7 @@ pipeline {
             stages {
                 stage("build") {
                     steps {
-                        dir("examples/cloudbank/backend-springboot") {
+                        dir("cloudbank/backend-springboot") {
                             sh "mvn clean package"
                         }
                     }
