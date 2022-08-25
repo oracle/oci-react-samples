@@ -33,7 +33,6 @@ if [ -z "$COMPLETED_BEFORE" ]; then
 fi;
 
 state_set '.state.init_files.STARTED |= $VAL' "$( date '+%F_%H:%M:%S' )"
-state_set '.state.init_files.DONE |= $VAL' ""
 
 # Copy Kubernetes scripts
 echo -n 'Copying Lab related scripts...'
