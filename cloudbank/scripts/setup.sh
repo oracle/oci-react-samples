@@ -8,7 +8,7 @@ if [ -z $CB_STATE_DIR ] | [ -z $CB_KUBERNETES_TEMPLATES_DIR ] | [ -z $CB_ROOT_DI
 fi
 
 # Init Lab Files by copying scripts and state
-$CB_STATE_DIR/tasks/init-lab-files.sh
+$CB_ROOT_DIR/scripts/tasks/init-lab-files.sh
 
 # Set source env inside bashrc
 echo -n 'Saving Lab settings...'
