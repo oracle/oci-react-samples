@@ -6,9 +6,15 @@
 # - Tenancy OCID
 # - Jenkins Password
 
-# todo - confirm below before continuing
+state_set '.state.init_state_a.STARTED |= $VAL' "$( date '+%F_%H:%M:%S' )"
 
-# requires Reqion
+echo "================================================="
+echo 'The lab requires the following information to provision resources on OCI...'
+echo " - Region"
+echo " - Tenancy OCID"
+echo " - Compartment OCID"
+echo " - Jenkins Password"
+echo "================================================="
 
 while : ; do
     read -p "Enter the region identifier for your region (e.g. us-phoenix-1): " INP
@@ -29,3 +35,5 @@ while : ; do
 
     (cd $CB_STATE_DIR/tasks ; ./utils-confirm.sh) || break
 done
+
+state_set '.state.init_state_a.DONE |= $VAL' "$( date '+%F_%H:%M:%S' )"

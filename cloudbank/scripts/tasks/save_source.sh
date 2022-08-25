@@ -5,6 +5,7 @@
 # check if this script needs to run again
 COMPLETED_BEFORE=$(state_get .state.source.SET)
 if [ -z "$COMPLETED_BEFORE" ]; then
+  echo "SKIPPED."
   exit 0;
 fi;
 
@@ -41,4 +42,5 @@ fi
 
 # mark done
 state_set '.state.source.SET |= $VAL' "$( date '+%F_%H:%M:%S' )"
+echo 'DONE'
 

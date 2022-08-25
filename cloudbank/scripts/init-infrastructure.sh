@@ -4,7 +4,10 @@ CURRENT_TIME=$( date '+%F_%H:%M:%S' )
 # check if this script needs to run again
 COMPLETED_BEFORE=$(state_get .state.provision.DONE)
 if [ -z "$COMPLETED_BEFORE" ]; then
+  echo "SKIPPED."
   exit 0;
+else
+  echo "STARTED."
 fi;
 
 # Generate Terraform Vars file
