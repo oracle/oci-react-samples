@@ -26,8 +26,8 @@ fi
 echo 'DONE'
 
 # check if this script needs to run again
-COMPLETED_BEFORE=$(state_get .state.init_files.STARTED)
-if [ -z "$COMPLETED_BEFORE" ]; then
+STARTED_BEFORE=$(state_get .state.init_files.STARTED)
+if [ -n "$STARTED_BEFORE" ]; then
   echo "SKIPPED."
   exit 0;
 fi;

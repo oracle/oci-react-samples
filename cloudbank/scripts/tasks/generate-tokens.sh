@@ -5,7 +5,7 @@ PYTHON_FUNCTION=$CB_STATE_DIR/tasks/generate.py
 
 # check if this script needs to run again
 COMPLETED_BEFORE=$(state_get .state.tokens.SET)
-if [ -z "$COMPLETED_BEFORE" ]; then
+if [ -n "$COMPLETED_BEFORE" ]; then
   echo "SKIPPED."
   exit 0;
 fi;

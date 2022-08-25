@@ -62,7 +62,7 @@ resource null_resource jenkins_provisioner {
       type        = "ssh"
       host        = oci_core_public_ip.jenkins_public_ip.ip_address
       agent       = false
-      timeout     = "5m"
+      timeout     = "10m"
       user        = "opc"
       private_key = tls_private_key.tls_key_pair.private_key_pem
 
