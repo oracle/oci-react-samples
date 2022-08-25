@@ -50,6 +50,12 @@ cp -r $CB_ROOT_DIR/terraform/* $CB_TERRAFORM_DIR
 echo 'DONE'
 echo ''
 
+# Set (3) Tokens for Jenkins
+echo -n 'Generate tokens...'
+$CB_STATE_DIR/tasks/generate-tokens.sh
+echo 'DONE'
+echo ''
+
 # Prompt user for input on setup
 echo "================================================="
 echo 'The lab requires the following information to provision resources on OCI...'
@@ -59,13 +65,6 @@ echo " - Tenancy OCID"
 echo " - Jenkins Password"
 echo "================================================="
 $CB_STATE_DIR/tasks/init-state-part1.sh
-
-
-# Set (3) Tokens for Jenkins
-echo -n 'Generate tokens...'
-$CB_STATE_DIR/tasks/generate-tokens.sh
-echo 'DONE'
-echo ''
 
 
 # Run terraform

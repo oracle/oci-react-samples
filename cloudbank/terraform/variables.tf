@@ -22,6 +22,11 @@ variable jenkins_password {
   sensitive = true
   type = string
 }
+# Required
+variable ocir_token {
+  description = "Token for OCIR"
+  type = string
+}
 variable availability_domain_name {
   description = "Availability Domain to provision the compute instance in"
   default = null
