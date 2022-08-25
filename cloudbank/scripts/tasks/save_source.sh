@@ -5,7 +5,7 @@
 # check if this script needs to run again
 COMPLETED_BEFORE=$(state_get .state.source.SET)
 if [ -z "$COMPLETED_BEFORE" ]; then
-  return 0;
+  exit 0;
 fi;
 
 # write state/source.env
