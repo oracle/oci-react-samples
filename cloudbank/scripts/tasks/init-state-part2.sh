@@ -24,7 +24,7 @@ echo "SET"
 #  -p "Enter the region-key to use (e.g. phx, iad, etc.): " RKEY
 REGION=$(state_get '.lab.region.identifier')
 RKEY=$(oci iam region list | jq -r --arg REGION "${REGION}" '.data[] | select (.name == $REGION) | .key ')
-PROCESSED_RKEY=$(python utils.py $RKEY )
+PROCESSED_RKEY=$(cd $CB_STATE_DIR/tasks ; python utils.py $RKEY )
 state_set '.lab.region.key |= $VAL' $PROCESSED_RKEY
 
 # requires Tenancy Namespace
