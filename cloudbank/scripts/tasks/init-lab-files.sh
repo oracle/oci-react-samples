@@ -1,16 +1,5 @@
 #!/bin/bash
 
-# check if this script needs to run again
-COMPLETED_BEFORE=$(state_get .state.init_files.STARTED)
-if [ -z "$COMPLETED_BEFORE" ]; then
-  echo "SKIPPED."
-  exit 0;
-fi;
-
-
-state_set '.state.init_files.STARTED |= $VAL' "$( date '+%F_%H:%M:%S' )"
-state_set '.state.init_files.DONE |= $VAL' ""
-
 # Make directories for lab-related files
 echo -n 'Beginning Lab setup...'
 
@@ -25,7 +14,7 @@ chmod 700 $CB_STATE_DIR/terraform;
 chmod 700 $CB_STATE_DIR/tls;
 echo 'DONE'
 
-
+# Set State if it does not exist
 # Copy JSON as new state
 echo -n 'Checking state file...'
 if [ ! -f $CB_STATE_DIR/state.json ]; then
@@ -35,6 +24,16 @@ if [ ! -f $CB_STATE_DIR/state.json ]; then
   chmod 700 $CB_STATE_DIR/state.json
 fi
 echo 'DONE'
+
+# check if this script needs to run again
+COMPLETED_BEFORE=$(state_get .state.init_files.STARTED)
+if [ -z "$COMPLETED_BEFORE" ]; then
+  echo "SKIPPED."
+  exit 0;
+fi;
+
+state_set '.state.init_files.STARTED |= $VAL' "$( date '+%F_%H:%M:%S' )"
+state_set '.state.init_files.DONE |= $VAL' ""
 
 # Copy Kubernetes scripts
 echo -n 'Copying Lab related scripts...'
