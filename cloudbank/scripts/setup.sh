@@ -48,7 +48,6 @@ echo 'DONE'
 echo -n 'Copying Lab terraform files...'
 cp -r $CB_ROOT_DIR/terraform/* $CB_TERRAFORM_DIR
 echo 'DONE'
-echo ''
 
 # Set (3) Tokens for Jenkins
 echo -n 'Generate tokens...'
