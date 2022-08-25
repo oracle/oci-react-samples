@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Make directories for lab-related files
-echo -n 'Beginning Lab setup...'
-
+echo -n 'Creating lab directories...'
 mkdir -p $CB_STATE_DIR;
 mkdir -p $CB_STATE_DIR/terraform;
 mkdir -p $CB_STATE_DIR/generated;
@@ -26,10 +25,13 @@ fi
 echo 'DONE'
 
 # check if this script needs to run again
+echo -n "Initializing other lab files..."
 STARTED_BEFORE=$(state_get .state.init_files.STARTED | jq -e 'select(.!=null)')
 if [ -n "$STARTED_BEFORE" ]; then
-  echo "SKIPPED."
+  echo "SKIPPED"
   exit 0;
+else
+  echo "STARTED"
 fi;
 
 state_set '.state.init_files.STARTED |= $VAL' "$( date '+%F_%H:%M:%S' )"
