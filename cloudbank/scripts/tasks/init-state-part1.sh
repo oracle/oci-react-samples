@@ -9,18 +9,23 @@
 # todo - confirm below before continuing
 
 # requires Reqion
-read -p "Enter the region identifier for your region (e.g. us-phoenix-1): " INP
-state_set '.lab.region.identifier |= $VAL' $INP
 
-# requires tenancy OCID
-read -p "Enter the tenancy OCID to authenticate provisioning with: " tOCID
-state_set '.lab.ocid.tenancy |= $VAL' $tOCID
+while : ; do
+    read -p "Enter the region identifier for your region (e.g. us-phoenix-1): " INP
+    state_set '.lab.region.identifier |= $VAL' $INP
 
-# requires compartment OCID
-read -p "Enter the compartment OCID to provision resources in: " OCID
-state_set '.lab.ocid.compartment |= $VAL' $OCID
+    # requires tenancy OCID
+    read -p "Enter the tenancy OCID to authenticate provisioning with: " tOCID
+    state_set '.lab.ocid.tenancy |= $VAL' $tOCID
 
-# requires Jenkins password
-read -s -r -p "Enter the Jenkins credentials to use: " JPWD
-state_set '.lab.pwd.jenkins |= $VAL' $JPWD
-echo "SET"
+    # requires compartment OCID
+    read -p "Enter the compartment OCID to provision resources in: " OCID
+    state_set '.lab.ocid.compartment |= $VAL' $OCID
+
+    # requires Jenkins password
+    read -s -r -p "Enter the Jenkins credentials to use: " JPWD
+    state_set '.lab.pwd.jenkins |= $VAL' $JPWD
+    echo "SET"
+
+    (cd $CB_STATE_DIR/tasks ; ./utils-confirm.sh) || break
+done
