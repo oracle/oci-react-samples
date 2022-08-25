@@ -26,7 +26,7 @@ fi
 echo 'DONE'
 
 # check if this script needs to run again
-STARTED_BEFORE=$(state_get .state.init_files.STARTED)
+STARTED_BEFORE=$(state_get .state.init_files.STARTED | jq -e 'select(.!=null)')
 if [ -n "$STARTED_BEFORE" ]; then
   echo "SKIPPED."
   exit 0;

@@ -3,7 +3,7 @@
 # expects environment variables set by source.env or ~/.bashrc
 
 # check if this script needs to run again
-COMPLETED_BEFORE=$(state_get .state.source.SET)
+COMPLETED_BEFORE=$(state_get .state.source.SET | jq -e 'select(.!=null)')
 if [ -n "$COMPLETED_BEFORE" ]; then
   echo "SKIPPED."
   exit 0;
