@@ -27,7 +27,7 @@ echo 'DONE'
 # check if this script needs to run again
 
 
-PYTHON_FUNCTION=$CB_STATE_DIR/tasks/lab-utils.py
+PYTHON_FUNCTION="$CB_STATE_DIR/tasks/lab-utils.py"
 STARTED_BEFORE=$(python "$PYTHON_FUNCTION" json -p state.init_files.STARTED)
 
 echo -n "Initializing other lab files..."
