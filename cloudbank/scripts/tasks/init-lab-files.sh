@@ -25,8 +25,12 @@ fi
 echo 'DONE'
 
 # check if this script needs to run again
+
+
+PYTHON_FUNCTION=$CB_STATE_DIR/tasks/lab-utils.py
+STARTED_BEFORE=$(python "$PYTHON_FUNCTION" json -p state.init_files.STARTED)
+
 echo -n "Initializing other lab files..."
-STARTED_BEFORE=$(state_get .state.init_files.STARTED | jq -e 'select(.!=null)')
 if [ -n "$STARTED_BEFORE" ]; then
   echo "SKIPPED"
   exit 0;

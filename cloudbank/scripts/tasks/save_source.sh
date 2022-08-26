@@ -3,9 +3,11 @@
 # expects environment variables set by source.env or ~/.bashrc
 
 # check if this script needs to run again
-COMPLETED_BEFORE=$(state_get .state.source.SET | jq -e 'select(.!=null)')
+PYTHON_FUNCTION=$CB_STATE_DIR/tasks/lab-utils.py
+COMPLETED_BEFORE=$(python $PYTHON_FUNCTION json -p state.source.SET)
+echo -n 'Saving Lab settings...'
 if [ -n "$COMPLETED_BEFORE" ]; then
-  echo "SKIPPED."
+  echo "SKIPPED"
   exit 0;
 fi;
 

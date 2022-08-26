@@ -2,7 +2,9 @@
 CURRENT_TIME=$( date '+%F_%H:%M:%S' )
 
 # check if this script needs to run again
-COMPLETED_BEFORE=$(state_get .state.provision.STARTED  | jq -e 'select(.!=null)')
+PYTHON_FUNCTION=$CB_STATE_DIR/tasks/lab-utils.py
+COMPLETED_BEFORE=$(python "$PYTHON_FUNCTION" json -p state.provision.STARTED)
+echo -n "Terraforming Resources on OCI..."
 if [ -n "$COMPLETED_BEFORE" ]; then
   echo "SKIPPED"
   exit 0;

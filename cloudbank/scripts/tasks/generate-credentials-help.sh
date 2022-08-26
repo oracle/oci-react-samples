@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Generate Tokens
-PYTHON_FUNCTION=$CB_STATE_DIR/tasks/generate.py
-
-# location of terraform
-TF_LOCATION=$CB_STATE_DIR/terraform
-
 CREATE_BRANCH_TOKEN="$(state_get .lab.tokens.create_branch_webhook.secret)"
 state_set '.lab.credentials.create_branch_webhook.id |= $VAL' 'cbworkshop-create-branch-token'
 state_set '.lab.credentials.create_branch_webhook.kind |= $VAL' 'secret_text'
