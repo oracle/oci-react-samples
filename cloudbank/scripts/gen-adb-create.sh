@@ -18,7 +18,8 @@ echo ""
 
 # Get compartment OCID variable
 COMPARTMENT_OCID=$(state_get .lab.ocid.compartment)
-
+ADB_NAME=$(state_get .lab.ocir_unique_identifier)
+ADB_DISPLAY_NAME="cloudbankdb_$ADB_NAME"
 
 # generate YAML
 echo -n "Generating YAML file..."
@@ -26,13 +27,17 @@ YAML_FILE=$CB_KUBERNETES_GEN_FILES_DIR/adb-create.yaml
 cp $CB_KUBERNETES_TEMPLATES_DIR/adb-create-template.yaml $YAML_FILE
 echo "DONE"
 
-
-# Replacing Compartment OCID
 echo -n "Updating generated YAML file..."
+# Replacing Compartment OCID
 sed -e  "s|%ADB_COMPARTMENT%|$COMPARTMENT_OCID|g" $YAML_FILE > /tmp/adb-create.yaml
 mv -- /tmp/adb-create.yaml $YAML_FILE
+# Replacing ADB Name
+sed -e  "s|%ADB_NAME%|$ADB_NAME|g" $YAML_FILE > /tmp/adb-create.yaml
+mv -- /tmp/adb-create.yaml $YAML_FILE
+# Replacing ADB Display Name
+sed -e  "s|%ADB_DISPLAY_NAME%|$ADB_DISPLAY_NAME|g" $YAML_FILE > /tmp/adb-create.yaml
+mv -- /tmp/adb-create.yaml $YAML_FILE
 echo "DONE"
-
 
 # Output copy
 echo ""

@@ -6,8 +6,8 @@ metadata:
 spec:
   details:
     compartmentOCID: %ADB_COMPARTMENT%
-    dbName: cloudbankdb
-    displayName: cloudbankdb
+    dbName: %ADB_NAME%
+    displayName: %ADB_DISPLAY_NAME%
     cpuCoreCount: 1
     adminPassword:
       k8sSecret:
