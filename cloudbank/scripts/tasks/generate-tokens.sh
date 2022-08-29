@@ -11,7 +11,7 @@ fi;
 
 # create tokens
 UNIQUE_OCIR_TOKEN="$(python $PYTHON_FUNCTION generate-token --length 8)"
-state_set '.lab.ocir_unique_identifier |= $VAL' "$UNIQUE_OCIR_TOKEN"
+state_set '.lab.ocir_unique_identifier |= $VAL' "cbdb$UNIQUE_OCIR_TOKEN"
 
 CREATE_BRANCH_TOKEN="$(python $PYTHON_FUNCTION generate-token)"
 state_set '.lab.tokens.create_branch_webhook.id |= $VAL' 'cbworkshop-create-branch-token'
