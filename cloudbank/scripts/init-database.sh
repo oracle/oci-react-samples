@@ -7,7 +7,7 @@ echo -n "Initializing Autonomous Database (ADB)..."
 
 # Download ADB Wallet
 location="$CB_STATE_DIR/generated/wallet.zip"
-CONNSERVICE=cloudbankdb_tp
+CONNSERVICE="$(state_get .lab.db.name)_tp"
 $CB_STATE_DIR/tasks/download-adb-wallet.sh
 
 # Retrieve Password

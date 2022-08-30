@@ -9,7 +9,6 @@
             "port": 8080
         },
         "backend": {
-            "pdb_name": "cloudbankdb",
             "image": {
                 "name": "transfer-springboot",
                 "version": 0.1

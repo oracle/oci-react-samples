@@ -18,7 +18,7 @@ echo ""
 
 # Get compartment OCID variable
 COMPARTMENT_OCID=$(state_get .lab.ocid.compartment)
-ADB_NAME=$(state_get .lab.ocir_unique_identifier)
+ADB_NAME=$(state_get .lab.db.name)
 ADB_DISPLAY_NAME="cloudbankdb_$ADB_NAME"
 
 # generate YAML

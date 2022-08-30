@@ -11,6 +11,9 @@ if [ -z "$FRONTEND_IMAGE" ]; then
 fi
 
 # Build Application
+if [ -f src/main/react-app/package-lock.json ]; then
+  rm src/main/react-app/package-lock.json
+fi
 mvn clean package
 docker build -t "$FRONTEND_IMAGE" .
 

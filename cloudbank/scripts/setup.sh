@@ -30,5 +30,3 @@ echo ''
 
 # Continue rest of retrieving values from end-user
 $CB_STATE_DIR/tasks/init-state-part2.sh
-
-

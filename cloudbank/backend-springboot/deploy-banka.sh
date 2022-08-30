@@ -13,7 +13,7 @@ fi
 # other
 BANK_NAME=$(state_get .app.services.banka)
 DB_WALLET_SECRET=$(state_get .app.secrets.DB_WALLET_SECRET)
-DB_NAME=$(state_get .app.backend.pdb_name)
+DB_NAME=$(state_get .lab.db.name)
 
 echo -n create banka deployment and service...
 export CURRENTTIME=generated

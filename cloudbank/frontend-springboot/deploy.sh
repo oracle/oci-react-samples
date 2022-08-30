@@ -17,7 +17,6 @@ export CURRENTTIME=generated
 
 # Retrieve image
 if [ -z "$FRONTEND_IMAGE" ]; then
-  echo "FRONTEND_IMAGE not set. Will get it from setup.json"
   DOCKER_REGISTRY=$(state_get .lab.docker_registry)
   FRONTEND_IMAGE_VALUE=$(state_get .app.frontend.image.name)
   FRONTEND_IMAGE_VERSION=$(state_get .app.frontend.image.version)
