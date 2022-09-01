@@ -11,17 +11,25 @@ if [ -z "$BACKEND_IMAGE" ]; then
 fi
 
 # package
-mvn clean package spring-boot:repackage
+echo -n "Building backend application..."
+mvn clean package spring-boot:repackage -q
+if [[ "$?" -ne 0 ]] ; then
+  echo "FAILED"; exit 1;
+else
+  echo "DONE"
+fi
+echo ""
 
 # build
-docker build -t $BACKEND_IMAGE .
+echo "Building image..."
+docker build -t $BACKEND_IMAGE . --quiet
+echo ""
 
 # push
+echo "Pushing image to OCIR..."
 docker push "$BACKEND_IMAGE"
 
 # cleanup
-if [  $? -eq 0 ]; then
-    docker rmi "$BACKEND_IMAGE"
-fi
+docker rmi "$BACKEND_IMAGE"
 
 
