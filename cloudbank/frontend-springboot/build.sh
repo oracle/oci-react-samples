@@ -14,11 +14,21 @@ fi
 if [ -f src/main/react-app/package-lock.json ]; then
   rm src/main/react-app/package-lock.json
 fi
-mvn clean package
-docker build -t "$FRONTEND_IMAGE" .
+echo -n "Building frontend application..."
+mvn clean package -q
+if [[ "$?" -ne 0 ]] ; then
+  echo "FAILED"; exit 1;
+else
+  echo "DONE"
+fi
+echo ""
+
+
+echo "Building image..."
+docker build -t "$FRONTEND_IMAGE" . -q
+echo ""
 
 # Push to Registry
+echo "Pushing image to OCIR..."
 docker push "$FRONTEND_IMAGE"
-if [  $? -eq 0 ]; then
-    docker rmi "$FRONTEND_IMAGE"
-fi
+docker rmi "$FRONTEND_IMAGE"

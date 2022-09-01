@@ -44,7 +44,7 @@ while : ; do
     state_set '.lab.tenancy.namespace |= $VAL' $NS
 
     # requires OCIR registry
-    TOK=$(state_get .lab.ocir_unique_identifier)
+    TOK=$(state_get .lab.unique_identifier)
     OCIR="${PROCESSED_RKEY}.ocir.io/${NS}/cloudbank/${TOK}"
     state_set '.lab.docker_registry |= $VAL' $OCIR
 
