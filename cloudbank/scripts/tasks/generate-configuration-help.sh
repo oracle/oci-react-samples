@@ -5,13 +5,7 @@ TF_LOCATION=$CB_STATE_DIR/terraform
 IP_ADDRESS="$(terraform -chdir="${TF_LOCATION}" output -json | jq -r .jenkins_public_ip.value)"
 
 # Generate Webhooks Help
-echo -n "Generating Webhook Configuration instructions..."
-WEBHOOKS_HELP="The following properties map to the fields when creating webhooks on GitHub.
-To get started, navigate to the settings of the repository and under Webhooks and click on Add Webhook.
-Below are the values you can copy into each respective field. For example, payload_url maps to Payload URL, while event
-provides the answer to the question: Which events would you like to trigger this webhook?"
-state_set '.lab.webhooks.instructions' "$WEBHOOKS_HELP"
-
+echo -n "Generating Jenkins list of webhook configuration..."
 CREATE_BRANCH_TOKEN="$(state_get .lab.tokens.create_branch_webhook.secret)"
 CREATE_WEBHOOK_ADDRESS="${IP_ADDRESS}/generic-webhook-trigger/invoke?token=${CREATE_BRANCH_TOKEN}"
 state_set '.lab.webhooks.create_branch_webhook.payload_url |= $VAL' $CREATE_WEBHOOK_ADDRESS
@@ -34,15 +28,7 @@ state_set '.lab.webhooks.push_branch_webhook.event |= $VAL' "Just_the_push_event
 echo "DONE"
 
 # Generate Jenkins Credentials Help
-echo -n "Generating Jenkins Credentials Configuration instructions..."
-CREDENTIALS_HELP="The following properties map to the fields when creating credentials on Jenkins.
-To get started, navigate to credentials store on Jenkins through Manage Jenkins > Manage Credentials.
-You can create the credentials under the global domain in the Jenkins credentials store. Below are the
-values you can copy into each respective field. For example, the kind maps to the drop-down select field, Kind with
-options such as Secret text and username_with_password."
-state_set '.lab.credentials.instructions' "$CREDENTIALS_HELP"
-
-
+echo -n "Generating Jenkins list of credentials..."
 CREATE_BRANCH_TOKEN="$(state_get .lab.tokens.create_branch_webhook.secret)"
 state_set '.lab.credentials.create_branch_webhook.kind |= $VAL' 'secret_text'
 state_set '.lab.credentials.create_branch_webhook.secret |= $VAL' "$CREATE_BRANCH_TOKEN"
@@ -96,6 +82,13 @@ state_set '.lab.credentials.db_password.secret |= $VAL' "$DB_PASSWORD"
 state_set '.lab.credentials.db_password.id |= $VAL' 'cbworkshop-default-db-password'
 
 
+
+UID="$(state_get .lab.unique_identifier)"
+state_set '.lab.credentials.lab_unique_id.kind |= $VAL' 'secret_text'
+state_set '.lab.credentials.lab_unique_id.secret |= $VAL' "$UID"
+state_set '.lab.credentials.lab_unique_id.id |= $VAL' 'cbworkshop-unique-id'
+
+
 YOUR_GITHUB_USERNAME="<your-github-username>"
 YOUR_GITHUB_CREDENTIALS="<your-github-credentials>"
 state_set '.lab.credentials.github_credentials.kind |= $VAL' 'username_with_password'
@@ -105,7 +98,7 @@ state_set '.lab.credentials.github_credentials.id |= $VAL' 'cbworkshop-github-cr
 
 
 YOUR_OCIR_USERNAME="$(state_get .lab.tenancy.namespace)/$(state_get .lab.username)"
-YOUR_OCIR_CREDENTIALS="<your-ocir-credentials>"
+YOUR_OCIR_CREDENTIALS="<your-auth-token>"
 state_set '.lab.credentials.ocir_credentials.kind |= $VAL' 'username_with_password'
 state_set '.lab.credentials.ocir_credentials.username |= $VAL' $YOUR_OCIR_USERNAME
 state_set '.lab.credentials.ocir_credentials.password |= $VAL' "$YOUR_OCIR_CREDENTIALS"
@@ -113,5 +106,6 @@ state_set '.lab.credentials.ocir_credentials.id |= $VAL' 'cbworkshop_ocir_creden
 echo "DONE"
 
 # Retreiving IP address
+echo ""
 echo "Retreiving Jenkins IP Address..."
 terraform -chdir="$CB_STATE_DIR/terraform" output -json | jq -r .jenkins_public_ip.value

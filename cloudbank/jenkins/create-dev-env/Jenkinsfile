@@ -9,7 +9,8 @@ pipeline {
         CLUSTER_SERVER_URL=credentials("cbworkshop-cluster-server-url")
         REGION_KEY=credentials("cbworkshop-region-key")
         TENANCY_NAMESPACE=credentials("cbworkshop-tenancy-namespace")
-        DOCKER_REGISTRY="${REGION_KEY}.ocir.io/${TENANCY_NAMESPACE}/cloudbank/transfer-springboot"
+        LAB_UNIQUE_ID=credentialsId("cbworkshop-unique-id")
+        DOCKER_REGISTRY="${REGION_KEY}.ocir.io/${TENANCY_NAMESPACE}/cloudbank/${LAB_UNIQUE_ID}/transfer-springboot"
     }
     parameters {
         string(name: 'ref_value', defaultValue: '', description: 'Payload ref')
