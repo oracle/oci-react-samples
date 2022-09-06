@@ -9,7 +9,7 @@ pipeline {
         CLUSTER_SERVER_URL=credentials("cbworkshop-cluster-server-url")
         REGION_KEY=credentials("cbworkshop-region-key")
         TENANCY_NAMESPACE=credentials("cbworkshop-tenancy-namespace")
-        LAB_UNIQUE_ID=credentialsId("cbworkshop-unique-id")
+        LAB_UNIQUE_ID=credentials("cbworkshop-unique-id")
         DOCKER_REGISTRY="${REGION_KEY}.ocir.io/${TENANCY_NAMESPACE}/cloudbank/${LAB_UNIQUE_ID}/transfer-springboot"
     }
     parameters {
