@@ -23,7 +23,7 @@ if kubectl version >> $CB_STATE_DIR/logs/$CURRENT_TIME-kubectl-version.log; then
   # if ADB resource still exists
   ADB_EXISTS=$(kubectl get AutonomousDatabase cloudbankdb -o "jsonpath={.status.lifecycleState}")
   if [ $? -eq 0 ]; then
-    ./gen-adb-delete.sh
+    ./gen-adb-delete.sh >> $CB_STATE_DIR/logs/$CURRENT_TIME-kubectl-version.log;
     kubectl apply -f $CB_STATE_DIR/generated/adb-delete.yaml
     kubectl delete AutonomousDatabase/cloudbankdb
   fi
