@@ -170,24 +170,24 @@ function Transfer() {
                         </div>
 
                         {/* Metadata/Informational */}
-                        <div className={"transfer date field flex flex-col"}>
-                            <label htmlFor={"app-transfer-date"}>Scheduled Date of Transfer</label>
-                            <input type={"text"} id={"app-transfer-date"} className={"app-field"} onChange={ handleTransferDateChange } value={transferDate}/>
-                        </div>
+                        {/*<div className={"transfer date field flex flex-col"}>*/}
+                        {/*    <label htmlFor={"app-transfer-date"}>Scheduled Date of Transfer</label>*/}
+                        {/*    <input type={"text"} id={"app-transfer-date"} className={"app-field"} onChange={ handleTransferDateChange } value={transferDate}/>*/}
+                        {/*</div>*/}
 
-                        <div className={"memo memo field flex flex-col"}>
-                            <label htmlFor={"app-transfer-memo"}>Memo <em>(Optional)</em></label>
-                            <input type={"text"} placeholder={"car, bills, loan, etc."} id={"app-transfer-memo"} className={"app-field"} onChange={ handleMemoChange } value={memo}/>
-                        </div>
-                        <div className={"actions flex flex-col"}>
-                            <input type={"submit"} className={"submit app-button"} value={"Submit Transfer"} />
-                        </div>
+                        {/*<div className={"memo memo field flex flex-col"}>*/}
+                        {/*    <label htmlFor={"app-transfer-memo"}>Memo <em>(Optional)</em></label>*/}
+                        {/*    <input type={"text"} placeholder={"car, bills, loan, etc."} id={"app-transfer-memo"} className={"app-field"} onChange={ handleMemoChange } value={memo}/>*/}
+                        {/*</div>*/}
+                        {/*<div className={"actions flex flex-col"}>*/}
+                        {/*    <input type={"submit"} className={"submit app-button"} value={"Submit Transfer"} />*/}
+                        {/*</div>*/}
 
                         </form>
                     </div>
                 </div>
                 <div className={"guide flex-grow-6"}>
-                    <h4 className={"title"}>Guide</h4>
+                    <h4 className={"title"}>Lab Guide</h4>
                     <div className={"response flex flex-col"}>
                         <h5 className={"response-title"}>Response</h5>
                         <textarea placeholder={""} readOnly={true} value={responseData} className={"output"}/>

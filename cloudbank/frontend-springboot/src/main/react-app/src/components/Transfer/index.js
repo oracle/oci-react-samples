@@ -11,11 +11,9 @@ function Component() {
         <section className={"transfer app-section flex-grow-8"}>
             <TransferNav/>
             <Routes>
-                <Route path="/history" element={<History />} />
+                {/*<Route path="/history" element={<History />} />*/}
                 <Route path="/" element={<Transfer/>} />
-
             </Routes>
-
         </section>
     )
 }
