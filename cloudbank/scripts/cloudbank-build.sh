@@ -14,6 +14,8 @@ state_set '.state.apps.cloudbank_frontend.BUILD_STARTED |= $VAL' "$( date '+%F_%
 (cd "$APP_FE_BUILD_SCRIPT_LOCATION" || exit ; sh "$APP_FE_BUILD_SCRIPT_FILENAME")
 state_set '.state.apps.cloudbank_frontend.BUILD_COMPLETED |= $VAL' "$( date '+%F_%H:%M:%S' )"
 
+echo ""
+
 # Application 2
 APP_BE_BUILD_SCRIPT_LOCATION="$CB_ROOT_DIR/backend-springboot"
 APP_BE_BUILD_SCRIPT_FILENAME="build.sh"
