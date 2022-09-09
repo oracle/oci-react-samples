@@ -15,7 +15,6 @@ echo "================================================="
 echo 'The lab requires the following information to provision resources on OCI...'
 echo " - Database Password"
 echo " - Frontend Login Password"
-echo " - User OCID"
 echo " - Fingerprint"
 echo "================================================="
 
@@ -49,11 +48,10 @@ while : ; do
     state_set '.lab.docker_registry |= $VAL' $OCIR
 
     # requires user OCID
-    read -p "Enter the user OCID to authenticate provisioning with: " uOCID
-    state_set '.lab.ocid.user |= $VAL' $uOCID
+    state_set '.lab.ocid.user |= $VAL' $OCI_CS_USER_OCID
 
     # requires username
-    uNAME=$(cd $CB_STATE_DIR/tasks ; ./get-user-name.sh $uOCID )
+    uNAME=$(cd $CB_STATE_DIR/tasks ; ./get-user-name.sh $OCI_CS_USER_OCID )
     state_set '.lab.username |= $VAL' $uNAME
 
     # requires Fingerprint

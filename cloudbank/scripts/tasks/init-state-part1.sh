@@ -10,19 +10,15 @@ state_set '.state.init_state_a.STARTED |= $VAL' "$( date '+%F_%H:%M:%S' )"
 
 echo "================================================="
 echo 'The lab requires the following information to provision resources on OCI...'
-echo " - Region"
-echo " - Tenancy OCID"
 echo " - Compartment OCID"
 echo " - Jenkins Password"
 echo "================================================="
 
 while : ; do
-    read -p "Enter the region identifier for your region (e.g. us-phoenix-1): " INP
-    state_set '.lab.region.identifier |= $VAL' $INP
+    state_set '.lab.region.identifier |= $VAL' $OCI_REGION
 
     # requires tenancy OCID
-    read -p "Enter the tenancy OCID to authenticate provisioning with: " tOCID
-    state_set '.lab.ocid.tenancy |= $VAL' $tOCID
+    state_set '.lab.ocid.tenancy |= $VAL' $OCI_TENANCY
 
     # requires compartment OCID
     read -p "Enter the compartment OCID to provision resources in: " OCID
