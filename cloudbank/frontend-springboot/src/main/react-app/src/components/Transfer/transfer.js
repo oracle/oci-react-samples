@@ -153,19 +153,27 @@ function Transfer() {
 
                         <div className={"transfer date field flex flex-col"}>
                             <label htmlFor={"app-sender"}>Transfer from Account</label>
-                            <input type={"text"} id={"app-sender"} className={"app-field"} required={true} onChange={ handleSenderChange } value={sender}/>
+                            <select id={"app-sender"} className={"app-field"} required={true} onChange={ handleSenderChange } value={sender}>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                            </select>
                         </div>
 
                         <div className={"transfer date field flex flex-col"}>
                             <label htmlFor={"app-recipient"}>Transfer to Account</label>
-                            <input type={"text"} id={"app-recipient"} className={"app-field"} required={true} onChange={ handleRecipientChange } value={recipient}/>
+                            <select id={"app-recipient"} className={"app-field"} required={true} onChange={ handleRecipientChange } value={recipient}>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                </select>
                         </div>
 
                         <div className={"amount amount field flex flex-col"}>
                             <label htmlFor={"app-transfer-amount"}><strong>Amount</strong></label>
                             <div className={"flex flex-row amount-with-currency"}>
                                 <span className={"currency"}>$</span>
-                                <input type={"number"} id={"app-transfer-amount"} className={"app-field flex-grow-9"} required={true} onChange={ handleAmountChange } value={amount}/>
+                                <input type={"number"} id={"app-transfer-amount"} className={"app-field flex-grow-9"} required={true} onChange={ handleAmountChange } value={amount} min={0}/>
                             </div>
                         </div>
 
@@ -179,9 +187,10 @@ function Transfer() {
                         {/*    <label htmlFor={"app-transfer-memo"}>Memo <em>(Optional)</em></label>*/}
                         {/*    <input type={"text"} placeholder={"car, bills, loan, etc."} id={"app-transfer-memo"} className={"app-field"} onChange={ handleMemoChange } value={memo}/>*/}
                         {/*</div>*/}
-                        {/*<div className={"actions flex flex-col"}>*/}
-                        {/*    <input type={"submit"} className={"submit app-button"} value={"Submit Transfer"} />*/}
-                        {/*</div>*/}
+
+                        <div className={"actions flex flex-col"}>
+                           <input type={"submit"} className={"submit app-button"} value={"Submit Transfer"} />
+                        </div>
 
                         </form>
                     </div>

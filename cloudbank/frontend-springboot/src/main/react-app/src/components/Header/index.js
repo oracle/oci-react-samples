@@ -13,8 +13,7 @@ function Component() {
                         <img></img>
                         <div className={"flex flex-col"}>
                             <h3 className="app-title">CloudBank</h3>
-                            <div className={"app-description"}>A demo application for the OraOperator with Oracle DevOps
-                                and observability
+                            <div className={"app-description"}>A demo application for the OraOperator lab
                             </div>
                         </div>
 
