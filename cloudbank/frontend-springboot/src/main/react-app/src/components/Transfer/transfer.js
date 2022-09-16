@@ -12,9 +12,9 @@ function Transfer() {
     const [sources, setSources] = useState([]);
     const [destinations, setDestinations] = useState([]);
     const [transferDate, setTransferDate] = useState("");
-    const [recipient, setRecipient] = useState("");
+    const [recipient, setRecipient] = useState("100");
     const [recipientBank, setRecipientBank] = useState("");
-    const [sender, setSender] = useState("");
+    const [sender, setSender] = useState("100");
     const [senderBank, setSenderBank] = useState("");
     const [amount, setAmount] = useState(0);
     const [memo, setMemo] = useState("");
@@ -23,23 +23,14 @@ function Transfer() {
     const [responseData, setResponseData] = useState("");
 
     // Load source and destination accounts
-    useEffect( async () => {
+    useEffect( () => {
 
-        // const getAvailableAccounts = async () => {
-        //     let options = {};
-        //     await fetch(`${process.env.REACT_APP_API_EP}/api/account/transfer`, options)
-        //         .then( res => res.json() )
-        //         .then( data => {
-        //             setSources(data.sources);
-        //             setDestinations(data.destinations);
-        //         })
-        //         .catch( err => {
-        //             setError(err);
-        //         })
-        // }
-        //
-        // await getAvailableAccounts();
-        setChangeOfTransfers(DEFAULT_TRANSFER)
+        async function callChangeOfTransfersInitially() {
+            await setChangeOfTransfers(DEFAULT_TRANSFER)
+
+        }
+        callChangeOfTransfersInitially();
+
     }, []);
 
     let handleSubmit = async e => {

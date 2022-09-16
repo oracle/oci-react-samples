@@ -19,13 +19,7 @@ fi
 
 # package
 echo -n "Building backend application..."
-mvn clean package spring-boot:repackage -q > $package_logfile
-if [[ "$?" -ne 0 ]] ; then
-  echo "FAILED"; exit 1;
-else
-  echo "DONE"
-fi
-echo ""
+mvn clean package spring-boot:repackage -q
 
 # build
 echo "Building image..."

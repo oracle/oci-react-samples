@@ -14,7 +14,7 @@ function App() {
 
               <Routes>
                   <Route path="/transfer/*" element={<Transfer />} />
-                  <Route path="/" element={<Transfer />} />
+                  <Route path="*" element={<Transfer />} />
               </Routes>
               <Footer />
           </div>

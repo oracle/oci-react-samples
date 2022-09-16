@@ -22,12 +22,7 @@ if [ -f src/main/react-app/package-lock.json ]; then
   rm src/main/react-app/package-lock.json
 fi
 echo -n "Building frontend application..."
-mvn clean package -q > $package_logfile
-if [[ "$?" -ne 0 ]] ; then
-  echo "FAILED"; exit 1;
-else
-  echo "DONE"
-fi
+mvn clean package -q
 
 echo "Building image..."
 docker build -t "$FRONTEND_IMAGE" . -q

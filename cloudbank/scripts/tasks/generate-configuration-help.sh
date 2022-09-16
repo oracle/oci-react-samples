@@ -75,17 +75,14 @@ state_set '.lab.credentials.cluster_token.kind |= $VAL' 'secret_text'
 state_set '.lab.credentials.cluster_token.secret |= $VAL' "$CLUSTER_TOKEN"
 state_set '.lab.credentials.cluster_token.id |= $VAL' 'cbworkshop-kubectl-token'
 
-
 DB_PASSWORD="$(state_get .lab.fixed_demo_user_credential)"
 state_set '.lab.credentials.db_password.kind |= $VAL' 'secret_text'
 state_set '.lab.credentials.db_password.secret |= $VAL' "$DB_PASSWORD"
 state_set '.lab.credentials.db_password.id |= $VAL' 'cbworkshop-default-db-password'
 
-
-
-UID="$(state_get .lab.unique_identifier)"
+UNIQUEID="$(state_get .lab.unique_identifier)"
 state_set '.lab.credentials.lab_unique_id.kind |= $VAL' 'secret_text'
-state_set '.lab.credentials.lab_unique_id.secret |= $VAL' "$UID"
+state_set '.lab.credentials.lab_unique_id.secret |= $VAL' "$UNIQUEID"
 state_set '.lab.credentials.lab_unique_id.id |= $VAL' 'cbworkshop-unique-id'
 
 
