@@ -60,16 +60,40 @@ while : ; do
     OCIR="${PROCESSED_RKEY}.ocir.io/${NS}/cloudbank/${TOK}"
     state_set '.lab.docker_registry |= $VAL' $OCIR
 
-    # requires user OCID
-    state_set '.lab.ocid.user |= $VAL' $OCI_CS_USER_OCID
-
-    # requires username
-    uNAME=$(cd $CB_STATE_DIR/tasks ; ./get-user-name.sh $OCI_CS_USER_OCID )
-    state_set '.lab.username |= $VAL' $uNAME
-
     # requires Fingerprint
     read -p "Enter user fingerprint to authenticate provisioning with: " fPRINTVAL
     state_set '.lab.apikey.fingerprint |= $VAL' $fPRINTVAL
+
+    # requires user OCID
+    USE_ENV_VARIABLE=0
+    echo "Retrieving user..."
+    while : ; do
+        
+        if [ $USE_ENV_VARIABLE -eq 0 ]; then
+            UOCID=$OCI_CS_USER_OCID
+        else
+            read -p "Please enter your User OCID: " UOCID
+        fi
+
+        # Check
+        OUTPUT=$(oci iam user get --user-id $UOCID 2> /dev/null)
+        # User found
+        if [ $? -eq 0 ]; then
+            echo "User found."
+            break
+        fi
+
+        echo ""
+        echo "Error: User with OCID: $UOCID: NOT FOUND"
+        echo "Error: This error is most likely caused by using a federated user and the OCID cannot be retrieved automatically"
+        USE_ENV_VARIABLE=1
+
+    done
+
+    uNAME=$(cd $CB_STATE_DIR/tasks ; ./get-user-name.sh $UOCID )
+    state_set '.lab.ocid.user |= $VAL' $UOCID
+    state_set '.lab.username |= $VAL' $uNAME
+
 
     (cd $CB_STATE_DIR/tasks ; ./utils-confirm.sh) || break
 done
