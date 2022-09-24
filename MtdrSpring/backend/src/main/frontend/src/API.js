@@ -13,9 +13,8 @@
  * https://petstore.swagger.io/
  * @author  jean.de.lavarene@oracle.com
  */
-// const API_LIST = 'http://localhost:8080/todolist';
 // Copy from the endpoint from the API Gateway Deployment
 // Example: const API_LIST = 'https://di2eyonlz5s7kmuektcddaw5zq.apigateway.<region>.oci.customer-oci.com/todolist';
-const API_LIST = 'https://di2eyonlz5s7kmuektcddaw5zq.apigateway.eu-frankfurt-1.oci.customer-oci.com/todolist';
-
+// const API_LIST = 'https://di2eyonlz5s7kmuektcddaw5zq.apigateway.eu-frankfurt-1.oci.customer-oci.com/todolist';
+const API_LIST = '/todolist';
 export default API_LIST;
