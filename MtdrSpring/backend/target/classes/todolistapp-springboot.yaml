@@ -32,7 +32,7 @@ spec:
   selector:
     matchLabels:
       app: todolistapp-springboot
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
