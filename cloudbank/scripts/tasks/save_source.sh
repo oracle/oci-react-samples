@@ -24,7 +24,6 @@ export CB_KUBERNETES_TEMPLATES_DIR=${CB_KUBERNETES_TEMPLATES_DIR}
 export CB_KUBERNETES_GEN_FILES_DIR=${CB_KUBERNETES_GEN_FILES_DIR}
 
 source ${CB_STATE_DIR}/state_functions.env
-$CB_ROOT_DIR/scripts/tasks/set-java-runtime.sh
 # ====================== END CLOUDBANK SOURCE ENV ==========================
 """ > $CB_STATE_DIR/source.env
 

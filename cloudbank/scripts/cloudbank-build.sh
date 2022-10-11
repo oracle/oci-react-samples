@@ -6,9 +6,6 @@ if [ -z "$CB_ROOT_DIR" ]; then
   CB_ROOT_DIR="$SCRIPT_LOCATION/.."
 fi;
 
-# Call csruntimectl
-(cd "$CB_STATE_DIR/tasks" || exit ; ./set-java-runtime.sh)
-
 # Variables
 APP_FE_DIR="frontend-springboot"
 APP_BE_DIR="backend-springboot"
