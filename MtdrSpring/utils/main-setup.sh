@@ -109,7 +109,7 @@ done
 ##newest code added later
 while ! state_done COMPARTMENT_OCID; do
   if test $(state_get RUN_TYPE) -ne 3; then
-    read -p "if you have your own compartment, enter it here: if not, hit enter" COMPARTMENT_OCID
+    read -p "if you have your own compartment, enter it here: (if not, hit enter) " COMPARTMENT_OCID
     ##newest condition added
     if test "$COMPARTMENT_OCID" != "" && test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null` == 'ACTIVE'; then
       state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
