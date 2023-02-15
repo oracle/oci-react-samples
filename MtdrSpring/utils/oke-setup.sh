@@ -23,7 +23,7 @@ done
 
 # Get OKE OCID
 while ! state_done OKE_OCID; do
-  OKE_OCID="$(terraform -chdir="${MTDRWORKSHOP_LOCATION/terraform}" output -json | python process-cluster-ocid.json.py)"
+  OKE_OCID=$(terraform -chdir="${MTDRWORKSHOP_LOCATION}"/terraform output -json | python "$MTDRWORKSHOP_LOCATION"/python-scripts/process-cluster-ocid.json.py)
   if [[ $OKE_OCID == Error* ]]; then
     echo "$OKE_OCID"
     exit
