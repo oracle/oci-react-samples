@@ -23,8 +23,12 @@ done
 
 # Get OKE OCID
 while ! state_done OKE_OCID; do
-  OKE_OCID=`oci ce cluster list --compartment-id "$(state_get COMPARTMENT_OCID)" --query "join(' ',data[?"'"lifecycle-state"'"=='ACTIVE'].id)" --raw-output`
-  state_set OKE_OCID "$OKE_OCID"
+  OKE_OCID="$(terraform -chdir="${MTDRWORKSHOP_LOCATION/terraform}" output -json | python process-cluster-ocid.json.py)"
+  if [[ $OKE_OCID == Error* ]]; then
+    echo "$OKE_OCID"
+    exit
+  fi
+    state_set OKE_OCID "$OKE_OCID"
   # Wait for OKE to warm up
 done
 
@@ -47,7 +51,7 @@ while ! state_done KUBECTL; do
 done
 
 
-# Wait for OKE nodes to become redy
+# Wait for OKE nodes to become ready
 while ! state_done BYO_K8S; do
   READY_NODES=`kubectl get nodes | grep Ready | wc -l` || echo 'Ignoring any Error'
   if test "$READY_NODES" -ge 3; then
