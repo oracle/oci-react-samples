@@ -67,6 +67,11 @@ while ! state_done USER_NAME; do
   state_set USER_NAME "$USER_NAME"
 done
 
+# Generate Unique Key
+while ! state_done MTDR_KEY; do
+  state_set MTDR_KEY $(python "$MTDRWORKSHOP_LOCATION/utils/python-scripts/generate-unique-key.py")
+done
+
 
 #Get Run Name from directory name
 while ! state_done RUN_NAME; do
@@ -178,7 +183,7 @@ while ! state_done DOCKER_REGISTRY; do
   while test $RETRIES -le 30; do
     if echo "$TOKEN" | docker login -u "$(state_get NAMESPACE)/$(state_get USER_NAME)" --password-stdin "$(state_get REGION).ocir.io" &>/dev/null; then
       echo "Docker login completed"
-      state_set DOCKER_REGISTRY "$(state_get REGION).ocir.io/$(state_get NAMESPACE)/$(state_get RUN_NAME)"
+      state_set DOCKER_REGISTRY "$(state_get REGION).ocir.io/$(state_get NAMESPACE)/$(state_get RUN_NAME)/$(state_get MTDR_KEY)"
       export OCI_CLI_PROFILE=$(state_get REGION)
       break
     else

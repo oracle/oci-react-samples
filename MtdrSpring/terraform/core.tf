@@ -2,7 +2,7 @@
 resource "oci_core_vcn" "okevcn" {
   cidr_block      = "10.0.0.0/16"
   compartment_id  = var.ociCompartmentOcid
-  display_name    = "mtdrworkshop"
+  display_name    = "mtdrworkshop-${var.mtdrKey}"
   dns_label       = "mtdrworkshop"
 }
 resource "oci_core_internet_gateway" "igw" {
