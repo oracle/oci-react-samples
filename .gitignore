@@ -42,6 +42,7 @@ frontend/build
 .env.development.local
 .env.test.local
 .env.production.local
+.idea
 
 frontend/package-lock.json
 frontend/npm-debug.log*
