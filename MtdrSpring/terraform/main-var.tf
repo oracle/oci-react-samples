@@ -6,3 +6,6 @@ variable "ociCompartmentOcid" {}
 variable "ociRegionIdentifier" {}
 variable "mtdrDbName" {}
 variable "runName" {}
+
+# mtdrKey is a unique generated id
+variable "mtdrKey" {}

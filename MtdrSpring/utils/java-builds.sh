@@ -9,12 +9,12 @@ set -e
 BUILDS="todolistapp-springboot"
 
 # Provision Repos
-while ! state_done JAVA_REPOS; do
-  for b in $BUILDS; do
-    oci artifacts container repository create --compartment-id "$(state_get COMPARTMENT_OCID)" --display-name "$(state_get RUN_NAME)/$b" --is-public true
-  done
-  state_set_done JAVA_REPOS
-done
+#while ! state_done JAVA_REPOS; do
+#  for b in $BUILDS; do
+#    oci artifacts container repository create --compartment-id "$(state_get COMPARTMENT_OCID)" --display-name "$(state_get RUN_NAME)/$b" --is-public true
+#  done
+#  state_set_done JAVA_REPOS
+#done
 
 
 # Install Graal

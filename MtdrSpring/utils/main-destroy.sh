@@ -53,6 +53,7 @@ export TF_VAR_ociCompartmentOcid="$(state_get COMPARTMENT_OCID)"
 export TF_VAR_ociRegionIdentifier="$(state_get REGION)"
 export TF_VAR_runName="$(state_get RUN_NAME)"
 export TF_VAR_mtdrDbName="$(state_get MTDR_DB_NAME)"
+export TF_VAR_mtdrKey="$(state_get MTDR_KEY)"
 terraform init
 terraform destroy -auto-approve
 

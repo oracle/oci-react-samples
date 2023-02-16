@@ -14,6 +14,7 @@ if ! state_done PROVISIONING; then
   export TF_VAR_ociRegionIdentifier="$(state_get REGION)"
   export TF_VAR_runName="$(state_get RUN_NAME)"
   export TF_VAR_mtdrDbName="$(state_get MTDR_DB_NAME)"
+  export TF_VAR_mtdrKey="$(state_get MTDR_KEY)"
   #export TF_VAR_inventoryDbName="$(state_get INVENTORY_DB_NAME)"
 
   if state_done K8S_PROVISIONING; then

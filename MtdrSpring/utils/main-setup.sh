@@ -54,8 +54,8 @@ while ! state_done USER_OCID; do
     USER_OCID=$TEST_USER_OCID
   fi
   # Validate
-  if test ""`oci iam user get --user-id "$OCI_CS_USER_OCID" --query 'data."lifecycle-state"' --raw-output 2>$MTDRWORKSHOP_LOG/user_ocid_err` == 'ACTIVE'; then
-    state_set USER_OCID "$OCI_CS_USER_OCID"
+  if test ""`oci iam user get --user-id "$USER_OCID" --query 'data."lifecycle-state"' --raw-output 2>$MTDRWORKSHOP_LOG/user_ocid_err` == 'ACTIVE'; then
+    state_set USER_OCID "$USER_OCID"
   else
     echo "That user OCID could not be validated"
     cat $MTDRWORKSHOP_LOG/user_ocid_err
@@ -65,6 +65,11 @@ done
 while ! state_done USER_NAME; do
   USER_NAME=`oci iam user get --user-id "$(state_get USER_OCID)" --query "data.name" --raw-output`
   state_set USER_NAME "$USER_NAME"
+done
+
+# Generate Unique Key
+while ! state_done MTDR_KEY; do
+  state_set MTDR_KEY $(python "$MTDRWORKSHOP_LOCATION/utils/python-scripts/generate-unique-key.py")
 done
 
 
@@ -109,7 +114,7 @@ done
 ##newest code added later
 while ! state_done COMPARTMENT_OCID; do
   if test $(state_get RUN_TYPE) -ne 3; then
-    read -p "if you have your own compartment, enter it here: if not, hit enter" COMPARTMENT_OCID
+    read -p "if you have your own compartment, enter it here: (if not, hit enter) " COMPARTMENT_OCID
     ##newest condition added
     if test "$COMPARTMENT_OCID" != "" && test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null` == 'ACTIVE'; then
       state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
@@ -178,7 +183,7 @@ while ! state_done DOCKER_REGISTRY; do
   while test $RETRIES -le 30; do
     if echo "$TOKEN" | docker login -u "$(state_get NAMESPACE)/$(state_get USER_NAME)" --password-stdin "$(state_get REGION).ocir.io" &>/dev/null; then
       echo "Docker login completed"
-      state_set DOCKER_REGISTRY "$(state_get REGION).ocir.io/$(state_get NAMESPACE)/$(state_get RUN_NAME)"
+      state_set DOCKER_REGISTRY "$(state_get REGION).ocir.io/$(state_get NAMESPACE)/$(state_get RUN_NAME)/$(state_get MTDR_KEY)"
       export OCI_CLI_PROFILE=$(state_get REGION)
       break
     else
