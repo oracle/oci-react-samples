@@ -86,7 +86,7 @@ while ! state_done RUN_NAME; do
   # Validate run name.  Must be between 1 and 13 characters, only letters or numbers, starting with letter
   if [[ "$DN" =~ ^[a-zA-Z][a-zA-Z0-9]{0,12}$ ]]; then
     state_set RUN_NAME `echo "$DN" | awk '{print tolower($0)}'`
-    state_set MTDR_DB_NAME "$(state_get RUN_NAME)o"
+    state_set MTDR_DB_NAME "$(state_get RUN_NAME)$(state_get MTDR_KEY)"
   else
     echo "Error: Invalid directory name $RN.  The directory name must be between 1 and 13 characters,"
     echo "containing only letters or numbers, starting with a letter.  Please restart the workshop with a valid directory name."
