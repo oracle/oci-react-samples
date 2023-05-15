@@ -8,7 +8,7 @@ resource "oci_containerengine_cluster" "mtdrworkshop_cluster" {
         ]
         subnet_id = oci_core_subnet.endpoint.id
     }
-    kubernetes_version  = "v1.23.4"
+    kubernetes_version  = "v1.26.2"
     name                = "mtdrworkshopcluster"
     vcn_id              = oci_core_vcn.okevcn.id
     #optional
@@ -36,7 +36,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
   #Required
   cluster_id         = oci_containerengine_cluster.mtdrworkshop_cluster.id
   compartment_id     = var.ociCompartmentOcid
-  kubernetes_version = "v1.23.4"
+  kubernetes_version = "v1.26.2"
   name               = "Pool"
 #  node_shape="VM.Standard2.4"
 #  node_shape         = "VM.Standard.B2.1"
