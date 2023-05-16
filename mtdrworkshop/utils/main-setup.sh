@@ -225,11 +225,13 @@ if ! state_done DB_PASSWORD; then
     if [[ ${#PW} -ge 12 && ${#PW} -le 30 && "$PW" =~ [A-Z] && "$PW" =~ [a-z] && "$PW" =~ [0-9] && "$PW" != *admin* && "$PW" != *'"'* ]]; then
       echo
       break
+      state_set DB_PASSWORD "$PW"
     else
       echo "Invalid Password, please retry"
     fi
   done
   BASE64_DB_PASSWORD=`echo -n "$PW" | base64`
+
 fi
 
 # Wait for provisioning
