@@ -217,21 +217,16 @@ if ! state_done DB_PASSWORD; then
   echo
 
   while true; do
-    if test -z "$TEST_DB_PASSWORD"; then
-      read -s -r -p "Enter the password to be used for the MTDR database: " PW
-    else
-      PW="$TEST_DB_PASSWORD"
-    fi
+    read -s -r -p "Enter the password to be used for the MTDR database: " PW
     if [[ ${#PW} -ge 12 && ${#PW} -le 30 && "$PW" =~ [A-Z] && "$PW" =~ [a-z] && "$PW" =~ [0-9] && "$PW" != *admin* && "$PW" != *'"'* ]]; then
+      state_set DB_PASSWORD "$PW"
       echo
       break
-      state_set DB_PASSWORD "$PW"
     else
       echo "Invalid Password, please retry"
     fi
   done
   BASE64_DB_PASSWORD=`echo -n "$PW" | base64`
-
 fi
 
 # Wait for provisioning
