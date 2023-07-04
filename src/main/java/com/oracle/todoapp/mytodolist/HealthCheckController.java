@@ -15,6 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthCheckController {
     @GetMapping(value = "/")
     public String getHealthCheck() {
-        return "I am alive :)";
+        return "I am alive!";
     }
 }
