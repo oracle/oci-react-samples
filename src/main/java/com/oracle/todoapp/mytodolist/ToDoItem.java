@@ -11,13 +11,11 @@ import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 /*
-    representation of the "todoitem" table that exists already
-    in the autonomous database
 
  CREATE TABLE todoitem (
     id NUMBER GENERATED ALWAYS AS IDENTITY,
     description VARCHAR2(32000),
-    creation_ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    creation_ts TIMESTAMP WITH TIME ZONE DEFAULT ON NULL CURRENT_TIMESTAMP ,
     done NUMBER(1,0) DEFAULT 0,
     PRIMARY KEY (id)
    );

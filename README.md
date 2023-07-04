@@ -22,10 +22,17 @@ java -Dserver.port=8181 -jar ./target/mytodolist-0.0.1-SNAPSHOT.jar
    }
 ]
 ```
-
+Or
+```
+curl -s https://mytodolist1.orcl.dev/todolist | json_pp
+```
 #### Add item:
 ```
 % curl -X POST http://localhost:8181/todolist -H 'Content-Type: application/json' -d '{"description":"another item"}'
+```
+Or
+```
+curl -X POST https://mytodolist1.orcl.dev/todolist -H 'Content-Type: application/json' -d '{"description":"another item"}' 
 ```
 
 #### Delete item #1:
