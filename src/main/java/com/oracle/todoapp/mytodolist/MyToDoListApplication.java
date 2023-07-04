@@ -18,7 +18,7 @@ public class MyToDoListApplication {
 		System.setProperty("oracle.jdbc.diagnostic.enableLogging", "true");
 		System.setProperty("oracle.jdbc.diagnostic.enableSensitiveDiagnostics", "true");
 		System.setProperty("oracle.jdbc.diagnostic.permitSensitiveDiagnostics", "true");
-		System.setProperty("java.util.logging.config.file", "./resources/jdbclogging.properties");
+		System.setProperty("java.util.logging.config.file", "./jdbclogging.properties");
 		SpringApplication.run(MyToDoListApplication.class, args);
 	}
 

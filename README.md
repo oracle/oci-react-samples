@@ -1,5 +1,10 @@
 # MyTodoList SpringBoot backend  
 
+#### To compile:
+Assuming we're using the "maven" profile:
+```
+mvn -P maven install
+```
 #### To run locally:
 ```
 java -Dserver.port=8181 -jar ./target/mytodolist-0.0.1-SNAPSHOT.jar
