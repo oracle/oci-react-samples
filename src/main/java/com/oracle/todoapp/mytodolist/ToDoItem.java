@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.time.OffsetDateTime;
 
 /*
+If the table needs to be created manually:
 
  CREATE TABLE todoitem (
     id NUMBER GENERATED ALWAYS AS IDENTITY,
@@ -29,9 +30,9 @@ public class ToDoItem {
     int id;
     @Column(name = "description")
     String description;
-    @Column(name = "creation_ts")
+    @Column(name = "creation_ts", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT ON NULL CURRENT_TIMESTAMP")
     OffsetDateTime creation_ts;
-    @Column(name = "done")
+    @Column(name = "done", columnDefinition = "NUMBER(1,0) DEFAULT 0")
     Boolean done = Boolean.FALSE;
 
     public ToDoItem() {

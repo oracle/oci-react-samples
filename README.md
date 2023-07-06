@@ -7,7 +7,7 @@ mvn -P maven install
 ```
 #### To run locally:
 ```
-java -Dserver.port=8181 -jar ./target/mytodolist-0.0.1-SNAPSHOT.jar
+java -Doracle.jdbc.diagnostic.permitSensitiveDiagnostics=true -Doracle.jdbc.diagnostic.enableSensitiveDiagnostics=true -Dserver.port=8181 -jar ./target/mytodolist-0.0.1-SNAPSHOT.jar
 ```
 
 #### List items:
