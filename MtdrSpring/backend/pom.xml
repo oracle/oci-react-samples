@@ -41,8 +41,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<scope>test</scope>
+			<artifactId>httpclient</artifactId>			
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
@@ -58,8 +57,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-starter-test</artifactId>			
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -67,8 +65,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-security-test</artifactId>			
 		</dependency>
 		<dependency>
 			<groupId>org.telegram</groupId>
