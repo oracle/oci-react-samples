@@ -18,6 +18,7 @@ import io.helidon.webserver.WebServer;
 import io.helidon.webserver.cors.CorsSupport;
 import io.helidon.webserver.cors.CrossOriginConfig;
 
+
 /*
  * This is the helidon-se backend.
  * @author jean.de.lavarene@oracle.com
@@ -42,7 +43,7 @@ public final class Main {
       .start()
       .thenAccept(ws -> {
         System.out.printf(
-          "webserver is up! http://localhost:%s/todolist%n", ws.port());
+          "webserver is up! http://localhost:%s/api/todolist%n", ws.port());
         ws.whenShutdown().thenRun(() ->
           System.out.println("WEB server is DOWN. Good bye!"));
       })
@@ -60,21 +61,21 @@ public final class Main {
     // can be over-ridden by System.properties
     TodoListAppService todoListAppService = new TodoListAppService(config.get("database"));
 
-    CorsSupport corsSupport = CorsSupport.builder()
-    .addCrossOrigin(CrossOriginConfig.builder()
-        .allowOrigins("http://localhost:3000",
-           "https://objectstorage.us-phoenix-1.oraclecloud.com",
-           "https://petstore.swagger.io")
-        .allowMethods("POST", "PUT", "DELETE")
-        .exposeHeaders("location")
-        .build())
-    .addCrossOrigin(CrossOriginConfig.create())
-        .build();
+    // Enables CORS
+      // update if needed
+      CorsSupport corsSupport = CorsSupport.builder()
+        .addCrossOrigin(CrossOriginConfig.builder()
+            .allowOrigins()
+            .allowMethods("POST", "PUT", "DELETE")
+            .exposeHeaders("location", "timestamp")
+            .build())
+        .addCrossOrigin(CrossOriginConfig.create())
+            .build();
 
     // Create routing and register
     return Routing
         .builder()
-        .register("/todolist", corsSupport, todoListAppService)
+        .register("/api/todolist", corsSupport, todoListAppService)
         .error(Throwable.class, handleErrors())
         .build();
   }

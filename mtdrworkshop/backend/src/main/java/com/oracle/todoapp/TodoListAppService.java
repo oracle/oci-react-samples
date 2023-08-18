@@ -64,7 +64,7 @@ public class TodoListAppService implements Service {
       .thenCompose(
           todoItem -> {
               serverResponse.status(201)
-                  .headers()
+                  .headers().add("timestamp", todoItem.getCreatedAt().toString())
                   .location(URI.create(""+todoItem.getId()));
               return serverResponse.send();
           }
@@ -97,11 +97,11 @@ public class TodoListAppService implements Service {
         // Use async APIs when avaiable:
         // .thenCompose(this.todiItems::asyncSave)
         .thenCompose(
-            p -> serverResponse.status(204).send()
+            p -> serverResponse.status(200).send(TodoItem.toJsonObject(p))
         );
   }
   void deleteTodoById(ServerRequest serverRequest, ServerResponse serverResponse) {
-    LOGGER.fine("updateTodo");
+    LOGGER.fine("deleteTodo");
     this.todoItems.deleteById(serverRequest.path().param("id"));
     serverResponse.status(204).send();
   }
