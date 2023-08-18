@@ -1,0 +1,36 @@
+
+.todo-component {
+    border-bottom: 1px solid #655e57;
+    padding: 9px 0;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.date {
+    font-size: max(10px,min(1.5vw, 14px));
+    color: #808080;
+    white-space: nowrap;
+    padding: 12px 8px 8px 8px;
+}
+
+.description {
+    flex-grow: 1;
+    color: #FEF9F2;
+    word-break: break-word;
+    padding-top: 9px;
+    font-size: .8em;
+}
+
+.todo-component:hover {
+    background-color: #161513;
+}
+
+table {
+    width: 100%;
+}
+
+table tr > td {
+    padding: 4px 8px;
+}
