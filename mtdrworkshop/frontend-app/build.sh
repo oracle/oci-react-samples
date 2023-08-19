@@ -6,8 +6,8 @@
 
 SCRIPT_DIR=$(dirname $0)
 
-export IMAGE_NAME=todolistapp-helidon-se
-export IMAGE_VERSION=0.1
+export IMAGE_NAME=next-frontendapp
+export IMAGE_VERSION=v1
 
 if [ -z "$DOCKER_REGISTRY" ]; then
     echo "DOCKER_REGISTRY not set. Will get it with state_get"
@@ -20,9 +20,7 @@ if [ -z "$DOCKER_REGISTRY" ]; then
 fi
 
 export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
-mvn clean package
-docker build -f src/main/docker/Dockerfile -t $IMAGE .
-# mvn package docker:build
+docker build -t $IMAGE .
 
 # if [ $DOCKERBUILD_RETCODE -ne 0 ]; then
 if [ $? -ne 0 ]; then

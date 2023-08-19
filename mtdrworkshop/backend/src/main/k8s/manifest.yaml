@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backendapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backendapp
+  template:
+    metadata:
+      labels:
+        app: backendapp
+    spec:
+      containers:
+      - name: app
+        image: %DOCKER_REGISTRY%/%DOCKER_IMAGE%:%DOCKER_IMAGE_TAG%
+        env:
+        - name: database.user
+          value: "TODOUSER"
+        - name: database.url
+          value: "jdbc:oracle:thin:@%TODO_PDB_NAME%_tp?TNS_ADMIN=/mtdrworkshop/creds"
+        - name: todo.table.name
+          value: "todoitem"
+        - name: OCI_REGION
+          value: "%OCI_REGION%"
+        - name: dbpassword
+          valueFrom:
+            secretKeyRef:
+              name: dbuser
+              key: dbpassword
+              optional: true
+        volumeMounts:
+        - name: creds
+          mountPath: /mtdrworkshop/creds
+        ports:
+        - containerPort: 8080
+      restartPolicy: Always
+      volumes:
+      - name: creds
+        secret:
+          secretName: db-wallet-secret
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: backendapp
+
