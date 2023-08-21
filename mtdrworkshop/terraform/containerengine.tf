@@ -8,7 +8,7 @@ resource "oci_containerengine_cluster" "mtdrworkshop_cluster" {
         ]
         subnet_id = oci_core_subnet.endpoint.id
     }
-    kubernetes_version  = local.version
+    kubernetes_version  = local.latest
     name                = "mtdrworkshopcluster"
     vcn_id              = oci_core_vcn.okevcn.id
     #optional
@@ -36,7 +36,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
   #Required
   cluster_id         = oci_containerengine_cluster.mtdrworkshop_cluster.id
   compartment_id     = var.ociCompartmentOcid
-  kubernetes_version = local.version
+  kubernetes_version = local.latest
   name               = "Pool"
 #  node_shape="VM.Standard2.4"
 #  node_shape         = "VM.Standard.B2.1"
@@ -84,5 +84,6 @@ locals {
 
 
 locals {
-  version = data.oci_containerengine_cluster_option.mtdrworkshop_cluster_option.kubernetes_versions[0]
-}
+    versions = reverse(sort(data.oci_containerengine_cluster_option.mtdrworkshop_cluster_option.kubernetes_versions))
+    latest = local.versions[0]
+  }
