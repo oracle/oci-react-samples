@@ -243,7 +243,7 @@ fi
 
 # Get MTDR_DB OCID
 while ! state_done MTDR_DB_OCID; do
-  MTDR_DB_OCID=`oci db autonomous-database list --compartment-id "$(cat state/COMPARTMENT_OCID)" --query 'join('"' '"',data[?"display-name"=='"'MTDRDB'"'].id)' --raw-output`
+  MTDR_DB_OCID=`terraform output -chdir="$MTDRWORKSHOP_LOCATION/terraform" --raw adb_ocid`
   if [[ "$MTDR_DB_OCID" =~ ocid1.autonomousdatabase* ]]; then
     state_set MTDR_DB_OCID "$MTDR_DB_OCID"
   else
