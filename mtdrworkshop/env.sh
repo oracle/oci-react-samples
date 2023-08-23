@@ -13,16 +13,17 @@ fi
 # command: source oci-react-samples/mtdrworkshop/env.sh
 # set mtdrworkshop_location to the location of this script
 export MTDRWORKSHOP_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-# source state-functions
-source $MTDRWORKSHOP_LOCATION/utils/state-functions.sh
 
-if ! state_set_done STATE_HOME; then
-  state_set STATE_HOME "${pwd}"
-fi 
+# assumes directory is above the code
 
 export MTDRWORKSHOP_HOME="$(state_get STATE_HOME)"
-export MTDRWORKSHOP_STATE_HOME=$MTDRWORKSHOP_HOME/state
-export MTDRWORKSHOP_LOG=$MTDRWORKSHOP_HOME/state/log
+export MTDRWORKSHOP_STATE_HOME=$MTDRWORKSHOP_LOCATION/../../state
+export MTDRWORKSHOP_LOG=$MTDRWORKSHOP_LOCATION/../../state/log
+mkdir -p $MTDRWORKSHOP_STATE_HOME
+mkdir -p $MTDRWORKSHOP_LOG
+
+# source state-functions
+source $MTDRWORKSHOP_LOCATION/utils/state-functions.sh
 
 # configure env.sh to run everytime cloud shell is start up
 # only if it does not already exist
@@ -31,9 +32,6 @@ if ! grep -q "$MTDRWORKSHOP_LOCATION"/env.sh ~/.bashrc; then
   cp ~/.bashrc ~/.bashrc.copy
 fi
 
-
-mkdir -p $MTDRWORKSHOP_STATE_HOME
-mkdir -p $MTDRWORKSHOP_LOG
 cd $MTDRWORKSHOP_LOCATION
 echo "MTDRWORKSHOP_LOCATION: $MTDRWORKSHOP_LOCATION"
 echo "MTDRWORKSOP_STATE_HOME: $MTDRWORKSHOP_STATE_HOME"
