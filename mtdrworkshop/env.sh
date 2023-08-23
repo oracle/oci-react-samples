@@ -17,7 +17,7 @@ export MTDRWORKSHOP_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/n
 source $MTDRWORKSHOP_LOCATION/utils/state-functions.sh
 
 if ! state_set_done STATE_HOME; then
-  state_set STATE_HOME "$pwd"
+  state_set STATE_HOME "${pwd}"
 fi 
 
 export MTDRWORKSHOP_HOME="$(state_get STATE_HOME)"
