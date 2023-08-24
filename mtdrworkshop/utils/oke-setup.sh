@@ -31,7 +31,7 @@ done
 
 # Setup Cluster Access
 while ! state_done KUBECTL; do
-  chmod 400 $HOME/.kube/config
+  
   oci ce cluster create-kubeconfig --cluster-id "$(state_get OKE_OCID)" --file $HOME/.kube/config --region "$(state_get REGION)" --token-version 2.0.0
 
   cluster_id="$(state_get OKE_OCID)"
@@ -44,6 +44,7 @@ while ! state_done KUBECTL; do
   --exec-arg="--region" \
   --exec-arg="$(state_get REGION)"
 
+  chmod 400 $HOME/.kube/config
   state_set_done KUBECTL
 done
 
