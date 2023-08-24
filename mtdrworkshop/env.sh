@@ -32,10 +32,8 @@ if ! grep -q "$MTDRWORKSHOP_LOCATION"/env.sh ~/.bashrc; then
   cp ~/.bashrc ~/.bashrc.copy
 fi
 
-cd $MTDRWORKSHOP_LOCATION
 echo "MTDRWORKSHOP_LOCATION: $MTDRWORKSHOP_LOCATION"
 echo "MTDRWORKSOP_STATE_HOME: $MTDRWORKSHOP_STATE_HOME"
-
 
 # ######################################################
 # Java Home

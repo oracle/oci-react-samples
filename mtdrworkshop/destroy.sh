@@ -10,5 +10,3 @@ if ! (return 0 2>/dev/null); then
 fi
 
 $MTDRWORKSHOP_LOCATION/utils/main-destroy.sh
-
-cd
