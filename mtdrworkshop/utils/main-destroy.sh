@@ -22,30 +22,12 @@ fi
 
 
 # Run the os-destroy.sh in the background
-if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/os-destroy.sh" | grep -v grep; then
-  echo "$MTDRWORKSHOP_LOCATION/utils/os-destroy.sh is already running"
-else
-  echo "Executing os-destroy.sh in the background"
-  nohup $MTDRWORKSHOP_LOCATION/utils/os-destroy.sh &>> $MTDRWORKSHOP_LOG/os-destroy.log &
-fi
-
-
-# Run the repo-destroy.sh in the background
-if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/repo-destroy.sh" | grep -v grep; then
-  echo "$MTDRWORKSHOP_LOCATION/utils/repo-destroy.sh is already running"
-else
-  echo "Executing repo-destroy.sh in the background"
-  nohup $MTDRWORKSHOP_LOCATION/utils/repo-destroy.sh &>> $MTDRWORKSHOP_LOG/repo-destroy.log &
-fi
-
-
-# Run the lb-destroy.sh in the background
-if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/lb-destroy.sh" | grep -v grep; then
-  echo "$MTDRWORKSHOP_LOCATION/utils/lb-destroy.sh is already running"
-else
-  echo "Executing lb-destroy.sh in the background"
-  nohup $MTDRWORKSHOP_LOCATION/utils/lb-destroy.sh &>> $MTDRWORKSHOP_LOG/lb-destroy.log &
-fi
+# if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/os-destroy.sh" | grep -v grep; then
+#   echo "$MTDRWORKSHOP_LOCATION/utils/os-destroy.sh is already running"
+# else
+#   echo "Executing os-destroy.sh in the background"
+#   nohup $MTDRWORKSHOP_LOCATION/utils/os-destroy.sh &>> $MTDRWORKSHOP_LOG/os-destroy.log &
+# fi
 
 
 # Terraform Destroy

@@ -31,10 +31,11 @@ done
 
 # Setup Cluster Access
 while ! state_done KUBECTL; do
+  chmod 400 $HOME/.kube/config
   oci ce cluster create-kubeconfig --cluster-id "$(state_get OKE_OCID)" --file $HOME/.kube/config --region "$(state_get REGION)" --token-version 2.0.0
 
   cluster_id="$(state_get OKE_OCID)"
-  kubectl config set-credentials "user-${cluster_id:(-11)}" --exec-command="kube_token_cache.sh" \
+  kubectl config set-credentials "user-${cluster_id:(-11)}" --exec-command="tasks/set-kube-token-cache.sh.sh" \
   --exec-arg="ce" \
   --exec-arg="cluster" \
   --exec-arg="generate-token" \

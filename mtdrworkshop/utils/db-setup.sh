@@ -7,12 +7,12 @@ set -e
 
 
 # Create Object Store Bucket (Should be replaced by terraform one day)
-while ! state_done OBJECT_STORE_BUCKET; do
-  echo "creating object storage bucket"
-  oci os bucket create --compartment-id "$(state_get COMPARTMENT_OCID)" --name "$(state_get RUN_NAME)"
-  state_set_done OBJECT_STORE_BUCKET
-  echo "finished creating object storage buckets"
-done
+# while ! state_done OBJECT_STORE_BUCKET; do
+#   echo "creating object storage bucket"
+#   oci os bucket create --compartment-id "$(state_get COMPARTMENT_OCID)" --name "$(state_get RUN_NAME)"
+#   state_set_done OBJECT_STORE_BUCKET
+#   echo "finished creating object storage buckets"
+# done
 
 
 # Wait for Order DB OCID
@@ -37,23 +37,23 @@ done
 
 
 # Get DB Connection Wallet and to Object Store
-while ! state_done CWALLET_SSO_OBJECT; do
-  echo "grabbing wallet"
-  cd $MTDRWORKSHOP_LOCATION/wallet
-  oci os object put --bucket-name "$(state_get RUN_NAME)" --name "cwallet.sso" --file 'cwallet.sso'
-  cd $MTDRWORKSHOP_LOCATION
-  state_set_done CWALLET_SSO_OBJECT
-  echo "done grabbing wallet"
-done
+# while ! state_done CWALLET_SSO_OBJECT; do
+#   echo "grabbing wallet"
+#   cd $MTDRWORKSHOP_LOCATION/wallet
+#   oci os object put --bucket-name "$(state_get RUN_NAME)" --name "cwallet.sso" --file 'cwallet.sso'
+#   cd $MTDRWORKSHOP_LOCATION
+#   state_set_done CWALLET_SSO_OBJECT
+#   echo "done grabbing wallet"
+# done
 
 
 # Create Authenticated Link to Wallet
-while ! state_done CWALLET_SSO_AUTH_URL; do
-  echo "creating authenticated link to wallet"
-  ACCESS_URI=`oci os preauth-request create --object-name 'cwallet.sso' --access-type 'ObjectRead' --bucket-name "$(state_get RUN_NAME)" --name 'mtdrworkshop' --time-expires $(date '+%Y-%m-%d' --date '+7 days') --query 'data."access-uri"' --raw-output`
-  state_set CWALLET_SSO_AUTH_URL "https://objectstorage.$(state_get REGION).oraclecloud.com${ACCESS_URI}"
-  echo "done creating authenticated link to wallet"
-done
+# while ! state_done CWALLET_SSO_AUTH_URL; do
+#   echo "creating authenticated link to wallet"
+#   ACCESS_URI=`oci os preauth-request create --object-name 'cwallet.sso' --access-type 'ObjectRead' --bucket-name "$(state_get RUN_NAME)" --name 'mtdrworkshop' --time-expires $(date '+%Y-%m-%d' --date '+7 days') --query 'data."access-uri"' --raw-output`
+#   state_set CWALLET_SSO_AUTH_URL "https://objectstorage.$(state_get REGION).oraclecloud.com${ACCESS_URI}"
+#   echo "done creating authenticated link to wallet"
+# done
 
 
 # Give DB_PASSWORD priority
@@ -103,8 +103,6 @@ SSL_SERVER_DN_MATCH=yes
 !
 MTDR_DB_SVC="$(state_get MTDR_DB_NAME)_tp"
 TODO_USER=TODOUSER
-ORDER_LINK=ORDERTOINVENTORYLINK
-ORDER_QUEUE=ORDERQUEUE
 
 
 # Get DB Password

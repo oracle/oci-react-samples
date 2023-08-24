@@ -125,15 +125,25 @@ while ! state_done COMPARTMENT_OCID; do
   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
 done
 
-## Run the java-builds.sh in the background
+## Install graal
 if ! state_get JAVA_BUILDS; then
-  if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh" | grep -v grep; then
-    echo "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh is already running"
+  if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/tasks/install-graal.sh" | grep -v grep; then
+    echo "$MTDRWORKSHOP_LOCATION/utils/tasks/install-graal.sh is already running"
   else
-    echo "Executing java-builds.sh in the background"
-    nohup $MTDRWORKSHOP_LOCATION/utils/java-builds.sh &>> $MTDRWORKSHOP_LOG/java-builds.log &
+    echo "Executing install-graal.sh in the background"
+    nohup "$MTDRWORKSHOP_LOCATION/utils/tasks/install-graal.sh" &>> $MTDRWORKSHOP_LOG/install-graal.log &
   fi
 fi
+
+## Run the java-builds.sh in the background
+# if ! state_get JAVA_BUILDS; then
+#   if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh" | grep -v grep; then
+#     echo "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh is already running"
+#   else
+#     echo "Executing java-builds.sh in the background"
+#     nohup $MTDRWORKSHOP_LOCATION/utils/java-builds.sh &>> $MTDRWORKSHOP_LOG/java-builds.log &
+#   fi
+# fi
 
 
 ## Run the terraform.sh in the background
@@ -314,7 +324,7 @@ done
 
 ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils" | grep -v grep
 
-bgs="JAVA_BUILDS OKE_SETUP DB_SETUP PROVISIONING"
+bgs="OKE_SETUP DB_SETUP PROVISIONING"
 while ! state_done SETUP_VERIFIED; do
   NOT_DONE=0
   bg_not_done=
