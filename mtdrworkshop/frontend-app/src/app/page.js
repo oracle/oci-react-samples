@@ -34,10 +34,16 @@ export default function Home() {
 
          create(newItem)
             .then(result => {
-                newItem.id = Number(result.headers.get("location"));
+                if (process.env.NODE_ENV === 'development') {
+                    newItem.id = result.headers.get("location");
+                } else {
+                    newItem.id = Number(result.headers.get("location"));
+                }
+                
                 newItem.createdAt = result.headers.get("timestamp")
 
                 let newItems = [newItem, ...items];
+                console.log(newItems);
                 setItems(newItems);
                 setInserting(false);
 
@@ -52,7 +58,7 @@ export default function Home() {
     let toggleItem = (id) => {
         let data = items.find(v =>  v.id === id);
         data.done = !data.done;
-
+        
         update(id, data)
             .then((result) => {
                 let newItems = items.map(v => {if (v.id === id) {
