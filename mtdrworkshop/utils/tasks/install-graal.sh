@@ -18,3 +18,6 @@ while ! state_done GRAAL_IMAGE; do
   ~/graalvm-ce-java11-20.1.0/bin/gu install native-image
   state_set_done GRAAL_IMAGE
 done
+
+
+state_set_done JAVA_BUILDS
