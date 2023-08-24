@@ -219,7 +219,6 @@ if ! state_done DB_PASSWORD; then
   while true; do
     read -s -r -p "Enter the password to be used for the MTDR database: " PW
     if [[ ${#PW} -ge 12 && ${#PW} -le 30 && "$PW" =~ [A-Z] && "$PW" =~ [a-z] && "$PW" =~ [0-9] && "$PW" != *admin* && "$PW" != *'"'* ]]; then
-      state_set DB_PASSWORD "$PW"
       echo
       break
     else
@@ -243,7 +242,7 @@ fi
 
 # Get MTDR_DB OCID
 while ! state_done MTDR_DB_OCID; do
-  MTDR_DB_OCID=`terraform output -chdir="$MTDRWORKSHOP_LOCATION/terraform" --raw adb_ocid`
+  MTDR_DB_OCID=`terraform -chdir="$MTDRWORKSHOP_LOCATION/terraform" output --raw adb_ocid`
   if [[ "$MTDR_DB_OCID" =~ ocid1.autonomousdatabase* ]]; then
     state_set MTDR_DB_OCID "$MTDR_DB_OCID"
   else
