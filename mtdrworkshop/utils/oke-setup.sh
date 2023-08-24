@@ -35,7 +35,7 @@ while ! state_done KUBECTL; do
   oci ce cluster create-kubeconfig --cluster-id "$(state_get OKE_OCID)" --file $HOME/.kube/config --region "$(state_get REGION)" --token-version 2.0.0
 
   cluster_id="$(state_get OKE_OCID)"
-  kubectl config set-credentials "user-${cluster_id:(-11)}" --exec-command="tasks/set-kube-token-cache.sh.sh" \
+  kubectl config set-credentials "user-${cluster_id:(-11)}" --exec-command="set-kube-token-cache.sh" \
   --exec-arg="ce" \
   --exec-arg="cluster" \
   --exec-arg="generate-token" \
