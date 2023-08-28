@@ -12,7 +12,7 @@ resource oci_containerengine_cluster cloudbank {
   image_policy_config {
     is_policy_enabled = "false"
   }
-  kubernetes_version = "v1.23.4"
+  kubernetes_version = local.latest
   name               = "cloudbank"
   options {
     add_ons {
@@ -42,7 +42,7 @@ resource oci_containerengine_node_pool pool {
     key   = "name"
     value = "cloudbank"
   }
-  kubernetes_version = "v1.23.4"
+  kubernetes_version = local.latest
   name               = "cloudbank-pool"
   node_config_details {
     placement_configs {
@@ -62,3 +62,11 @@ resource oci_containerengine_node_pool pool {
   }
 }
 
+data "oci_containerengine_cluster_option" options {
+  cluster_option_id = "all"
+}
+
+locals {
+    versions = reverse(sort(data.oci_containerengine_cluster_option.options.kubernetes_versions))
+    latest = local.versions[0]
+  }
