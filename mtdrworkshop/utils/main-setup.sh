@@ -109,7 +109,7 @@ done
 ##newest code added later
 while ! state_done COMPARTMENT_OCID; do
   if test $(state_get RUN_TYPE) -ne 3; then
-    read -p "if you have your own compartment, enter it here: if not, hit enter" COMPARTMENT_OCID
+    read -p "Please enter your compartment OCID: [Press enter/return to create a new compartment] " COMPARTMENT_OCID
     ##newest condition added
     if test "$COMPARTMENT_OCID" != "" && test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null` == 'ACTIVE'; then
       state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
@@ -170,7 +170,7 @@ while ! state_done DOCKER_REGISTRY; do
       if grep UserCapacityExceeded $MTDRWORKSHOP_LOG/docker_registry_err >/dev/null; then
         # The key already exists
         echo 'ERROR: Failed to create auth token.  Please delete an old token from the OCI Console (Profile -> User Settings -> Auth Tokens).'
-        read -p "Hit return when you are ready to retry?"
+        read -p "[Press enter/return to retry] "
         continue
       else
         echo "ERROR: Creating auth token had failed:"
