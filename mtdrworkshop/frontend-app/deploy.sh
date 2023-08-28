@@ -7,11 +7,11 @@ SCRIPT_DIR=$(dirname $0)
 
 echo "Creating frontend deployment and service"
 export CURRENTTIME=$( date '+%F_%H:%M:%S' )
+
 YAML_NAME=manifest-$CURRENTTIME.yaml
-export DOCKER_REGISTRY=$(state_get DOCKER_REGISTRY)
 
-
-
+# set vars
+source set.sh
 
 
 echo CURRENTTIME is $CURRENTTIME  ...this will be appended to generated deployment yaml
