@@ -3,7 +3,7 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 
-#Make sure this is run via source or .
+# Make sure this is run via source or .
 if ! (return 0 2>/dev/null); then
   echo "ERROR: Usage 'source setup.sh'"
   exit

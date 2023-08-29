@@ -1,4 +1,8 @@
 #!/bin/bash
+## MyToDoReact version 2.0.0
+##
+## Copyright (c) 2021 Oracle, Inc.
+## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
 
 export IMAGE_NAME=todolistapp-helidon-se
 export IMAGE_VERSION=0.1

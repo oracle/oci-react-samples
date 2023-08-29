@@ -1,4 +1,10 @@
+// MyToDoReact version 2.0.0
+//
+// Copyright (c) 2021 Oracle, Inc.
+// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
 const ROOT_API = process.env.NEXT_PUBLIC_ROOT_API ? process.env.NEXT_PUBLIC_ROOT_API : ""
+
+
 async function retrieve_prod() {
     return await fetch(ROOT_API+"/api/todolist")
         .then(response => {
