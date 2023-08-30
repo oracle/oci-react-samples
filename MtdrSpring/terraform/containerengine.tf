@@ -8,7 +8,7 @@ resource "oci_containerengine_cluster" "mtdrworkshop_cluster" {
     ]
     subnet_id = oci_core_subnet.endpoint.id
   }
-  kubernetes_version  = "v1.25.4"
+  kubernetes_version  = local.latest
   name                = "mtdrworkshopcluster-${var.mtdrKey}"
   vcn_id              = oci_core_vcn.okevcn.id
   #optional
@@ -36,7 +36,7 @@ resource "oci_containerengine_node_pool" "oke_node_pool" {
   #Required
   cluster_id         = oci_containerengine_cluster.mtdrworkshop_cluster.id
   compartment_id     = var.ociCompartmentOcid
-  kubernetes_version = "v1.25.4"
+  kubernetes_version = local.latest
   name               = "Pool"
   #  node_shape="VM.Standard2.4"
   #  node_shape         = "VM.Standard.B2.1"
@@ -81,3 +81,8 @@ locals {
   all_sources = data.oci_containerengine_node_pool_option.mtdrworkshop_node_pool_option.sources
   oracle_linux_images = [for source in local.all_sources : source.image_id if length(regexall("Oracle-Linux-[0-9]*.[0-9]*-20[0-9]*",source.source_name)) > 0]
 }
+
+locals {
+    versions = reverse(sort(data.oci_containerengine_cluster_option.mtdrworkshop_cluster_option.kubernetes_versions))
+    latest = local.versions[0]
+  }
