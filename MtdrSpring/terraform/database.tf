@@ -51,3 +51,7 @@ output "ns_objectstorage_namespace" {
 output "autonomous_database_admin_password" {
   value =  [ "Welcome12345" ]
 }
+
+output "adb_ocid" {
+  value = oci_database_autonomous_database.autonomous_database_atp.id
+}
