@@ -70,3 +70,4 @@ locals {
     versions = reverse(sort(data.oci_containerengine_cluster_option.options.kubernetes_versions))
     latest = local.versions[0]
   }
+
