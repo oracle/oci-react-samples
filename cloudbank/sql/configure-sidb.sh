@@ -2,10 +2,10 @@
 
 database=$1
 password=$2
-connection='XEPDB1'
+connection='FREEPDB1'
 
 {
-  echo "alter session set container=XEPDB1;"
+  echo "alter session set container=FREEPDB1;"
   echo "connect sys/$password@$connection as sysdba"
   cat AdminCreateUsers-SIDBXE.sql
   echo "conn aquser/$password@$connection"
