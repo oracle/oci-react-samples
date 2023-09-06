@@ -39,7 +39,7 @@ public class TransferController {
     final String bankdbuser =   System.getenv("bankdbuser");
     final String bankdbpw =  System.getenv("bankdbpw");
     final String bankdburl =   System.getenv("bankdburl");
-    // bankdburl example: "jdbc:oracle:thin:@//<ip_address>:1521/XEPDB1";
+    // bankdburl example: "jdbc:oracle:thin:@//<ip_address>:1521/FREEPDB1";
 
     //transfer id is currently just the currentTimeMillis and not persisted
     private Map<String, TransferInformation> transferLedger = new HashMap<>();
