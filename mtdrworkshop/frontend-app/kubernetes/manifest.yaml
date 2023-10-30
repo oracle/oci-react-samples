@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontendapp-deployment
+  labels:
+    app: frontendapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontendapp
+  template:
+    metadata:
+      labels:
+        app: frontendapp
+    spec:
+      containers:
+      - name: app
+        image: %DOCKER_REGISTRY%/%DOCKER_IMAGE%:%DOCKER_IMAGE_TAG%
+        ports:
+        - containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontendapp-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: frontendapp

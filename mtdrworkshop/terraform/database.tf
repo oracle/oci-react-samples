@@ -48,6 +48,7 @@ data "oci_objectstorage_namespace" "test_namespace" {
 output "ns_objectstorage_namespace" { 
   value =  [ data.oci_objectstorage_namespace.test_namespace.namespace ]
 }
-output "autonomous_database_admin_password" {
-  value =  [ "Welcome12345" ]
+
+output "adb_ocid" {
+  value = oci_database_autonomous_database.autonomous_database_atp.id
 }

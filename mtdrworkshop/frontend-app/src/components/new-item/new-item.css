@@ -1,0 +1,75 @@
+/*
+## MyToDoReact version 2.0.0
+##
+## Copyright (c) 2021 Oracle, Inc.
+## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
+*/
+
+.new-item-component {
+    width: 100%;
+    margin-top: 1em;
+    padding: 9px;
+}
+
+.new-item-component input {
+    flex-grow: 1;
+    padding: 8px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    font-size: .8em;
+}
+
+.new-item-component .error-message {
+    color: #ff6262;
+    font-size: max(10px,min(1.5vw, 14px));
+    height: 20px;
+}
+.new-item-component input.required,
+.new-item-component input.required:focus {
+    border: 2px solid #ff6262;
+    outline: none;
+}
+
+@media only screen and (max-width: 600px)  {
+    .new-item-component {
+        flex-direction: column;
+    }
+}
+
+button.AddButton {
+    height: 36px;
+}
+
+.progress {
+    color: #fff;
+}
+
+
+button.AddButton,
+button.DeleteButton,
+button.AddButton,
+button.DoneButton {
+    font-size: max(8px,min(2vw, 12px));
+    padding: 0.35em 0.5em;
+}
+
+button.AddButton {
+    color: #FEF9F2;
+    background-color: #5F7D4F;
+}
+button.AddButton:hover {
+    background-color: #6F915D;
+}
+button.DeleteButton {
+    color: #FEF9F2;
+    background-color:  #D63B25;
+}
+button.DeleteButton:hover {
+    background-color: #EC4F3A
+}
+button.DoneButton {
+    background-color: #274759;
+}
+button.DoneButton:hover {
+    background-color: #2d5266;
+}

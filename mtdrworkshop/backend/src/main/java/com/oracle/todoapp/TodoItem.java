@@ -1,5 +1,5 @@
 /*
-## MyToDoReact version 1.0.
+## MyToDoReact version 2.0.0
 ##
 ## Copyright (c) 2021 Oracle, Inc.
 ## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
@@ -102,17 +102,18 @@ class TodoItem implements Serializable {
     item.setId(json.get("id") == null ? -1 : json.getInt("id"));
     item.setDescription(json.get("description") == null ? null : json.getString("description"));
     item.setCreatedAt(json.get("createdAt") == null ? null : OffsetDateTime.parse(json.getString("createdAt")));
-    item.setDone(json.get("done") == null ? false : json.getBoolean("done"));
-    LOGGER.fine(()->"fromJsonObject returns:"+item);
+    item.setDone(json.get("done") != null && json.getBoolean("done"));
     return item;
   }
 
-  static JsonArray toJsonArray(List<TodoItem> items) {
-    JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+  static JsonObject toJsonArray(List<TodoItem> items) {
+
+    JsonArrayBuilder itemsJSONArray = Json.createArrayBuilder();
     items.forEach(p -> {
-        jsonArrayBuilder.add(toJsonObject(p));
+      itemsJSONArray.add(toJsonObject(p));
     });
 
-    return jsonArrayBuilder.build();
+    return Json.createObjectBuilder()
+            .add("items", itemsJSONArray).build();
   }
 }

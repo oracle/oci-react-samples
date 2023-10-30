@@ -109,7 +109,7 @@ done
 ##newest code added later
 while ! state_done COMPARTMENT_OCID; do
   if test $(state_get RUN_TYPE) -ne 3; then
-    read -p "if you have your own compartment, enter it here: if not, hit enter" COMPARTMENT_OCID
+    read -p "Please enter your compartment OCID: [Press enter/return to create a new compartment] " COMPARTMENT_OCID
     ##newest condition added
     if test "$COMPARTMENT_OCID" != "" && test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null` == 'ACTIVE'; then
       state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
@@ -125,15 +125,25 @@ while ! state_done COMPARTMENT_OCID; do
   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
 done
 
-## Run the java-builds.sh in the background
+## Install graal
 if ! state_get JAVA_BUILDS; then
-  if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh" | grep -v grep; then
-    echo "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh is already running"
+  if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/tasks/install-graal.sh" | grep -v grep; then
+    echo "$MTDRWORKSHOP_LOCATION/utils/tasks/install-graal.sh is already running"
   else
-    echo "Executing java-builds.sh in the background"
-    nohup $MTDRWORKSHOP_LOCATION/utils/java-builds.sh &>> $MTDRWORKSHOP_LOG/java-builds.log &
+    echo "Executing install-graal.sh in the background"
+    nohup "$MTDRWORKSHOP_LOCATION/utils/tasks/install-graal.sh" &>> $MTDRWORKSHOP_LOG/install-graal.log &
   fi
 fi
+
+## Run the java-builds.sh in the background
+# if ! state_get JAVA_BUILDS; then
+#   if ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh" | grep -v grep; then
+#     echo "$MTDRWORKSHOP_LOCATION/utils/java-builds.sh is already running"
+#   else
+#     echo "Executing java-builds.sh in the background"
+#     nohup $MTDRWORKSHOP_LOCATION/utils/java-builds.sh &>> $MTDRWORKSHOP_LOG/java-builds.log &
+#   fi
+# fi
 
 
 ## Run the terraform.sh in the background
@@ -160,7 +170,7 @@ while ! state_done DOCKER_REGISTRY; do
       if grep UserCapacityExceeded $MTDRWORKSHOP_LOG/docker_registry_err >/dev/null; then
         # The key already exists
         echo 'ERROR: Failed to create auth token.  Please delete an old token from the OCI Console (Profile -> User Settings -> Auth Tokens).'
-        read -p "Hit return when you are ready to retry?"
+        read -p "[Press enter/return to retry] "
         continue
       else
         echo "ERROR: Creating auth token had failed:"
@@ -217,11 +227,7 @@ if ! state_done DB_PASSWORD; then
   echo
 
   while true; do
-    if test -z "$TEST_DB_PASSWORD"; then
-      read -s -r -p "Enter the password to be used for the MTDR database: " PW
-    else
-      PW="$TEST_DB_PASSWORD"
-    fi
+    read -s -r -p "Enter the password to be used for the MTDR database: " PW
     if [[ ${#PW} -ge 12 && ${#PW} -le 30 && "$PW" =~ [A-Z] && "$PW" =~ [a-z] && "$PW" =~ [0-9] && "$PW" != *admin* && "$PW" != *'"'* ]]; then
       echo
       break
@@ -246,7 +252,7 @@ fi
 
 # Get MTDR_DB OCID
 while ! state_done MTDR_DB_OCID; do
-  MTDR_DB_OCID=`oci db autonomous-database list --compartment-id "$(cat state/COMPARTMENT_OCID)" --query 'join('"' '"',data[?"display-name"=='"'MTDRDB'"'].id)' --raw-output`
+  MTDR_DB_OCID=`terraform -chdir="$MTDRWORKSHOP_LOCATION/terraform" output --raw adb_ocid`
   if [[ "$MTDR_DB_OCID" =~ ocid1.autonomousdatabase* ]]; then
     state_set MTDR_DB_OCID "$MTDR_DB_OCID"
   else
@@ -318,7 +324,7 @@ done
 
 ps -ef | grep "$MTDRWORKSHOP_LOCATION/utils" | grep -v grep
 
-bgs="JAVA_BUILDS OKE_SETUP DB_SETUP PROVISIONING"
+bgs="OKE_SETUP DB_SETUP PROVISIONING"
 while ! state_done SETUP_VERIFIED; do
   NOT_DONE=0
   bg_not_done=

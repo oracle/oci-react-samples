@@ -1,0 +1,38 @@
+/*
+## MyToDoReact version 2.0.0
+##
+## Copyright (c) 2021 Oracle, Inc.
+## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
+*/
+.main {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 60rem;
+    font-family: var(--font-mono);
+    font-size: max(12px,min(2vw, 18px));
+
+}
+
+.section {
+    box-shadow: 0 10px 18px 0 rgba(0, 0, 0, 0.2), 0 4.5rem 8rem 0 rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    background: #201E1C;
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow-x: auto;
+}
+.title {
+    text-align: center;
+    color: #a4a4a4;
+    margin-bottom: 25px;
+}
+
+.bottom {
+
+}
+
+.loading {
+    margin: 0 auto;
+}
+

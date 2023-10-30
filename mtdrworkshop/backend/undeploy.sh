@@ -1,10 +1,10 @@
 #!/bin/bash
-## MyToDoReact version 1.0.
+## MyToDoReact version 2.0.0
 ##
 ## Copyright (c) 2021 Oracle, Inc.
 ## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
 
-echo delete frontend deployment and service...
+echo Deleting backend deployment and service...
 
-kubectl -n mtdrworkshop delete deployment todolistapp-helidon-se-deployment 
-kubectl -n mtdrworkshop delete service todolistapp-helidon-se-service
+kubectl -n mtdrworkshop delete deployment backend-deployment
+kubectl -n mtdrworkshop delete service backend-service

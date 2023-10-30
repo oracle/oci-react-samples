@@ -8,12 +8,34 @@ if ! (return 0 2>/dev/null); then
   exit
 fi
 
-#set mtdrworkshop_location
+# ######################################################
+# set mtdrworkshop_home to where the current directory is (under ~/../mtdrtodo)
+# command: source oci-react-samples/mtdrworkshop/env.sh
+# set mtdrworkshop_location to the location of this script
 export MTDRWORKSHOP_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-cd $MTDRWORKSHOP_LOCATION
+
+# assumes directory is above the code
+
+export MTDRWORKSHOP_HOME="$(state_get STATE_HOME)"
+export MTDRWORKSHOP_STATE_HOME=$MTDRWORKSHOP_LOCATION/../../state
+export MTDRWORKSHOP_LOG=$MTDRWORKSHOP_LOCATION/../../state/log
+mkdir -p $MTDRWORKSHOP_STATE_HOME
+mkdir -p $MTDRWORKSHOP_LOG
+
+# source state-functions
+source $MTDRWORKSHOP_LOCATION/utils/state-functions.sh
+
+# configure env.sh to run everytime cloud shell is start up
+# only if it does not already exist
+if ! grep -q "$MTDRWORKSHOP_LOCATION"/env.sh ~/.bashrc; then
+  echo source "$MTDRWORKSHOP_LOCATION"/env.sh >> ~/.bashrc
+  cp ~/.bashrc ~/.bashrc.copy
+fi
+
 echo "MTDRWORKSHOP_LOCATION: $MTDRWORKSHOP_LOCATION"
+echo "MTDRWORKSOP_STATE_HOME: $MTDRWORKSHOP_STATE_HOME"
 
-
+# ######################################################
 # Java Home
 # -d true if file is a directory, so it's testing if this directory exists, if it does
 # we are on Mac doing local dev
@@ -26,19 +48,8 @@ else
 fi
 export PATH=$JAVA_HOME/bin:$PATH
 
-#state directory
-if test -d ~/mtdrworkshop-state; then
-  export MTDRWORKSHOP_STATE_HOME=~/mtdrworkshop-state
-else
-  export MTDRWORKSHOP_STATE_HOME=$MTDRWORKSHOP_LOCATION
-fi
-echo "MTDRWORKSOP_STATE_HOME: $MTDRWORKSHOP_STATE_HOME"
-#Log Directory
-export MTDRWORKSHOP_LOG=$MTDRWORKSHOP_STATE_HOME/log
-mkdir -p $MTDRWORKSHOP_LOG
 
-source $MTDRWORKSHOP_LOCATION/utils/state-functions.sh
-
+# ######################################################
 # SHORTCUT ALIASES AND UTILS...
 alias k='kubectl'
 alias kt='kubectl --insecure-skip-tls-verify'

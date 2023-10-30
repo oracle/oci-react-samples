@@ -1,6 +1,8 @@
 #!/bin/bash
-# Copyright (c) 2021 Oracle and/or its affiliates.
-# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+## MyToDoReact version 2.0.0
+##
+## Copyright (c) 2021 Oracle, Inc.
+## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
 
 # Fail on error
 set -e
@@ -31,10 +33,11 @@ done
 
 # Setup Cluster Access
 while ! state_done KUBECTL; do
+  
   oci ce cluster create-kubeconfig --cluster-id "$(state_get OKE_OCID)" --file $HOME/.kube/config --region "$(state_get REGION)" --token-version 2.0.0
 
   cluster_id="$(state_get OKE_OCID)"
-  kubectl config set-credentials "user-${cluster_id:(-11)}" --exec-command="kube_token_cache.sh" \
+  kubectl config set-credentials "user-${cluster_id:(-11)}" --exec-command="set-kube-token-cache.sh" \
   --exec-arg="ce" \
   --exec-arg="cluster" \
   --exec-arg="generate-token" \
@@ -43,6 +46,7 @@ while ! state_done KUBECTL; do
   --exec-arg="--region" \
   --exec-arg="$(state_get REGION)"
 
+  chmod 400 $HOME/.kube/config
   state_set_done KUBECTL
 done
 
