@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.4</version>
+		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.oracle.todoapp</groupId>
@@ -15,7 +15,7 @@
 	<name>mytodolist</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>21</java.version>
 		<version.lib.ojdbc>23.2.0.0</version.lib.ojdbc>
 	</properties>
 	<dependencies>
@@ -24,16 +24,16 @@
 			<artifactId>ojdbc11</artifactId>
 			<version>${version.lib.ojdbc}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ucp11</artifactId>
-			<version>${version.lib.ojdbc}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle.database.security</groupId>
-			<artifactId>oraclepki</artifactId>
-			<version>${version.lib.ojdbc}</version>
-		</dependency>
+    <dependency>
+      <groupId>com.oracle.database.ha</groupId>
+      <artifactId>ons</artifactId>
+      <version>${version.lib.ojdbc}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle.database.ha</groupId>
+      <artifactId>simplefan</artifactId>
+      <version>${version.lib.ojdbc}</version>
+    </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>

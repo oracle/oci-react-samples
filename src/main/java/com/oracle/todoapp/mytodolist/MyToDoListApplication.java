@@ -13,10 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MyToDoListApplication {
 
-	public static void main(String[] args) {	
-		// -Doracle.jdbc.diagnostic.permitSensitiveDiagnostics=true -Doracle.jdbc.diagnostic.enableSensitiveDiagnostics=true
-		// -Doracle.jdbc.diagnostic.enableLogging=true -Djava.util.logging.config.file=./jdbclogging.properties	
-		System.setProperty("oracle.jdbc.diagnostic.enableLogging", "true");
+	public static void main(String[] args) {
+		System.setProperty("oracle.jdbc.diagnostic.enableLogging", "false");
 		System.setProperty("java.util.logging.config.file", "./jdbclogging.properties");
 		SpringApplication.run(MyToDoListApplication.class, args);
 	}

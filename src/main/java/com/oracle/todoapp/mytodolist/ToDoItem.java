@@ -7,8 +7,9 @@
 
 package com.oracle.todoapp.mytodolist;
 
-import javax.persistence.*;
 import java.time.OffsetDateTime;
+
+import jakarta.persistence.*;
 
 /*
 If the table needs to be created manually:
