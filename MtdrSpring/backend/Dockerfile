@@ -1,4 +1,6 @@
-FROM openjdk:11
+#FROM openjdk:11
+# FROM openjdk:21
+FROM eclipse-temurin:21
 COPY pom.xml /tmp/
 COPY src /tmp/src/
 WORKDIR /tmp/
