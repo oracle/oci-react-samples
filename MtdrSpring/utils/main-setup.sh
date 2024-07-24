@@ -168,9 +168,13 @@ while ! state_done DOCKER_REGISTRY; do
         read -p "Hit return when you are ready to retry?"
         continue
       else
-        echo "ERROR: Creating auth token had failed:"
-        cat $MTDRWORKSHOP_LOG/docker_registry_err
-        exit
+        # OCI auth token creation - restriction by design (can only create token on Home region)
+        # echo "ERROR: Creating auth token had failed:"
+        # cat $MTDRWORKSHOP_LOG/docker_registry_err
+        # exit
+        read -s -r -p "Please generate an Auth Token and enter the value: " TOKEN
+        echo
+        echo "Auth Token entry accepted.  Attempting docker login."
       fi
     fi
   else
