@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>What’s in Oracle Database 23ai for Java Developers?</title>
+<link rel="stylesheet" href="styles.css">
+<script>
+	function notificationMessage() {
+		document.getElementById("notificationMessage").innerHTML = "Processing, please wait!";
+	}
+</script>
+</head>
+<body style="font-family: Verdana; color: #333232;">
+	<div class="container">
+		<h2 style="text-align: center;">RAG (PDF) - SpringAI
+			(OracleDatabaseVectorStore) + Cohere + Oracle Database 23ai</h2>
+		<h3 style="text-align: center;">Ask your questions about Oracle
+			Database 23ai for Java Developers</h3>
+		<form action="rag23aivectorstore" method="post">
+
+			<div class="input_wrap">
+				<label for="query">Question:</label> <input type="text" name="query"
+					value="What’s in Oracle Database 23ai for Java Developers?">
+			</div>
+			<button type="submit" class="btn" onclick="notificationMessage()">Ask
+				Now!</button>
+			<p id="notificationMessage"></p>
+		</form>
+	</div>
+</body>
+</html>

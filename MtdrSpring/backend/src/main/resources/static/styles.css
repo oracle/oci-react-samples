@@ -1,0 +1,48 @@
+.container {
+	max-width: 380px;
+	padding: 60px 20px;
+	margin: 0 auto;
+}
+
+.container form {
+	margin-top: 40px;
+}
+
+.input_wrap {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.input_wrap label {
+	max-width: 120px;
+	width: 100%;
+	display: block;
+}
+
+.input_wrap input {
+	max-width: calc(100% - 140px);
+	width: 100%;
+	padding: 7px;
+}
+
+.btn {
+	font-family: Verdana;
+	background-color: transparent;
+	border: 1px solid;
+	padding: 7px 12px;
+	border-radius: .25rem;
+	color: #018ED3;
+	border-color: #018ED3;
+	margin: 12px auto 0 auto;
+	width: calc(100% - 120px);
+	float: right;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background: #018ED3;
+	color: #fff;
+}
