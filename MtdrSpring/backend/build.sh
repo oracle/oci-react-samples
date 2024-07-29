@@ -15,7 +15,7 @@ if [ -z "$DOCKER_REGISTRY" ]; then
 fi
 export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
 
-mvn clean package spring-boot:repackage
+~/mvn-upgrade/apache-maven-3.9.8/bin/mvn clean package spring-boot:repackage
 docker build -f Dockerfile -t $IMAGE .
 
 docker push $IMAGE
