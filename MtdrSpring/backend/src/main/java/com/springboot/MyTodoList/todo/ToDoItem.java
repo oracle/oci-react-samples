@@ -1,28 +1,37 @@
-package com.springboot.MyTodoList.model;
+package com.springboot.MyTodoList.todo;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 
 /*
     representation of the TODOITEM table that exists already
     in the autonomous database
- */
+*/
+
 @Entity
-@Table(name = "TODOITEM")
+@Table(name = "TODOITEM", schema = "TODOOWNER")
 public class ToDoItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     int ID;
+
     @Column(name = "DESCRIPTION")
     String description;
+
     @Column(name = "CREATION_TS")
     OffsetDateTime creation_ts;
+
     @Column(name = "done")
     boolean done;
-    public ToDoItem(){
 
+    public ToDoItem(){}
+
+    public ToDoItem(String description) {
+        this.description = description;
+        this.creation_ts = OffsetDateTime.now();
     }
+
     public ToDoItem(int ID, String description, OffsetDateTime creation_ts, boolean done) {
         this.ID = ID;
         this.description = description;
