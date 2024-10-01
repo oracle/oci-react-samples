@@ -16,7 +16,11 @@ public class ToDoItemController {
     @Autowired
     private ToDoItemRepository repository;
 
-    //@CrossOrigin
+    @GetMapping(value = "/health")
+    public String getHealth(){
+        return "OK";
+    }
+
     @GetMapping(value = "/todolist")
     public List<ToDoItem> getAllToDoItems(){
       return repository.findAll();
