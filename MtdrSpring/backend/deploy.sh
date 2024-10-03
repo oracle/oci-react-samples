@@ -8,12 +8,14 @@ if [ -z "$TODO_PDB_NAME" ]; then
     echo "Error: TODO_PDB_NAME env variable needs to be set!"
     exit 1
 fi
-if [ -z "$OCI_REGION" ]; then
-    echo "OCI_REGION not set. Will get it with state_get"
-    export OCI_REGION=$(state_get REGION)
+
+if [ -z "$DOCKER_REGISTRY" ]; then
+    echo "DOCKER_REGISTRY not set. Will get it with state_get"
+  export DOCKER_REGISTRY=$(state_get DOCKER_REGISTRY)
 fi
-if [ -z "$OCI_REGION" ]; then
-    echo "Error: OCI_REGION env variable needs to be set!"
+
+if [ -z "$DOCKER_REGISTRY" ]; then
+    echo "Error: DOCKER_REGISTRY env variable needs to be set!"
     exit 1
 fi
 
@@ -36,12 +38,13 @@ sed -i "s|%DOCKER_REGISTRY%|${DOCKER_REGISTRY}|g" todolistapp-springboot-$CURREN
 
 sed -e "s|%DOCKER_REGISTRY%|${DOCKER_REGISTRY}|g" todolistapp-springboot-${CURRENTTIME}.yaml > /tmp/todolistapp-springboot-${CURRENTTIME}.yaml
 mv -- /tmp/todolistapp-springboot-$CURRENTTIME.yaml todolistapp-springboot-$CURRENTTIME.yaml
+
 sed -e "s|%TODO_PDB_NAME%|${TODO_PDB_NAME}|g" todolistapp-springboot-${CURRENTTIME}.yaml > /tmp/todolistapp-springboot-${CURRENTTIME}.yaml
 mv -- /tmp/todolistapp-springboot-$CURRENTTIME.yaml todolistapp-springboot-$CURRENTTIME.yaml
-sed -e "s|%OCI_REGION%|${OCI_REGION}|g" todolistapp-springboot-${CURRENTTIME}.yaml > /tmp/todolistapp-springboot-$CURRENTTIME.yaml
-mv -- /tmp/todolistapp-springboot-$CURRENTTIME.yaml todolistapp-springboot-$CURRENTTIME.yaml
+
 sed -e "s|%UI_USERNAME%|${UI_USERNAME}|g" todolistapp-springboot-${CURRENTTIME}.yaml > /tmp/todolistapp-springboot-$CURRENTTIME.yaml
 mv -- /tmp/todolistapp-springboot-$CURRENTTIME.yaml todolistapp-springboot-$CURRENTTIME.yaml
+
 if [ -z "$1" ]; then
     kubectl apply -f $SCRIPT_DIR/todolistapp-springboot-$CURRENTTIME.yaml -n mtdrworkshop
 else

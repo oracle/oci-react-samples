@@ -16,7 +16,7 @@ fi
 export IMAGE=${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
 
 mvn clean package spring-boot:repackage
-docker build -f Dockerfile -t $IMAGE .
+docker buildx build --platform linux/amd64 -f Dockerfile -t $IMAGE .
 
 docker push $IMAGE
 if [  $? -eq 0 ]; then
