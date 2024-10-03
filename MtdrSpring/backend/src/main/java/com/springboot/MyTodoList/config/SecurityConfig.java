@@ -30,6 +30,7 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests((requests) ->
             requests.requestMatchers("/api/health").permitAll().anyRequest().authenticated())
+        .httpBasic(withDefaults())
         .formLogin(withDefaults())
         .logout(LogoutConfigurer::permitAll);
 
@@ -40,7 +41,7 @@ public class SecurityConfig {
   public CorsFilter corsFilter() {
 
     CorsConfiguration config = new CorsConfiguration();
-    config.setAllowCredentials(true);
+//    config.setAllowCredentials(true);
     config.setAllowedOrigins(List.of("*"));
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
