@@ -1,12 +1,14 @@
 # Todolist SpringBoot 3 backend
 
-Todolist application backend built with Spring Boot 3, using Oracle JDBC. 
-This application also serves a frontend application using React.
+Todolist application backend built with Spring Boot 3, using Oracle JDBC.
 
 - __App Version `v2.0.0`__
 - __Oracle JDBC Version `v23.4.0.24.05`__
 - __Spring Boot Version `v3.3.3`__
 - __Java Version `17`__
+
+This application also serves a frontend application using React.
+- __App Version `v1.0.1`__
 - __Node Version `v22.8.0`__
 - __NPM Version `10.8.2`__
 
