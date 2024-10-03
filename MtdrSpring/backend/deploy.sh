@@ -1,5 +1,18 @@
 #!/bin/bash
+
+## MyToDoReact version 2.0.0
+##
+## Copyright (c) 2024 Oracle, Inc.
+## Licensed under the Universal Permissive License v 1.0 as
+## shown at https://oss.oracle.com/licenses/upl/
+
 SCRIPT_DIR=$(dirname $0)
+
+# Requires
+# export TODO_PDB_NAME=<database-name>
+# export DOCKER_REGISTRY=<registry>
+# export UI_USERNAME=admin
+
 if [ -z "$TODO_PDB_NAME" ]; then
     echo "TODO_PDB_NAME not set. Will get it with state_get"
   export TODO_PDB_NAME=$(state_get MTDR_DB_NAME)

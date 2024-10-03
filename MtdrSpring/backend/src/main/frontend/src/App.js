@@ -1,5 +1,5 @@
-          /*
-## MyToDoReact version 1.0.
+/*
+## MyToDoReact version 1.0.1
 ##
 ## Copyright (c) 2022 Oracle, Inc.
 ## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
@@ -10,11 +10,11 @@
  * consistency.
  * @author  jean.de.lavarene@oracle.com
  */
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import NewItem from './NewItem';
 import API_LIST from './API';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, TableBody, CircularProgress } from '@mui/material';
+import {Button, CircularProgress, TableBody} from '@mui/material';
 import Moment from 'react-moment';
 
 /* In this application we're using Function Components with the State Hooks
@@ -24,160 +24,168 @@ import Moment from 'react-moment';
  * one with the items that are already done.
  */
 function App() {
-    // isLoading is true while waiting for the backend to return the list
-    // of items. We use this state to display a spinning circle:
-    const [isLoading, setLoading] = useState(false);
-    // Similar to isLoading, isInserting is true while waiting for the backend
-    // to insert a new item:
-    const [isInserting, setInserting] = useState(false);
-    // The list of todo items is stored in this state. It includes the "done"
-    // "not-done" items:
-    const [items, setItems] = useState([]);
-    // In case of an error during the API call:
-    const [error, setError] = useState();
+  // isLoading is true while waiting for the backend to return the list
+  // of items. We use this state to display a spinning circle:
+  const [isLoading, setLoading] = useState(false);
+  // Similar to isLoading, isInserting is true while waiting for the backend
+  // to insert a new item:
+  const [isInserting, setInserting] = useState(false);
+  // The list of todo items is stored in this state. It includes the "done"
+  // "not-done" items:
+  const [items, setItems] = useState([]);
+  // In case of an error during the API call:
+  const [error, setError] = useState();
 
 
-    function deleteItem(deleteId) {
-      // console.log("deleteItem("+deleteId+")")
-        const myHeaders = new Headers({ 'Content-Type': 'application/json' });
+  function deleteItem(deleteId) {
+    // console.log("deleteItem("+deleteId+")")
+    const myHeaders = new Headers({'Content-Type': 'application/json'});
 
-        fetch(API_LIST+"/"+deleteId, {
-        method: 'DELETE',
-          headers: myHeaders
-      })
-      .then(response => {
-        // console.log("response=");
-        // console.log(response);
-        if (response.ok) {
-          // console.log("deleteItem FETCH call is ok");
-          return response;
-        } else {
-          throw new Error('Something went wrong ...');
-        }
-      })
-      .then(
+    fetch(API_LIST + "/" + deleteId, {
+      method: 'DELETE',
+      headers: myHeaders
+    })
+        .then(response => {
+          // console.log("response=");
+          // console.log(response);
+          if (response.ok) {
+            // console.log("deleteItem FETCH call is ok");
+            return response;
+          } else {
+            throw new Error('Something went wrong ...');
+          }
+        })
+        .then(
+            (result) => {
+              const remainingItems = items.filter(item => item.id !== deleteId);
+              setItems(remainingItems);
+            },
+            (error) => {
+              setError(error);
+            }
+        );
+  }
+
+  function toggleDone(event, id, description, done) {
+    event.preventDefault();
+    modifyItem(id, description, done).then(
         (result) => {
-          const remainingItems = items.filter(item => item.id !== deleteId);
-          setItems(remainingItems);
+          reloadOneIteam(id);
         },
         (error) => {
           setError(error);
         }
-      );
-    }
-
-    function toggleDone(event, id, description, done) {
-      event.preventDefault();
-      modifyItem(id, description, done).then(
-        (result) => { reloadOneIteam(id); },
-        (error) => { setError(error); }
-      );
-    }
-    function reloadOneIteam(id){
-        const myHeaders = new Headers({ 'Content-Type': 'application/json' });
-      fetch(API_LIST+"/"+id, {
-          headers: myHeaders
-      })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Something went wrong ...');
-          }
-        })
-        .then(
-          (result) => {
-            const items2 = items.map(
-              x => (x.id === id ? {
-                 ...x,
-                 'description':result.description,
-                 'done': result.done
-                } : x));
-            setItems(items2);
-          },
-          (error) => {
-            setError(error);
-          });
-    }
-    function modifyItem(id, description, done) {
-        const myHeaders = new Headers({ 'Content-Type': 'application/json' });
-      // console.log("deleteItem("+deleteId+")")
-      var data = {"description": description, "done": done};
-      return fetch(API_LIST+"/"+id, {
-        method: 'PUT',
-        headers: myHeaders,
-        body: JSON.stringify(data)
-      })
-      .then(response => {
-        // console.log("response=");
-        // console.log(response);
-        if (response.ok) {
-          // console.log("deleteItem FETCH call is ok");
-          return response;
-        } else {
-          throw new Error('Something went wrong ...');
-        }
-      });
-    }
-    /*
-    To simulate slow network, call sleep before making API calls.
-    const sleep = (milliseconds) => {
-      return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
-    */
-    useEffect(() => {
-            const myHeaders = new Headers({ 'Content-Type': 'application/json' });
-      setLoading(true);
-      // sleep(5000).then(() => {
-      fetch(API_LIST, { headers: myHeaders })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Something went wrong ...');
-          }
-        })
-        .then(
-          (result) => {
-            setLoading(false);
-            setItems(result);
-          },
-          (error) => {
-            setLoading(false);
-            setError(error);
-          });
-
-      //})
-    },
-    // https://en.reactjs.org/docs/faq-ajax.html
-    [] // empty deps array [] means
-       // this useEffect will run once
-       // similar to componentDidMount()
     );
-    function addItem(text){
-        const myHeaders = new Headers({ 'Content-Type': 'application/json' });
-      console.log("addItem("+text+")")
-      setInserting(true);
-      var data = {};
-      console.log(data);
-      data.description = text;
-      fetch(API_LIST, {
-        method: 'POST',
-        // We convert the React state to JSON and send it as the POST body
-        headers: myHeaders,
-        body: JSON.stringify(data),
-      }).then((response) => {
-        // This API doens't return a JSON document
-        console.log(response);
-        console.log();
-        console.log(response.headers.location);
-        // return response.json();
-        if (response.ok) {
-          return response;
-        } else {
-          throw new Error('Something went wrong ...');
-        }
-      }).then(
+  }
+
+  function reloadOneIteam(id) {
+    const myHeaders = new Headers({'Content-Type': 'application/json'});
+    fetch(API_LIST + "/" + id, {
+      headers: myHeaders
+    })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Something went wrong ...');
+          }
+        })
+        .then(
+            (result) => {
+              const items2 = items.map(
+                  x => (x.id === id ? {
+                    ...x,
+                    'description': result.description,
+                    'done': result.done
+                  } : x));
+              setItems(items2);
+            },
+            (error) => {
+              setError(error);
+            });
+  }
+
+  function modifyItem(id, description, done) {
+    const myHeaders = new Headers({'Content-Type': 'application/json'});
+    // console.log("deleteItem("+deleteId+")")
+    var data = {"description": description, "done": done};
+    return fetch(API_LIST + "/" + id, {
+      method: 'PUT',
+      headers: myHeaders,
+      body: JSON.stringify(data)
+    })
+        .then(response => {
+          // console.log("response=");
+          // console.log(response);
+          if (response.ok) {
+            // console.log("deleteItem FETCH call is ok");
+            return response;
+          } else {
+            throw new Error('Something went wrong ...');
+          }
+        });
+  }
+
+  /*
+  To simulate slow network, call sleep before making API calls.
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+  */
+  useEffect(() => {
+        const myHeaders = new Headers({'Content-Type': 'application/json'});
+        setLoading(true);
+        // sleep(5000).then(() => {
+        fetch(API_LIST, {headers: myHeaders})
+            .then(response => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error('Something went wrong ...');
+              }
+            })
+            .then(
+                (result) => {
+                  setLoading(false);
+                  setItems(result);
+                },
+                (error) => {
+                  setLoading(false);
+                  setError(error);
+                });
+
+        //})
+      },
+      // https://en.reactjs.org/docs/faq-ajax.html
+      [] // empty deps array [] means
+      // this useEffect will run once
+      // similar to componentDidMount()
+  );
+
+  function addItem(text) {
+    const myHeaders = new Headers({'Content-Type': 'application/json'});
+    console.log("addItem(" + text + ")")
+    setInserting(true);
+    var data = {};
+    console.log(data);
+    data.description = text;
+    fetch(API_LIST, {
+      method: 'POST',
+      // We convert the React state to JSON and send it as the POST body
+      headers: myHeaders,
+      body: JSON.stringify(data),
+    }).then((response) => {
+      // This API doens't return a JSON document
+      console.log(response);
+      console.log();
+      console.log(response.headers.location);
+      // return response.json();
+      if (response.ok) {
+        return response;
+      } else {
+        throw new Error('Something went wrong ...');
+      }
+    }).then(
         (result) => {
           var id = result.headers.get('location');
           var newItem = {"id": id, "description": text}
@@ -188,60 +196,67 @@ function App() {
           setInserting(false);
           setError(error);
         }
-      );
-    }
-    return (
+    );
+  }
+
+  return (
       <div className="App">
         <h1>MY TODO LIST</h1>
         <NewItem addItem={addItem} isInserting={isInserting}/>
-        { error &&
-          <p>Error: {error.message}</p>
+        {error &&
+            <p>Error: {error.message}</p>
         }
-        { isLoading &&
-          <CircularProgress />
+        {isLoading &&
+            <CircularProgress/>
         }
-        { !isLoading &&
-        <div id="maincontent">
-        <table id="itemlistNotDone" className="itemlist">
-          <TableBody>
-          {items.map(item => (
-            !item.done && (
-            <tr key={item.id}>
-              <td className="description">{item.description}</td>
-              { /*<td>{JSON.stringify(item, null, 2) }</td>*/ }
-              <td className="date"><Moment format="MMM Do hh:mm:ss">{item.createdAt}</Moment></td>
-              <td><Button variant="contained" className="DoneButton" onClick={(event) => toggleDone(event, item.id, item.description, !item.done)} size="small">
-                    Done
-                  </Button></td>
-            </tr>
-          )))}
-          </TableBody>
-        </table>
-        <h2 id="donelist">
-          Done items
-        </h2>
-        <table id="itemlistDone" className="itemlist">
-          <TableBody>
-          {items.map(item => (
-            item.done && (
+        {!isLoading &&
+            <div id="maincontent">
+              <table id="itemlistNotDone" className="itemlist">
+                <TableBody>
+                  {items.map(item => (
+                      !item.done && (
+                          <tr key={item.id}>
+                            <td className="description">{item.description}</td>
+                            { /*<td>{JSON.stringify(item, null, 2) }</td>*/}
+                            <td className="date"><Moment format="MMM Do hh:mm:ss">{item.createdAt}</Moment></td>
+                            <td><Button variant="contained" className="DoneButton"
+                                        onClick={(event) => toggleDone(event, item.id, item.description, !item.done)}
+                                        size="small">
+                              Done
+                            </Button></td>
+                          </tr>
+                      )))}
+                </TableBody>
+              </table>
+              <h2 id="donelist">
+                Done items
+              </h2>
+              <table id="itemlistDone" className="itemlist">
+                <TableBody>
+                  {items.map(item => (
+                      item.done && (
 
-            <tr key={item.id}>
-              <td className="description">{item.description}</td>
-              <td className="date"><Moment format="MMM Do hh:mm:ss">{item.createdAt}</Moment></td>
-              <td><Button variant="contained" className="DoneButton" onClick={(event) => toggleDone(event, item.id, item.description, !item.done)} size="small">
-                    Undo
-                  </Button></td>
-              <td><Button startIcon={<DeleteIcon />} variant="contained" className="DeleteButton" onClick={() => deleteItem(item.id)} size="small">
-                    Delete
-                  </Button></td>
-            </tr>
-          )))}
-          </TableBody>
-        </table>
-        </div>
+                          <tr key={item.id}>
+                            <td className="description">{item.description}</td>
+                            <td className="date"><Moment format="MMM Do hh:mm:ss">{item.createdAt}</Moment></td>
+                            <td><Button variant="contained" className="DoneButton"
+                                        onClick={(event) => toggleDone(event, item.id, item.description, !item.done)}
+                                        size="small">
+                              Undo
+                            </Button></td>
+                            <td><Button startIcon={<DeleteIcon/>} variant="contained" className="DeleteButton"
+                                        onClick={() => deleteItem(item.id)} size="small">
+                              Delete
+                            </Button></td>
+                          </tr>
+                      )))}
+                </TableBody>
+              </table>
+            </div>
         }
 
       </div>
-    );
+  );
 }
+
 export default App;

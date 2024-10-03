@@ -1,5 +1,10 @@
+/*
+## MyToDoReact version 2.0.0
+##
+## Copyright (c) 2024 Oracle, Inc.
+## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
+*/
 package com.springboot.MyTodoList.todo;
-
 
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
@@ -13,71 +18,71 @@ import java.time.OffsetDateTime;
 @Table(name = "TODOITEM", schema = "TODOOWNER")
 public class ToDoItem {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int ID;
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  int ID;
 
-    @Column(name = "DESCRIPTION")
-    String description;
+  @Column(name = "DESCRIPTION")
+  String description;
 
-    @Column(name = "CREATION_TS")
-    OffsetDateTime creation_ts;
+  @Column(name = "CREATION_TS")
+  OffsetDateTime creation_ts;
 
-    @Column(name = "done")
-    boolean done;
+  @Column(name = "done")
+  boolean done;
 
-    public ToDoItem(){}
+  public ToDoItem(){}
 
-    public ToDoItem(String description) {
-        this.description = description;
-        this.creation_ts = OffsetDateTime.now();
-    }
+  public ToDoItem(String description) {
+    this.description = description;
+    this.creation_ts = OffsetDateTime.now();
+  }
 
-    public ToDoItem(int ID, String description, OffsetDateTime creation_ts, boolean done) {
-        this.ID = ID;
-        this.description = description;
-        this.creation_ts = creation_ts;
-        this.done = done;
-    }
+  public ToDoItem(int ID, String description, OffsetDateTime creation_ts, boolean done) {
+    this.ID = ID;
+    this.description = description;
+    this.creation_ts = creation_ts;
+    this.done = done;
+  }
 
-    public int getID() {
-        return ID;
-    }
+  public int getID() {
+    return ID;
+  }
 
-    public void setID(int ID) {
-        this.ID = ID;
-    }
+  public void setID(int ID) {
+    this.ID = ID;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public OffsetDateTime getCreation_ts() {
-        return creation_ts;
-    }
+  public OffsetDateTime getCreation_ts() {
+    return creation_ts;
+  }
 
-    public void setCreation_ts(OffsetDateTime creation_ts) {
-        this.creation_ts = creation_ts;
-    }
+  public void setCreation_ts(OffsetDateTime creation_ts) {
+    this.creation_ts = creation_ts;
+  }
 
-    public boolean isDone() {
-        return done;
-    }
+  public boolean isDone() {
+    return done;
+  }
 
-    public void setDone(boolean done) {
-        this.done = done;
-    }
+  public void setDone(boolean done) {
+    this.done = done;
+  }
 
-    @Override
-    public String toString() {
-        return "ToDoItem{" +
-                "ID=" + ID +
-                ", description='" + description + '\'' +
-                ", creation_ts=" + creation_ts +
-                ", done=" + done +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "ToDoItem{" +
+        "ID=" + ID +
+        ", description='" + description + '\'' +
+        ", creation_ts=" + creation_ts +
+        ", done=" + done +
+        '}';
+  }
 }
