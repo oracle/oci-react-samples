@@ -26,7 +26,7 @@ public class ToDoItemController {
       return repository.findAll();
     }
 
-    //@CrossOrigin
+    @CrossOrigin
     @GetMapping(value = "/todolist/{id}")
     public ResponseEntity<ToDoItem> getToDoItemById(@PathVariable int id){
 
@@ -35,7 +35,8 @@ public class ToDoItemController {
             .orElseGet(() -> ResponseEntity.notFound().build());
 
     }
-//    //@CrossOrigin
+
+    @CrossOrigin
     @PostMapping(value = "/todolist")
     public ResponseEntity<String> addToDoItem(@RequestBody ToDoItem todoItem) throws Exception{
 
@@ -51,7 +52,7 @@ public class ToDoItemController {
                 .headers(responseHeaders).build();
     }
 
-//    //@CrossOrigin
+    @CrossOrigin
     @PutMapping(value = "todolist/{id}")
     public ResponseEntity<ToDoItem> updateToDoItem(@RequestBody ToDoItem todoitem, @PathVariable int id){
 
@@ -64,7 +65,8 @@ public class ToDoItemController {
           })
           .orElseGet(() -> ResponseEntity.notFound().build());
     }
-//    //@CrossOrigin
+
+    @CrossOrigin
     @DeleteMapping(value = "todolist/{id}")
     public ResponseEntity<String> deleteToDoItem(@PathVariable("id") int id){
 
