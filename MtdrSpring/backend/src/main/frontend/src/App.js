@@ -36,10 +36,14 @@ function App() {
     // In case of an error during the API call:
     const [error, setError] = useState();
 
+
     function deleteItem(deleteId) {
       // console.log("deleteItem("+deleteId+")")
-      fetch(API_LIST+"/"+deleteId, {
+        const myHeaders = new Headers({ 'Content-Type': 'application/json' });
+
+        fetch(API_LIST+"/"+deleteId, {
         method: 'DELETE',
+          headers: myHeaders
       })
       .then(response => {
         // console.log("response=");
@@ -61,6 +65,7 @@ function App() {
         }
       );
     }
+
     function toggleDone(event, id, description, done) {
       event.preventDefault();
       modifyItem(id, description, done).then(
@@ -69,7 +74,10 @@ function App() {
       );
     }
     function reloadOneIteam(id){
-      fetch(API_LIST+"/"+id)
+        const myHeaders = new Headers({ 'Content-Type': 'application/json' });
+      fetch(API_LIST+"/"+id, {
+          headers: myHeaders
+      })
         .then(response => {
           if (response.ok) {
             return response.json();
@@ -92,13 +100,12 @@ function App() {
           });
     }
     function modifyItem(id, description, done) {
+        const myHeaders = new Headers({ 'Content-Type': 'application/json' });
       // console.log("deleteItem("+deleteId+")")
       var data = {"description": description, "done": done};
       return fetch(API_LIST+"/"+id, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: myHeaders,
         body: JSON.stringify(data)
       })
       .then(response => {
@@ -119,9 +126,10 @@ function App() {
     }
     */
     useEffect(() => {
+            const myHeaders = new Headers({ 'Content-Type': 'application/json' });
       setLoading(true);
       // sleep(5000).then(() => {
-      fetch(API_LIST)
+      fetch(API_LIST, { headers: myHeaders })
         .then(response => {
           if (response.ok) {
             return response.json();
@@ -147,6 +155,7 @@ function App() {
        // similar to componentDidMount()
     );
     function addItem(text){
+        const myHeaders = new Headers({ 'Content-Type': 'application/json' });
       console.log("addItem("+text+")")
       setInserting(true);
       var data = {};
@@ -155,9 +164,7 @@ function App() {
       fetch(API_LIST, {
         method: 'POST',
         // We convert the React state to JSON and send it as the POST body
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: myHeaders,
         body: JSON.stringify(data),
       }).then((response) => {
         // This API doens't return a JSON document
