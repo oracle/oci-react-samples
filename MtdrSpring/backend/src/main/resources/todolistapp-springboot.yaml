@@ -1,92 +1,109 @@
+#/**
+#* Copyright (c) 2024 Oracle and/or its affiliates.
+
+#* The Universal Permissive License (UPL), Version 1.0
+
+#* Subject to the condition set forth below, permission is hereby granted to any
+#* person obtaining a copy of this software, associated documentation and/or data
+#* (collectively the "Software"), free of charge and under any and all copyright
+#* rights in the Software, and any and all patent rights owned or freely
+#* licensable by each licensor hereunder covering either (i) the unmodified
+#* Software as contributed to or provided by such licensor, or (ii) the Larger
+#* Works (as defined below), to deal in both
+
+#* (a) the Software, and
+#* (b) any piece of software and/or hardware listed in the lrgrwrks.txt file if
+#* one is included with the Software (each a "Larger Work" to which the Software
+#* is contributed by such licensors),
+
+#* without restriction, including without limitation the rights to copy, create
+#* derivative works of, display, perform, and distribute the Software and make,
+#* use, sell, offer for sale, import, export, have made, and have sold the
+#* Software and the Larger Work(s), and to sublicense the foregoing rights on
+#* either these or other terms.
+
+#* This license is subject to the following condition:
+#* The above copyright notice and either this complete permission notice or at
+#* a minimum a reference to the UPL must be included in all copies or
+#* substantial portions of the Software.
+
+#* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#* SOFTWARE.
+#
+#*/
+
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: todolistapp-springboot-service
-  annotations:
-    oci.oraclecloud.com/loadbalancer-policy: "IP_HASH"
+  name: todolistapp
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Local
-
   ports:
-    - port: 80
-      protocol: TCP
+    - port: 8080
       targetPort: 8080
   selector:
-    app: todolistapp-springboot
----
-#this is new stuff for hosting on the load balancer
-apiVersion: v1
-kind: Service
-metadata:
-  name: todolistapp-backend-router
-spec:
-  selector:
-    app: todolistapp-springboot
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: http
+    app: todolistapp
+
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 600
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todolistapp-springboot-deployment
+  name: todolistapp
+  labels:
+    app: todolistapp
 spec:
   selector:
     matchLabels:
-      app: todolistapp-springboot
+      app: todolistapp
   replicas: 2
   template:
     metadata:
       labels:
-        app: todolistapp-springboot
-        version: v1
+        app: todolistapp
     spec:
       containers:
         - name: todolistapp-springboot
           image: %DOCKER_REGISTRY%/todolistapp-springboot:0.1
           imagePullPolicy: Always
           env:
-            - name: db_user
-              value: "TODOUSER"
-            - name: db_url
+            - name: DATABASE_URL
               value: "jdbc:oracle:thin:@%TODO_PDB_NAME%_tp?TNS_ADMIN=/mtdrworkshop/creds"
-            - name: todo.table.name
-              value: "todoitem"
-            - name: driver_class_name
-              value: "oracle.jdbc.OracleDriver"
-            - name: OCI_REGION
-              value: "%OCI_REGION%"
-            - name: dbpassword
+            - name: DATABASE_USER
+              value: "admin"
+            - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: dbuser
                   key: dbpassword
                   optional: true
-            - name: ui_username
+
+            - name: SPRING_SECURITY_USER_NAME
               value: "%UI_USERNAME%"
-            - name: ui_password
+            - name: SPRING_SECURITY_USER_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: frontendadmin
                   key: password
                   optional: true
+
           volumeMounts:
             - name: creds
               mountPath: /mtdrworkshop/creds
           ports:
             - containerPort: 8080
+
       restartPolicy: Always
       volumes:
         - name: creds
           secret:
             secretName: db-wallet-secret
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: todolistapp-springboot
----

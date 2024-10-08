@@ -136,12 +136,20 @@ while ! state_done TODO_USER; do
   sqlplus /nolog <<!
 WHENEVER SQLERROR EXIT 1
 connect admin/"$DB_PASSWORD"@$SVC
+
+create user TODOOWNER no authentication;
+grant create table to TODOOWNER;
+grant create procedure, create view, create sequence to TODOOWNER;
+alter user TODOOWNER quota unlimited on USERS;
+CREATE TABLE TODOOWNER.TODOITEM (id NUMBER GENERATED ALWAYS AS IDENTITY, description VARCHAR2(4000), creation_ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, done NUMBER(1,0) default 0, PRIMARY KEY (id));
+insert into TODOOWNER.todoitem  (description) values ('My first task!');
+
 CREATE USER $U IDENTIFIED BY "$DB_PASSWORD" DEFAULT TABLESPACE data QUOTA UNLIMITED ON data;
 GRANT CREATE SESSION, CREATE VIEW, CREATE SEQUENCE, CREATE PROCEDURE TO $U;
 GRANT CREATE TABLE, CREATE TRIGGER, CREATE TYPE, CREATE MATERIALIZED VIEW TO $U;
 GRANT CONNECT, RESOURCE, pdb_dba, SODA_APP to $U;
-CREATE TABLE TODOUSER.todoitem (id NUMBER GENERATED ALWAYS AS IDENTITY, description VARCHAR2(4000), creation_ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, done NUMBER(1,0) , PRIMARY KEY (id));
-insert into TODOUSER.todoitem  (description, done) values ('Manual item insert', 0);
+
+grant select, insert, update, delete on TODOOWNER.TODOITEM to $U;
 commit;
 !
   state_set_done TODO_USER
