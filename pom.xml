@@ -16,7 +16,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
-		<version.lib.ojdbc>23.2.0.0</version.lib.ojdbc>
+		<version.lib.ojdbc>23.6.0.24.10</version.lib.ojdbc>
 	</properties>
 	<dependencies>
 		<dependency>
