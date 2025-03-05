@@ -17,6 +17,19 @@ function sed_i(){
 }
 export -f sed_i
 
+# Java Home
+# -d true if file is a directory, so it's testing if this directory exists, if it does
+# we are on Mac doing local dev
+function set_javahome(){
+  if test -d ~/graalvm-ce-java11-20.1.0/Contents/Home/bin; then
+    # We are on Mac doing local dev
+    export JAVA_HOME=~/graalvm-ce-java11-20.1.0/Contents/Home;
+  else
+    # Assume linux
+    export JAVA_HOME=~/graalvm-ce-java11-20.1.0
+  fi
+  export PATH=$JAVA_HOME/bin:$PATH
+}
 
 #set mtdrworkshop_location
 export MTDRWORKSHOP_LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -24,17 +37,12 @@ cd $MTDRWORKSHOP_LOCATION
 echo "MTDRWORKSHOP_LOCATION: $MTDRWORKSHOP_LOCATION"
 
 
-# Java Home
-# -d true if file is a directory, so it's testing if this directory exists, if it does
-# we are on Mac doing local dev
-if test -d ~/graalvm-ce-java11-20.1.0/Contents/Home/bin; then
-  # We are on Mac doing local dev
-  export JAVA_HOME=~/graalvm-ce-java11-20.1.0/Contents/Home;
+JAVA_TEST=`which java`
+if [ -n $JAVA_TEST ]; then
+  echo "JAVA Found: $JAVA_TEST"
 else
-  # Assume linux
-  export JAVA_HOME=~/graalvm-ce-java11-20.1.0
+  set_javahome
 fi
-export PATH=$JAVA_HOME/bin:$PATH
 
 #state directory
 if test -d ~/mtdrworkshop-state; then

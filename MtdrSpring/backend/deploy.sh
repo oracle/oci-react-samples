@@ -1,13 +1,25 @@
 #!/bin/bash
-SCRIPT_DIR=$(dirname $0)
+SCRIPT_DIR=$(pwd)
+
+#Validation
+if [ -z "$DOCKER_REGISTRY" ]; then
+    export DOCKER_REGISTRY=$(state_get DOCKER_REGISTRY)
+    echo "DOCKER_REGISTRY set."
+fi
+if [ -z "$DOCKER_REGISTRY" ]; then
+    echo "Error: DOCKER_REGISTRY env variable needs to be set!"
+    exit 1
+fi
+
 if [ -z "$TODO_PDB_NAME" ]; then
-    echo "TODO_PDB_NAME not set. Will get it with state_get"
-  export TODO_PDB_NAME=$(state_get MTDR_DB_NAME)
+    export TODO_PDB_NAME=$(state_get MTDR_DB_NAME)
+    echo "TODO_PDB_NAME set."
 fi
 if [ -z "$TODO_PDB_NAME" ]; then
     echo "Error: TODO_PDB_NAME env variable needs to be set!"
     exit 1
 fi
+
 if [ -z "$OCI_REGION" ]; then
     echo "OCI_REGION not set. Will get it with state_get"
     export OCI_REGION=$(state_get REGION)
@@ -19,9 +31,8 @@ fi
 
 if [ -z "$UI_USERNAME" ]; then
     echo "UI_USERNAME not set. Will get it with state_get"
-  export UI_USERNAME=$(state_get UI_USERNAME)
+    export UI_USERNAME=$(state_get UI_USERNAME)
 fi
-
 if [ -z "$UI_USERNAME" ]; then
     echo "Error: UI_USERNAME env variable needs to be set!"
     exit 1

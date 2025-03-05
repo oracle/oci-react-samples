@@ -1,0 +1,37 @@
+version: 0.1 
+component: build
+timeoutInSeconds: 600
+shell: bash
+
+env:
+  variables:
+    JAVA_HOME: /usr/lib64/graalvm/graalvm22-ee-java17
+
+  exportedVariables:
+    - BuildServiceDemoVersion
+
+steps:
+  - type: Command
+    name: "Install GraalVM Enterprise 22.x Native Image for Java17"
+    command: yum -y install graalvm22-ee-17-native-image
+
+  - type: Command
+    name: "Set PATH Variable"
+    command: export PATH=$JAVA_HOME/bin:$PATH
+
+  - type: Command
+    name: "Docker Login"
+    command:  cd MtdrSpring;
+              oci os object get --bucket-name reacttodo-rolax --name deployment_config.tgz --file deployment_config.tgz;
+              tar -xzvf deployment_config.tgz;
+              source env.sh;
+              cat at.cfg | docker login -u "axzmghqes1gn/adan.ruiz@tec.mx" --password-stdin mx-queretaro-1.ocir.io
+
+  - type: Command
+    name: "Build"
+    command:  cd MtdrSpring;
+              source env.sh;
+              (cd backend;source build.sh)
+
+
+

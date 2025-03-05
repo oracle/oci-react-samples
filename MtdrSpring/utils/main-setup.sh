@@ -125,7 +125,7 @@ while ! state_done COMPARTMENT_OCID; do
   fi
   while ! test `oci iam compartment get --compartment-id "$COMPARTMENT_OCID" --query 'data."lifecycle-state"' --raw-output 2>/dev/null`"" == 'ACTIVE'; do
     echo "Waiting for the compartment to become ACTIVE"
-    sleep 2
+    sleep 60
   done
   state_set COMPARTMENT_OCID "$COMPARTMENT_OCID"
 done
@@ -162,6 +162,7 @@ while ! state_done DOCKER_REGISTRY; do
   if test $(state_get RUN_TYPE) -ne 3; then
     ##export OCI_CLI_PROFILE=$(state_get HOME_REGION) ## have to get rid of this for non instance_principal based stuff
     if ! TOKEN=`oci iam auth-token create  --user-id "$(state_get USER_OCID)" --description 'mtdr docker login' --query 'data.token' --raw-output 2>$MTDRWORKSHOP_LOG/docker_registry_err`; then
+      sleep 60
       if grep UserCapacityExceeded $MTDRWORKSHOP_LOG/docker_registry_err >/dev/null; then
         # The key already exists
         echo 'ERROR: Failed to create auth token.  Please delete an old token from the OCI Console (Profile -> User Settings -> Auth Tokens).'
@@ -172,6 +173,7 @@ while ! state_done DOCKER_REGISTRY; do
         cat $MTDRWORKSHOP_LOG/docker_registry_err
         exit
       fi
+      sleep 5
     fi
   else
     read -s -r -p "Please generate an Auth Token and enter the value: " TOKEN

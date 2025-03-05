@@ -20,7 +20,7 @@ public class ToDoItemController {
     public List<ToDoItem> getAllToDoItems(){
         return toDoItemService.findAll();
     }
-    //@CrossOrigin
+    //@CrossOriginFailed to load resource: the server responded with a status of 500 ()
     @GetMapping(value = "/todolist/{id}")
     public ResponseEntity<ToDoItem> getToDoItemById(@PathVariable int id){
         try{
